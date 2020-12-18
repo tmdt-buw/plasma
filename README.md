@@ -30,6 +30,9 @@ The java version of the shared artifact ist 8.
 * For building the backend components execute ```maven package``` on the parent module
 * For installing the backend components including docker containers execute ```maven install``` on the parent module
 ** Ensure that your docker is running on the local machine and can be reached
-* Execture the docker-compose to start the stack
 
 ## Development and Execution of the UI
+
+## Execution
+* After building all docker images, just execute the ```docker-compose``` script
+* You can access the UI at ```localhost:80```
