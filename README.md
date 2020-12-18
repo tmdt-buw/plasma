@@ -24,14 +24,15 @@ The java version of the shared artifact ist 8.
 * Install Docker for executing each service
 * You require Maven to build the services
 * We recommend IntelliJ as an IDE
-
-## Development and Execution of the Backend Components
 * Checkout the repository
+
+## Development and Building of the Backend Components
 * For building the backend components execute ```maven package``` on the parent module
 * For installing the backend components including docker containers execute ```maven install``` on the parent module
 ** Ensure that your docker is running on the local machine and can be reached
 
-## Development and Execution of the UI
+## Development and Building of the UI Components
+* Build the docker container for the user interface using the corresponding ```Dockerfile```
 
 ## Execution
 * After building all docker images, just execute the ```docker-compose``` script
