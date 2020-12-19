@@ -1,0 +1,70 @@
+<mat-toolbar class="main-toolbar mat-elevation-z1">
+  <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+    <div fxLayout="row" fxLayoutAlign="space-center center">
+      <button mat-icon-button (click)="toggle()" class="menu-button">
+        <i class="material-icons" style="color: #042042">menu</i>
+      </button>
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <img class="logo" src="assets/img/plasma_logo.png" style="width: 40px; height: auto; margin-left: 30px; margin-right: 200px">
+        <span>
+          PLASMA - PLatform for Auxiliary Semantic Modeling Approaches
+        </span>
+        <img class="logo" src="assets/img/tmdt_logo.png" style="width: 140px; height: auto; margin-left: 200px!important;">
+      </div>
+
+    </div>
+    <div>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>settings</mat-icon>
+      </button>
+    </div>
+
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-sidenav-container [hasBackdrop]="false" class="sidenav-container">
+  <mat-sidenav
+    [mode]="'side'"
+    [@sidenavExpand]="opened ? 'sidenav-expanded' : 'sidenav-collapsed'"
+    opened>
+
+    <mat-nav-list>
+      <a mat-list-item routerLinkActive="active" [routerLink]="datasourcesRoute">
+        <mat-icon class="icon-wrapper" fxLayout="row" fxLayoutAlign="center center" color="primary">source</mat-icon>
+        <span *ngIf="opened" class="text-wrapper">
+          Data Sources
+        </span>
+      </a>
+
+      <a mat-list-item routerLinkActive="active" [routerLink]="schemaanaylsisRoute">
+        <mat-icon class="icon-wrapper" fxLayout="row" fxLayoutAlign="center center" color="primary">graphic_eq</mat-icon>
+        <span *ngIf="opened" class="text-wrapper">
+          Schema Analysis
+        </span>
+      </a>
+
+      <a mat-list-item routerLinkActive="active" [routerLink]="modelingRoute">
+        <mat-icon class="icon-wrapper" fxLayout="row" fxLayoutAlign="center center" color="primary">widgets</mat-icon>
+        <span *ngIf="opened" class="text-wrapper">
+          Modeling
+        </span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content [@sidenavExpand]="opened ? 'content-expanded' : 'content-collapsed'" cdkScrollable>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<mat-menu #menu="matMenu" style="width: 300px !important;">
+
+  <button mat-menu-item [routerLink]="kgImportRoute" style="outline: none">
+    <mat-icon>cloud_upload</mat-icon>
+    <span>Import Ontology</span>
+  </button>
+  <button mat-menu-item [routerLink]="kgExportRoute" style="outline: none">
+    <mat-icon>cloud_download</mat-icon>
+    <span>Export Ontology</span>
+  </button>
+</mat-menu>

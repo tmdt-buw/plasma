@@ -1,0 +1,28 @@
+<div class="mcontainer" fxLayout.lt-sm fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center start">
+  <mat-card fxFlex="90" fxFill style="margin-bottom: 20px;">
+    <mat-card-header>Upload Base Ontology</mat-card-header>
+    <mat-card-content fxFill>
+      <label for="file" class="btn btn-primary" style="margin-top: 8px; margin-left: 40px">Select File</label>
+      <input id="file" type="file" (change)="onFileChanged($event)" #fileInput label="XYZ" style="visibility: hidden">
+    </mat-card-content>
+  </mat-card>
+
+    <mat-card fxFlex="90" fxFill style="margin-bottom: 20px;" *ngIf="ontology">
+      <mat-card-header>Review Ontology</mat-card-header>
+      <mat-card-content>
+        <textarea title="Description"
+                  cdkTextareaAutosize
+                  *ngIf="ontology"
+                  [(ngModel)]="ontology"
+                  name="description"
+                  class="form-control"
+                  cdkAutosizeMinRows="10"
+                  cdkAutosizeMaxRows="20"
+                  id="output schema analysis" style="width: 95%; font-family: Consolas; margin-left: 20px; margin-top: 20px; overflow-y: scroll;">
+                </textarea>
+        <button (click)="uploadOntology()" class="btn btn-primary" style="margin-top: 20px; margin-left: 40px">Confirm Import</button>
+      </mat-card-content>
+    </mat-card>
+
+
+</div>

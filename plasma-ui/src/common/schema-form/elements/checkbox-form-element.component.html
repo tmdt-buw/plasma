@@ -1,0 +1,12 @@
+<div class="form-group">
+  <label>{{ formElement.label }}</label>
+  <div class="form-check"
+       *ngFor="let value of customConfiguration.values; let first = first; let last = last; let i = index; trackBy:trackByFn">
+    <label class="form-check-label">
+      <input class="form-check-input" [type]="formElement.maximumCardinality == 1 ? 'radio' : 'checkbox'"
+             name="exampleRadios" (change)="selectValue(value)" [checked]="formElement.value.indexOf(value) != -1">
+      <i *ngIf="formElement.type === 'DataType'" class="fa" [innerHTML]="getDataTypeIcon(value)"></i> {{ value }}
+    </label>
+  </div>
+  <small *ngIf="formElement['description']" class="form-text text-muted">{{ formElement['description'] }}</small>
+</div>

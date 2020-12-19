@@ -1,0 +1,5 @@
+<app-vis-network #network [nodes]="nodes" [edges]="edges" [options]="visNetworkOptions" [selection]="selection"
+                 (oncontext)="oncontext.emit($event)" (dragEnd)="dragEnd.emit($event)"
+                 (doubleClick)="doubleclick.emit($event)" (selectionChange)="selectionChange.emit($event)"
+                 (selectNode)="selectNode.emit($event)" (deselectNode)="deselectNode.emit($event)"
+                 class="informationgraph-canvas"></app-vis-network>

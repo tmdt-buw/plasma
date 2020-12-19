@@ -1,0 +1,38 @@
+.form-group.contacts .selectize-control .selectize-input [data-value] .email {
+  opacity: 0.5;
+}
+
+.form-group.contacts .selectize-control .selectize-input [data-value] .name + .email {
+  margin-left: 5px;
+}
+
+.form-group.contacts .selectize-control .selectize-input [data-value] .email:before {
+  content: '<';
+}
+
+.form-group.contacts .selectize-control .selectize-input [data-value] .email:after {
+  content: '>';
+}
+
+.form-group.contacts .selectize-control .selectize-dropdown .caption {
+  font-size: 12px;
+  display: block;
+  opacity: 0.5;
+}
+
+.selectize-control .selectize-input {
+  &.focus {
+    border-color: $custom-select-focus-border-color;
+    outline: none;
+    box-shadow: none !important;
+  }
+}
+
+.selectize-control .selectize-dropdown .active {
+  background-color: map-get($theme-colors, primary);
+  color: $gray-200;
+}
+
+.selectize-dropdown [data-selectable] .highlight {
+  background: rgba(190, 190, 190, 0.6) !important;
+}

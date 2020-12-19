@@ -1,0 +1,8 @@
+/**
+ *  Ugly hack, required to get celar out the "Choose file" label, if a file has been selected.
+ *  Requires additional JS to set the has-selected-file class
+*/
+
+.custom-file-control.has-selected-file:lang(en)::after {
+  content: "";
+}

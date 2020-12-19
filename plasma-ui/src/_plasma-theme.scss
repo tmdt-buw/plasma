@@ -1,0 +1,106 @@
+@import '~@angular/material/theming';
+
+/** import fonts **/
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+}
+
+// Define a custom typography config that overrides the font-family
+$plasma-typography: mat-typography-config(
+  $font-family: 'Roboto',
+  $display-4: mat-typography-level(112px, 112px, 300),
+  $display-3: mat-typography-level(56px, 56px, 400),
+  $display-2: mat-typography-level(45px, 48px, 400),
+  $display-1: mat-typography-level(34px, 40px, 400),
+  $headline: mat-typography-level(24px, 32px, 400),
+  $title: mat-typography-level(20px, 32px, 500),
+  $subheading-2: mat-typography-level(16px, 28px, 400),
+  $subheading-1: mat-typography-level(14px, 24px, 400),
+  $body-2: mat-typography-level(14px, 24px, 500),
+  $body-1: mat-typography-level(14px, 20px, 400),
+  $caption: mat-typography-level(12px, 20px, 400),
+  $button: mat-typography-level(14px, 14px, 500),
+    // Line-height must be unit-less fraction of the font-size.
+  $input: mat-typography-level(14px, 1.125, 400)
+);
+
+$plasma-colors: (
+  200: #042042, // plasma darkblue
+  300: #042042, // plasma yellow
+  400: #042042, // plasma orange
+  500: #042042, //plasma grau 1
+  600: #042042, //plasma grau 2
+  700: #042042, //plasma grau 3
+  800: #042042, //plasma grau 4
+  900: #042042,
+  A100: #042042,
+  A200: #042042,
+  A400: #042042, // plasma red alt
+  A700: #042042, // plasma darkblue
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $light-primary-text,
+    A400: $light-primary-text,
+    A700: $light-primary-text,
+  )
+);
+
+$plasma-app-primary: mat-palette($plasma-colors, A700);
+$plasma-app-accent: mat-palette($plasma-colors, 800);
+$plasma-app-warn: mat-palette($plasma-colors, 400);
+$plasma-app-theme: mat-light-theme($plasma-app-primary, $plasma-app-accent, $plasma-app-warn);
+
+$plasma-app-background: map-get($plasma-app-theme, background);
+$plasma-app-foreground: map-get($plasma-app-theme, foreground);
+$plasma-app-text: mat-color($plasma-app-foreground, text);
+$plasma-app-grey-1: mat-palette($plasma-colors, 500);
+$plasma-app-grey-2: mat-palette($plasma-colors, 600);
+$plasma-app-grey-3: mat-palette($plasma-colors, 700);
+$plasma-app-grey-4: mat-palette($plasma-colors, 800);
+$plasma-app-green: mat-palette($plasma-colors, 200);
+
+$plasma-app-started: $plasma-app-grey-2;
+$plasma-app-failed: mat-palette($plasma-colors, A400);
+$plasma-app-success: mat-palette($plasma-colors, 200);
+$plasma-app-incomplete: mat-palette($plasma-colors, 300);
+$plasma-app-pending: $plasma-app-grey-3;
+$plasma-app-no-build: $plasma-app-grey-4;
+
+
+.custom-spinner {
+  filter: grayscale(100%);
+}
+
+.informationgraph-integration-start {
+  bottom: 75px !important;
+}
+
+.content-wrapper {
+  padding-bottom: 80px !important;
+}
+
+.search {
+  position: relative;
+}
+
+.search input {
+  text-indent: 0px;
+}
+
+.search .fa-info-circle {
+  position: absolute;
+  top: 12px;
+  left: 13rem;
+  font-size: 15px;
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration shutdownHook="disable">
+    <!-- Appenders -->
+    <Appenders>
+        <!-- Console Appender -->
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout disableAnsi="false">
+                <pattern>
+                    %d{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%-5level}{FATAL=black, ERROR=red, WARN=yellow, INFO=blue, DEBUG=green,
+                    TRACE=white}[%-40.40logger{10}] [%t] - %msg%n
+                </pattern>>
+            </PatternLayout>
+        </Console>
+
+        <!-- File Appender -->
+        <RollingFile name="file_all_appender"
+                     fileName="${bundle:application:plasma.logging.path}/${bundle:application:plasma.logging.all.file}.log"
+                     filePattern="${bundle:application:plasma.logging.path}/${bundle:application:plasma.logging.all.file}_%d{yyyy-MM-dd}.log.zip">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%-40.40logger{10}] [%t] - %msg%n"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="20 MB"/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+    </Appenders>
+
+    <!-- Loggers -->
+    <Loggers>
+        <Root level="${bundle:application:plasma.logging.all.level}">
+            <AppenderRef ref="file_all_appender"/>
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -1,0 +1,306 @@
+<?xml version="1.0" ?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.1/graphml.xsd">
+    <key id="labelV" for="node" attr.name="labelV" attr.type="string"></key>
+    <key id="Y_COORDINATE" for="node" attr.name="Y_COORDINATE" attr.type="double"></key>
+    <key id="description" for="node" attr.name="description" attr.type="string"></key>
+    <key id="numberOfUsages" for="node" attr.name="numberOfUsages" attr.type="string"></key>
+    <key id="sourceURI" for="node" attr.name="sourceURI" attr.type="string"></key>
+    <key id="ID" for="node" attr.name="ID" attr.type="string"></key>
+    <key id="label" for="node" attr.name="label" attr.type="string"></key>
+    <key id="mainLabel" for="node" attr.name="mainLabel" attr.type="string"></key>
+    <key id="originalLabel" for="node" attr.name="originalLabel" attr.type="string"></key>
+    <key id="validity" for="node" attr.name="validity" attr.type="string"></key>
+    <key id="X_COORDINATE" for="node" attr.name="X_COORDINATE" attr.type="double"></key>
+    <key id="mappedToData" for="node" attr.name="mappedToData" attr.type="boolean"></key>
+    <key id="dataSourceId" for="node" attr.name="dataSourceId" attr.type="string" />
+    <key id="labelE" for="edge" attr.name="labelE" attr.type="string"></key>
+    <graph id="G" edgedefault="directed">
+        <node id="0">
+            <data key="labelV">EntityConcept</data>
+            <data key="mainLabel">Schulbus</data>
+            <data key="description"></data>
+            <data key="sourceURI"></data>
+            <data key="ID">ec_030c8331-d402-43ae-a1f5-ad935cd7d2c3</data>
+        </node>
+        <node id="2">
+            <data key="labelV">EntityConceptRelation</data>
+            <data key="numberOfUsages">1</data>
+            <data key="ID">ecr_6bcf03e0-41dd-4b7b-ac0b-93a7c9961601</data>
+            <data key="validity">unknown</data>
+        </node>
+        <node id="3">
+            <data key="labelV">EntityConceptRelation</data>
+            <data key="numberOfUsages">1</data>
+            <data key="ID">ecr_cc53c02c-c06c-401f-9fbe-e7592aecd9e0</data>
+            <data key="validity">unknown</data>
+        </node>
+        <node id="4">
+            <data key="labelV">EntityConceptRelation</data>
+            <data key="numberOfUsages">1</data>
+            <data key="ID">ecr_c6dd85bc-0faf-404b-aba6-7592f8ff2b10</data>
+            <data key="validity">unknown</data>
+        </node>
+        <node id="5">
+            <data key="labelV">Position</data>
+            <data key="Y_COORDINATE">0.0</data>
+            <data key="X_COORDINATE">0.0</data>
+            <data key="ID">pos_0ab26997-9843-42dd-93c6-de48ac4b14f2</data>
+        </node>
+        <node id="6">
+            <data key="labelV">SemanticModel</data>
+            <data key="ID">sm_ab7004eb-a939-42e3-948a-0e9c9251aa01</data>
+            <data key="dataSourceId">123</data>
+            <data key="label">"testSM1"</data>
+            <data key="description"/>
+        </node>
+        <node id="7">
+            <data key="labelV">EntityType</data>
+            <data key="description"></data>
+            <data key="ID">et_74b51e15-1d62-406b-acd9-f32219d4c13c</data>
+         			<data key="originalLabel">et1_original</data>
+            <data key="label">et1</data>
+            <data key="mappedToData">true</data>
+        </node>
+        <node id="20">
+            <data key="labelV">EntityConcept</data>
+            
+            <data key="mainLabel">Datenbus</data>
+            <data key="description"></data>
+            <data key="sourceURI"></data>
+            <data key="ID">ec_3267bfa2-3f07-4086-9566-b6cb2fb79b22</data>
+        </node>
+        <node id="23">
+            <data key="labelV">EntityConcept</data>
+            
+            <data key="mainLabel">Bus</data>
+            <data key="description"></data>
+            <data key="sourceURI"></data>
+            <data key="ID">ec_3cf1d4fe-63b6-4eee-9a5a-17465dc57548</data>
+        </node>
+        <node id="24">
+            <data key="labelV">EntityConcept</data>
+            
+            <data key="mainLabel">Vehicle</data>
+            <data key="description"></data>
+            <data key="sourceURI"></data>
+            <data key="ID">ec_728dea3c-8cf5-44ae-af3d-79a730de9830</data>
+        </node>
+        <node id="27">
+            <data key="labelV">EntityConcept</data>
+            
+            <data key="mainLabel">Car</data>
+            <data key="description"></data>
+            <data key="sourceURI"></data>
+            <data key="ID">ec_6f90edfb-10dc-464d-b37f-80cc05dd4e47</data>
+        </node>
+        <node id="28">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="description"></data>
+            <data key="ID">rc_879698c8-c637-4075-bec9-cc3a9c43037a</data>
+            <data key="label">isA</data>
+        </node>
+        <node id="29">
+            <data key="labelV">EntityConceptRelation</data>
+            <data key="numberOfUsages">1</data>
+            <data key="ID">ecr_df196e3e-210c-4b7c-9e33-c284e30bdb75</data>
+            <data key="validity">unknown</data>
+        </node>
+        <node id="30">
+            <data key="labelV">Position</data>
+            <data key="Y_COORDINATE">0.0</data>
+            <data key="X_COORDINATE">0.0</data>
+            <data key="ID">pos_fcd22e31-aaeb-4422-bc3c-66ddfe3b61d4</data>
+        </node>
+        <node id="31">
+            <data key="labelV">SemanticModel</data>
+            <data key="ID">sm_c7a26375-b5c1-4f7e-bac9-d1c5bc29b387</data>
+            <data key="dataSourceId">123</data>
+            <data key="label">"testSM2"</data>
+            <data key="description"/>
+        </node>
+        <node id="32">
+            <data key="labelV">EntityType</data>
+            <data key="description"></data>
+            <data key="ID">et_e2d58442-e329-4f5a-a4c3-73722ba7f29f</data>
+            <data key="label">et2</data>
+         			<data key="originalLabel">et2_original</data>
+            <data key="mappedToData">true</data>
+        </node>
+        <node id="33">
+            <data key="labelV">SemanticModel</data>
+            <data key="ID">sm_29c31d85-b9c9-45d9-8f4c-7889a4922a45</data>
+            <data key="dataSourceId">123</data>
+            <data key="label">"testSM3"</data>
+            <data key="description"/>
+        </node>
+        <node id="34">
+            <data key="labelV">EntityType</data>
+            <data key="description"></data>
+            <data key="ID">et_b74d1a1a-e8af-403f-975b-be701f1d6bfe</data>
+            <data key="label">et3</data>
+         			<data key="originalLabel">et3_original</data>
+            <data key="mappedToData">true</data>
+        </node>
+        <node id="35">
+            <data key="labelV">Position</data>
+            <data key="Y_COORDINATE">0.0</data>
+            <data key="X_COORDINATE">0.0</data>
+            <data key="ID">pos_6329d98b-ba1b-4b43-927b-069b8cac52b6</data>
+        </node>
+        <node id="36">
+            <data key="labelV">EntityType</data>
+            <data key="description"></data>
+            <data key="ID">et_d0e43ff2-6f01-4945-84a6-150544d1de22</data>
+            <data key="label">et4</data>
+         			<data key="originalLabel">et4_original</data>
+            <data key="mappedToData">true</data>
+        </node>
+        <node id="37">
+            <data key="labelV">Position</data>
+            <data key="Y_COORDINATE">0.0</data>
+            <data key="X_COORDINATE">0.0</data>
+            <data key="ID">pos_b808a716-64d5-4797-a380-fffa2a6ff2a3</data>
+        </node>
+        <node id="38">
+            <data key="labelV">SemanticModel</data>
+            <data key="ID">sm_43c0efba-7dd7-4c41-89d1-296bb5d973a2</data>
+            <data key="dataSourceId">123</data>
+            <data key="label">"testSM4"</data>
+            <data key="description"/>
+        </node>
+        <node id="39">
+            <data key="labelV">Position</data>
+            <data key="Y_COORDINATE">0.0</data>
+            <data key="X_COORDINATE">0.0</data>
+            <data key="ID">pos_7c6687e6-079e-440a-843f-0235f9d27894</data>
+        </node>
+        <node id="40">
+            <data key="labelV">SemanticModel</data>
+            <data key="ID">sm_7ac24f64-80da-493a-8707-988fa8579583</data>
+            <data key="dataSourceId">123</data>
+            <data key="label">"testSM5"</data>
+            <data key="description"/>
+        </node>
+        <node id="41">
+            <data key="labelV">EntityType</data>
+            <data key="description"></data>
+            <data key="ID">et_82d0a61c-0820-41a0-a496-f94023aa8713</data>
+            <data key="label">et5</data>
+         			<data key="originalLabel">et5_original</data>
+            <data key="mappedToData">true</data>
+        </node>
+        <node id="42">
+            <data key="labelV">EntityType</data>
+            <data key="description"></data>
+            <data key="ID">et_810b3dc7-b1d0-48b8-8560-a2e9ef4793a9</data>
+            <data key="label">et6</data>
+         			<data key="originalLabel">et6_original</data>
+            <data key="mappedToData">true</data>
+        </node>
+        <node id="43">
+            <data key="labelV">SemanticModel</data>
+            <data key="ID">sm_c39b9a9a-dbc0-4ecf-844b-f70e1b59bba4</data>
+            <data key="dataSourceId">123</data>
+            <data key="label">"testSM6"</data>
+            <data key="description"/>
+        </node>
+        <node id="44">
+            <data key="labelV">Position</data>
+            <data key="Y_COORDINATE">0.0</data>
+            <data key="X_COORDINATE">0.0</data>
+            <data key="ID">pos_d7680dcd-b45b-4e6f-9bd5-6ce098486366</data>
+        </node>
+        <edge id="1" source="2" target="28">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="2" source="2" target="23">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="3" source="20" target="2">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="4" source="3" target="28">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="5" source="3" target="24">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="6" source="23" target="3">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="7" source="27" target="4">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="8" source="4" target="24">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="9" source="4" target="28">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="10" source="7" target="5">
+            <data key="labelE">position</data>
+        </edge>
+        <edge id="11" source="6" target="7">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="12" source="7" target="0">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="24" source="29" target="28">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="25" source="0" target="29">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="26" source="29" target="23">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="27" source="31" target="32">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="28" source="32" target="30">
+            <data key="labelE">position</data>
+        </edge>
+        <edge id="29" source="32" target="20">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="30" source="34" target="35">
+            <data key="labelE">position</data>
+        </edge>
+        <edge id="31" source="34" target="23">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="32" source="33" target="34">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="33" source="36" target="23">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="34" source="38" target="36">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="35" source="36" target="37">
+            <data key="labelE">position</data>
+        </edge>
+        <edge id="36" source="41" target="39">
+            <data key="labelE">position</data>
+        </edge>
+        <edge id="37" source="41" target="23">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="38" source="40" target="41">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="39" source="43" target="42">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="40" source="42" target="27">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="41" source="42" target="44">
+            <data key="labelE">position</data>
+        </edge>
+    </graph>
+</graphml>

@@ -1,0 +1,1052 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://graphml.graphdrawing.org/xmlns"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.1/graphml.xsd">
+    <key id="labelV" for="node" attr.name="labelV" attr.type="string"/>
+    <key id="sourceURI" for="node" attr.name="sourceURI" attr.type="string"/>
+    <key id="mainLabel" for="node" attr.name="mainLabel" attr.type="string"/>
+    <key id="label" for="node" attr.name="label" attr.type="string"/>
+    <key id="description" for="node" attr.name="description" attr.type="string"/>
+    <key id="ID" for="node" attr.name="ID" attr.type="string"/>
+    <key id="labelE" for="edge" attr.name="labelE" attr.type="string"/>
+    <graph id="G" edgedefault="directed">
+        <node id="29907">
+            <data key="labelV">EntityConceptRelation</data>
+            <data key="description">foo</data>
+            <data key="ID">#23:0</data>
+        </node>
+        <node id="29908">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">provides</data>
+            <data key="description"/>
+            <data key="ID">#22:1</data>
+        </node>
+        <node id="29909">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="description"/>
+            <data key="mainLabel">abstract</data>
+            <data key="ID">#13:45</data>
+        </node>
+        <node id="29910">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="description"/>
+            <data key="mainLabel">publication</data>
+            <data key="ID">#14:36</data>
+        </node>
+        <node id="29911">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="description"/>
+            <data key="mainLabel">beer</data>
+            <data key="ID">#14:8</data>
+        </node>
+        <node id="29912">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="description"/>
+            <data key="mainLabel">signalling installation</data>
+            <data key="ID">#14:10</data>           
+        </node>
+        <node id="29913">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="description"/>
+            <data key="mainLabel">crime</data>
+            <data key="ID">#13:23</data>          
+        </node>
+        <node id="29914">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="description"/>
+            <data key="mainLabel">company</data>
+            <data key="ID">#14:3</data>           
+        </node>
+        <node id="29915">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="description"/>
+            <data key="mainLabel">plant</data>
+            <data key="ID">#13:2</data>           
+        </node>
+        <node id="29916">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="description"/>
+            <data key="mainLabel">bibtex key</data>
+            <data key="ID">#14:34</data>         
+        </node>
+        <node id="29917">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">livesAt</data>
+            <data key="description"/>
+            <data key="ID">#21:1</data>
+        </node>
+        <node id="29918">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="description"/>
+            <data key="mainLabel">festival</data>
+            <data key="ID">#13:14</data>           
+        </node>
+        <node id="29919">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="description"/>
+            <data key="mainLabel">library</data>
+            <data key="ID">#14:21</data>        
+        </node>
+        <node id="29920">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">region</data>
+            <data key="description"/>
+            <data key="ID">#14:30</data>           
+        </node>
+        <node id="29921">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">hotspot</data>
+            <data key="description"/>
+            <data key="ID">#14:7</data>           
+        </node>
+        <node id="29922">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">url</data>
+            <data key="description"/>
+            <data key="ID">#14:47</data>           
+        </node>
+        <node id="29923">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">locatedAt</data>
+            <data key="description"/>
+            <data key="ID">#22:2</data>
+        </node>
+        <node id="29924">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">has</data>
+            <data key="description"/>
+            <data key="ID">#22:13</data>
+        </node>
+        <node id="29925">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">sensor</data>
+            <data key="description"/>
+            <data key="ID">#14:14</data>            
+        </node>
+        <node id="29926">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">Mammal</data>
+            <data key="description">Mammals are any vertebrates within the class Mammalia (/məˈmeɪli.ə/ from Latin mamma "breast"), a clade of endothermic
+                amniotes distinguished from reptiles and birds by the possession of a neocortex (a region of the brain), hair, three middle ear bones and
+                mammary glands. The sister group of Mammals may be the extinct Haldanodon. The Mammals represent the only living Synapsida, which together with
+                the Sauropsida form the Amniota clade. The Mammals consist of the Australosphenida including monotrema and the theria.
+            </data>
+            <data key="ID">#14:52</data>           
+        </node>
+        <node id="29927">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">publishedBy</data>
+            <data key="description"/>
+            <data key="ID">#22:11</data>
+        </node>
+        <node id="29928">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">municipality</data>
+            <data key="description"/>
+            <data key="ID">#13:31</data>           
+        </node>
+        <node id="29929">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">construction site</data>
+            <data key="description"/>
+            <data key="ID">#14:31</data>           
+        </node>
+        <node id="29930">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">location</data>
+            <data key="description"/>
+            <data key="ID">#14:1</data>           
+        </node>
+        <node id="29931">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">isbn</data>
+            <data key="description"/>
+            <data key="ID">#13:46</data>           
+        </node>
+        <node id="29932">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">expiresOn</data>
+            <data key="description"/>
+            <data key="ID">#21:5</data>
+        </node>
+        <node id="29933">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">note</data>
+            <data key="description"/>
+            <data key="ID">#14:44</data>            
+        </node>
+        <node id="29934">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">residence</data>
+            <data key="description"/>
+            <data key="ID">#13:20</data>            
+        </node>
+        <node id="29935">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">pharmacy</data>
+            <data key="description"/>
+            <data key="ID">#13:19</data>           
+        </node>
+        <node id="29936">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">site</data>
+            <data key="description"/>
+            <data key="ID">#14:16</data>           
+        </node>
+        <node id="29937">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">uses</data>
+            <data key="description"/>
+            <data key="ID">#21:8</data>
+        </node>
+        <node id="29938">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">employee</data>
+            <data key="description"/>
+            <data key="ID">#13:26</data>           
+        </node>
+        <node id="29939">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">property</data>
+            <data key="description"/>
+            <data key="ID">#14:17</data>        
+        </node>
+        <node id="29940">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">starsIn</data>
+            <data key="description"/>
+            <data key="ID">#21:3</data>
+        </node>
+        <node id="29941">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">Dog</data>
+            <data key="description">This furry Thing</data>
+            <data key="ID">#13:52</data>           
+        </node>
+        <node id="29942">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">copyright</data>
+            <data key="description"/>
+            <data key="ID">#14:48</data>        
+        </node>
+        <node id="29943">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">title</data>
+            <data key="description"/>
+            <data key="ID">#13:35</data>            
+        </node>
+        <node id="29944">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">studio</data>
+            <data key="description"/>
+            <data key="ID">#13:10</data>           
+        </node>
+        <node id="29945">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">bike station</data>
+            <data key="description"/>
+            <data key="ID">#14:26</data>           
+        </node>
+        <node id="29946">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">lccn</data>
+            <data key="description"/>
+            <data key="ID">#13:47</data>
+        </node>
+        <node id="29947">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">director</data>
+            <data key="description"/>
+            <data key="ID">#14:12</data>
+        </node>
+        <node id="29948">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">key</data>
+            <data key="description"/>
+            <data key="ID">#13:43</data>
+        </node>
+        <node id="29949">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">completedOn</data>
+            <data key="description"/>
+            <data key="ID">#21:6</data>
+        </node>
+        <node id="29950">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">park</data>
+            <data key="description"/>
+            <data key="ID">#13:24</data>
+        </node>
+        <node id="29951">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">mr number</data>
+            <data key="description"/>
+            <data key="ID">#13:50</data>
+        </node>
+        <node id="29952">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">bike station slot</data>
+            <data key="description"/>
+            <data key="ID">#14:28</data>
+        </node>
+        <node id="29953">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">cross reference</data>
+            <data key="description"/>
+            <data key="ID">#13:40</data>
+        </node>
+        <node id="29954">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">species</data>
+            <data key="description"/>
+            <data key="ID">#14:2</data>
+        </node>
+        <node id="29955">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">journal</data>
+            <data key="description"/>
+            <data key="ID">#14:42</data>
+        </node>
+        <node id="29956">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">Animal</data>
+            <data key="description">Animals are multicellular, eukaryotic organisms of the kingdom Animalia (also called Metazoa). All animals are motile,
+                meaning they can move spontaneously and independently at some point in their lives. Their body plan eventually becomes fixed as they develop,
+                although some undergo a process of metamorphosis later on in their lives. All animals are heterotrophs: they must ingest other organisms or
+                their products for sustenance.
+            </data>
+            <data key="ID">#13:53</data>
+        </node>
+        <node id="29957">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">book title</data>
+            <data key="description"/>
+            <data key="ID">#14:35</data>
+        </node>
+        <node id="29958">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">hotel</data>
+            <data key="description"/>
+            <data key="ID">#14:19</data>
+        </node>
+        <node id="29959">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">person</data>
+            <data key="description"/>
+            <data key="ID">#13:3</data>
+        </node>
+        <node id="29960">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">school</data>
+            <data key="description"/>
+            <data key="ID">#14:20</data>
+        </node>
+        <node id="29961">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">year</data>
+            <data key="description"/>
+            <data key="ID">#14:33</data>
+        </node>
+        <node id="29962">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">airport</data>
+            <data key="description"/>
+            <data key="ID">#14:9</data>
+        </node>
+        <node id="29963">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">weather</data>
+            <data key="description"/>
+            <data key="ID">#13:27</data>
+        </node>
+        <node id="29964">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">author</data>
+            <data key="description"/>
+            <data key="ID">#14:43</data>
+        </node>
+        <node id="29965">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">writer</data>
+            <data key="description"/>
+            <data key="ID">#13:13</data>
+        </node>
+        <node id="29966">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">issn</data>
+            <data key="description"/>
+            <data key="ID">#14:46</data>
+        </node>
+        <node id="29967">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">connected</data>
+            <data key="description"/>
+            <data key="ID">#22:0</data>
+        </node>
+        <node id="29968">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">demography</data>
+            <data key="description"/>
+            <data key="ID">#13:17</data>
+        </node>
+        <node id="29969">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">creates</data>
+            <data key="description"/>
+            <data key="ID">#22:3</data>
+        </node>
+        <node id="29970">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">movie</data>
+            <data key="description"/>
+            <data key="ID">#14:11</data>
+        </node>
+        <node id="29971">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">station</data>
+            <data key="description"/>
+            <data key="ID">#13:8</data>
+        </node>
+        <node id="29972">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">alert</data>
+            <data key="description"/>
+            <data key="ID">#14:13</data>
+        </node>
+        <node id="29973">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">isA</data>
+            <data key="description">the head is the generalization of the tail</data>
+            <data key="ID">#22:14</data>
+        </node>
+        <node id="29974">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">activity</data>
+            <data key="description"/>
+            <data key="ID">#13:22</data>
+        </node>
+        <node id="29975">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">attends</data>
+            <data key="description"/>
+            <data key="ID">#22:7</data>
+        </node>
+        <node id="29976">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">acm identifier</data>
+            <data key="description"/>
+            <data key="ID">#13:51</data>
+        </node>
+        <node id="29977">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">traffic</data>
+            <data key="description"/>
+            <data key="ID">#14:25</data>
+        </node>
+        <node id="29978">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">annotation</data>
+            <data key="description"/>
+            <data key="ID">#14:39</data>
+        </node>
+        <node id="29979">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">type</data>
+            <data key="description"/>
+            <data key="ID">#14:40</data>
+        </node>
+        <node id="29980">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">city</data>
+            <data key="description"/>
+            <data key="ID">#14:5</data>
+        </node>
+        <node id="29981">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">chapter</data>
+            <data key="description"/>
+            <data key="ID">#13:39</data>
+        </node>
+        <node id="29982">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">volume</data>
+            <data key="description"/>
+            <data key="ID">#13:44</data>
+        </node>
+        <node id="29983">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">language</data>
+            <data key="description"/>
+            <data key="ID">#14:45</data>
+        </node>
+        <node id="29984">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">sponsoredBy</data>
+            <data key="description"/>
+            <data key="ID">#22:10</data>
+        </node>
+        <node id="29985">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">bus station</data>
+            <data key="description"/>
+            <data key="ID">#13:30</data>
+        </node>
+        <node id="29986">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">artwork</data>
+            <data key="description"/>
+            <data key="ID">#13:4</data>
+        </node>
+        <node id="29987">
+            <data key="labelV">EntityConceptRelation</data>
+            <data key="description">false positive for testing</data>
+            <data key="ID">#23:1</data>
+        </node>
+        <node id="29988">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">article number</data>
+            <data key="description"/>
+            <data key="ID">#14:51</data>
+        </node>
+        <node id="29989">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">organization</data>
+            <data key="description"/>
+            <data key="ID">#14:41</data>
+        </node>
+        <node id="29990">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">restriction</data>
+            <data key="description"/>
+            <data key="ID">#13:25</data>
+        </node>
+        <node id="29991">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">institution</data>
+            <data key="description"/>
+            <data key="ID">#14:18</data>
+        </node>
+        <node id="29992">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">performs</data>
+            <data key="description"/>
+            <data key="ID">#22:9</data>
+        </node>
+        <node id="29993">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">pages</data>
+            <data key="description"/>
+            <data key="ID">#13:42</data>
+        </node>
+        <node id="29994">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">device</data>
+            <data key="description"/>
+            <data key="ID">#13:28</data>
+        </node>
+        <node id="29995">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">happenedOn</data>
+            <data key="description"/>
+            <data key="ID">#22:5</data>
+        </node>
+        <node id="29996">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">waste</data>
+            <data key="description"/>
+            <data key="ID">#14:6</data>
+        </node>
+        <node id="29997">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">isA</data>
+            <data key="description">It's a trap!</data>
+            <data key="ID">#14:53</data>
+        </node>
+        <node id="29998">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">book</data>
+            <data key="description"/>
+            <data key="ID">#14:32</data>
+        </node>
+        <node id="29999">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">createdIn</data>
+            <data key="description"/>
+            <data key="ID">#21:4</data>
+        </node>
+        <node id="30000">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">restrictedBy</data>
+            <data key="description"/>
+            <data key="ID">#22:8</data>
+        </node>
+        <node id="30001">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">collects</data>
+            <data key="description"/>
+            <data key="ID">#21:9</data>
+        </node>
+        <node id="30002">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">bike</data>
+            <data key="description"/>
+            <data key="ID">#14:4</data>
+        </node>
+        <node id="30003">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">point of interest</data>
+            <data key="description"/>
+            <data key="ID">#13:32</data>
+        </node>
+        <node id="30004">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">waste disposal</data>
+            <data key="description"/>
+            <data key="ID">#13:7</data>
+        </node>
+        <node id="30005">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">month</data>
+            <data key="description"/>
+            <data key="ID">#13:33</data>
+            
+        </node>
+        <node id="30006">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">links</data>
+            <data key="description"/>
+            <data key="ID">#21:10</data>
+        </node>
+        <node id="30007">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">identifier</data>
+            <data key="description"/>
+            <data key="ID">#14:49</data>
+        </node>
+        <node id="30008">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">shelter</data>
+            <data key="description"/>
+            <data key="ID">#14:23</data>
+        </node>
+        <node id="30009">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">authoredBy</data>
+            <data key="description"/>
+            <data key="ID">#21:11</data>
+        </node>
+        <node id="30010">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">publisher</data>
+            <data key="description"/>
+            <data key="ID">#13:37</data>
+        </node>
+        <node id="30011">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">date</data>
+            <data key="description"/>
+            <data key="ID">#14:0</data>
+        </node>
+        <node id="30012">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">editor</data>
+            <data key="description"/>
+            <data key="ID">#13:38</data>
+        </node>
+        <node id="30013">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">brand</data>
+            <data key="description"/>
+            <data key="ID">#13:9</data>
+        </node>
+        <node id="30014">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">address</data>
+            <data key="description"/>
+            <data key="ID">#13:0</data>
+        </node>
+        <node id="30015">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">owns</data>
+            <data key="description"/>
+            <data key="ID">#21:2</data>
+        </node>
+        <node id="30016">
+            <data key="labelV">EntityConceptRelation</data>
+            <data key="description">bar</data>
+            <data key="ID">#24:0</data>
+        </node>
+        <node id="30017">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">phone</data>
+            <data key="description"/>
+            <data key="ID">#14:22</data>
+        </node>
+        <node id="30018">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">permit</data>
+            <data key="description"/>
+            <data key="ID">#13:29</data>
+        </node>
+        <node id="30019">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">hotspot link</data>
+            <data key="description"/>
+            <data key="ID">#14:27</data>
+        </node>
+        <node id="30020">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">parking zone</data>
+            <data key="description"/>
+            <data key="ID">#13:11</data>
+        </node>
+        <node id="30021">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">job</data>
+            <data key="description"/>
+            <data key="ID">#13:21</data>
+        </node>
+        <node id="30022">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">actor</data>
+            <data key="description"/>
+            <data key="ID">#13:12</data>
+        </node>
+        <node id="30023">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">memberOf</data>
+            <data key="description"/>
+            <data key="ID">#22:12</data>
+        </node>
+        <node id="30024">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">publication number</data>
+            <data key="description"/>
+            <data key="ID">#13:41</data>
+        </node>
+        <node id="30025">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">country</data>
+            <data key="description"/>
+            <data key="ID">#13:5</data>
+        </node>
+        <node id="30026">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">car</data>
+            <data key="description"/>
+            <data key="ID">#13:6</data>
+        </node>
+        <node id="30027">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">contains</data>
+            <data key="description"/>
+            <data key="ID">#22:6</data>
+        </node>
+        <node id="30028">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">road</data>
+            <data key="description"/>
+            <data key="ID">#14:24</data>
+        </node>
+        <node id="30029">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">validAt</data>
+            <data key="description"/>
+            <data key="ID">#21:7</data>
+        </node>
+        <node id="30030">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">occurredIn</data>
+            <data key="description"/>
+            <data key="ID">#21:13</data>
+        </node>
+        <node id="30031">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">edition</data>
+            <data key="description"/>
+            <data key="ID">#14:38</data>
+        </node>
+        <node id="30032">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">consistsOf</data>
+            <data key="description"/>
+            <data key="ID">#21:14</data>
+        </node>
+        <node id="30033">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">createdOn</data>
+            <data key="description"/>
+            <data key="ID">#22:4</data>
+        </node>
+        <node id="30034">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">geographical location</data>
+            <data key="description"/>
+            <data key="ID">#13:1</data>
+        </node>
+        <node id="30035">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">hospital</data>
+            <data key="description"/>
+            <data key="ID">#13:18</data>
+        </node>
+        <node id="30036">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">identity</data>
+            <data key="description"/>
+            <data key="ID">#21:0</data>
+        </node>
+        <node id="30037">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">price</data>
+            <data key="description"/>
+            <data key="ID">#13:48</data>
+        </node>
+        <node id="30038">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="label">editedBy</data>
+            <data key="description"/>
+            <data key="ID">#21:12</data>
+        </node>
+        <node id="30039">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">status</data>
+            <data key="description"/>
+            <data key="ID">#13:16</data>
+        </node>
+        <node id="30040">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">room temperature</data>
+            <data key="description"/>
+            <data key="ID">#13:15</data>
+        </node>
+        <node id="30041">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">description</data>
+            <data key="description"/>
+            <data key="ID">#13:36</data>
+        </node>
+        <node id="30042">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">bibtex type</data>
+            <data key="description"/>
+            <data key="ID">#13:34</data>
+        </node>
+        <node id="30043">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">event</data>
+            <data key="description"/>
+            <data key="ID">#14:15</data>
+        </node>
+        <node id="30044">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">investigation</data>
+            <data key="description"/>
+            <data key="ID">#14:29</data>
+        </node>
+        <node id="30045">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">series</data>
+            <data key="description"/>
+            <data key="ID">#14:37</data>
+        </node>
+        <node id="30046">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">size</data>
+            <data key="description"/>
+            <data key="ID">#13:49</data>
+        </node>
+        <node id="30047">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">doi</data>
+            <data key="description"/>
+            <data key="ID">#14:50</data>
+        </node>
+        <edge id="3373" source="29926" target="29907">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="3205" source="29907" target="29956">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="3206" source="29987" target="29997">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="3207" source="29941" target="30016">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="3208" source="29907" target="29973">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="3209" source="29941" target="29987">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="3210" source="30016" target="29973">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="3211" source="29987" target="30015">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="3212" source="30016" target="29926">
+            <data key="labelE">E</data>
+        </edge>
+        <node id="30152">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">fox</data>
+            <data key="description">Foxy the fox</data>
+            <data key="ID">#15:01</data>
+        </node>
+        <node id="30153">
+            <data key="labelV">EntityConceptRelation</data>
+            <data key="description">mau</data>
+            <data key="ID">#24:65</data>
+        </node>
+        <edge id="1538" source="30152" target="30153">
+            <data key="labelE">E</data>
+        </edge>
+        29973
+        <edge id="1539" source="30153" target="29973">
+            <data key="labelE">E</data>
+        </edge>
+        <edge id="1540" source="30153" target="29926">
+            <data key="labelE">E</data>
+        </edge>
+    </graph>
+</graphml>

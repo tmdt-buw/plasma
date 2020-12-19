@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.1/graphml.xsd">
+    <key id="labelV" for="node" attr.name="labelV" attr.type="string" />
+    <key id="sourceURI" for="node" attr.name="sourceURI" attr.type="string" />
+    <key id="description" for="node" attr.name="description" attr.type="string" />
+    <key id="ID" for="node" attr.name="ID" attr.type="string" />
+    <key id="mainLabel" for="node" attr.name="mainLabel" attr.type="string"/>
+    <key id="labelE" for="edge" attr.name="labelE" attr.type="string" />
+    <graph id="G" edgedefault="directed">
+        <node id="37618">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">Floor</data>
+            <data key="description">The inside lower horizontal surface (as of a room, hallway, tent, or other structure)</data>
+            <data key="ID">3</data>
+        </node>
+        <node id="37619">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">car</data>
+            <data key="description">A motor vehicle with four wheels; usually propelled by an internal combustion engine</data>
+            <data key="ID">4</data>
+        </node>
+        <node id="37620">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">computer</data>
+            <data key="description">A machine for performing calculations automatically</data>
+            <data key="ID">5</data>
+        </node>
+        <node id="37621">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">factory</data>
+            <data key="description">A plant consisting of one or more buildings with facilities for manufacturing</data>
+            <data key="ID">1</data>
+        </node>
+        <node id="37622">
+            <data key="labelV">EntityConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">robot</data>
+            <data key="description">A mechanism that can move automatically</data>
+            <data key="ID">2</data>
+        </node>
+    </graph>
+</graphml>

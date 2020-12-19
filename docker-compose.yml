@@ -1,0 +1,184 @@
+version: "3.5"
+
+services:
+########################### Infrastructure ######################################
+  neo4j:
+    image: neo4j:4.1.3
+    hostname: neo4j
+    restart: unless-stopped
+    environment:
+      - NEO4J_AUTH=neo4j/plasma
+      - NEO4J_USERNAME=neo4j
+      - NEO4J_PASSWORD=plasma
+      - NEO4J_dbms_allow__upgrade=true
+    volumes:
+      - neo4j_data:/data
+    healthcheck:
+      test: cypher-shell "match (n) return n;"
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    ports:
+      - 7473:7473
+      - 7474:7474
+      - 7687:7687
+      
+  mariadb-dss:
+    image: mariadb:latest
+    hostname: mariadb-dss
+    restart: unless-stopped
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      - MYSQL_DATABASE=plasma-dss
+      - MYSQL_ROOT_PASSWORD=plasma
+    volumes:
+      - mariadb_dss:/var/lib/mysql
+    healthcheck:
+      test: bash -c "mariadb -h 127.0.0.1 -p$$MYSQL_ROOT_PASSWORD  -e \"show databases;\""
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    ports:
+     - 3306:3306
+     
+  mariadb-sas:
+    image: mariadb:latest
+    hostname: mariadb-sas
+    restart: unless-stopped
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      - MYSQL_DATABASE=plasma-sas
+      - MYSQL_ROOT_PASSWORD=plasma
+    volumes:
+      - mariadb_sas:/var/lib/mysql
+    healthcheck:
+      test: bash -c "mariadb -h 127.0.0.1 -p$$MYSQL_ROOT_PASSWORD  -e \"show databases;\""
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    ports:
+     - 3307:3306      
+  mariadb-dms:
+    image: mariadb:latest
+    hostname: mariadb-dms
+    restart: unless-stopped
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      - MYSQL_DATABASE=plasma-dms
+      - MYSQL_ROOT_PASSWORD=plasma
+    volumes:
+      - mariadb_dms:/var/lib/mysql
+    healthcheck:
+      test: bash -c "mariadb -h 127.0.0.1 -p$$MYSQL_ROOT_PASSWORD  -e \"show databases;\""
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    ports:
+     - 3308:3306 
+      
+########################### Service Infrastructure ######################################
+  discovery:
+    image: "plasma/discovery:${PLASMA_VERSION}"
+    hostname: plasma-discovery-service
+    restart: unless-stopped
+    ports:
+     - 8761:8761  
+
+  admin:
+    image: "plasma/admin:${PLASMA_VERSION}"
+    hostname: plasma-admin-service
+    restart: unless-stopped
+    depends_on:
+      - discovery
+    ports:
+     - 8080:8080       
+
+  gateway:
+    image: "plasma/gateway:${PLASMA_VERSION}"
+    hostname: plasma-gateway-service
+    restart: unless-stopped
+    depends_on:
+      - discovery
+    ports:
+     - 8888:8888 
+     
+########################### Services ######################################
+     
+  kgs:
+    image: "plasma/kgs:${PLASMA_VERSION}"
+    hostname: plasma-kgs
+    restart: unless-stopped
+    depends_on:
+      - discovery
+      - neo4j
+    ports:
+     - 8181:8181
+     
+  dss:
+    image: "plasma/dss:${PLASMA_VERSION}"
+    hostname: plasma-dss
+    restart: unless-stopped
+    depends_on:
+      - discovery
+      - mariadb-dss      
+    ports:
+     - 8185:8185    
+
+  sas:
+    image: "plasma/sas:${PLASMA_VERSION}"
+    hostname: plasma-sas
+    restart: unless-stopped
+    depends_on:
+      - discovery
+      - mariadb-sas      
+    ports:
+     - 8189:8189   
+
+  dms:
+    image: "plasma/dms:${PLASMA_VERSION}"
+    hostname: plasma-dms
+    restart: unless-stopped
+    depends_on:
+      - discovery
+      - mariadb-dms      
+    ports:
+     - 8186:8186   
+
+  srs:
+    image: "plasma/srs:${PLASMA_VERSION}"
+    hostname: plasma-srs
+    restart: unless-stopped
+    depends_on:
+      - discovery   
+    ports:
+     - 8190:8190 
+
+  ui:
+    build: ./plasma-ui
+    image: "plasma/ui:${PLASMA_VERSION}"
+    hostname: plasma-ui
+    restart: unless-stopped
+    ports:
+     - 80:80
+
+########################### Auxiliary Services ######################################
+     
+  ars-l-lm:
+    image: "plasma/ars-l-lm:${PLASMA_VERSION}"
+    hostname: plasma-ars-l-lm
+    restart: unless-stopped
+    depends_on:
+      - discovery
+      - kgs
+    ports:
+     - 8201:8201
+
+volumes:
+  neo4j_data:
+  mariadb_dss: 
+  mariadb_sas:   
+  mariadb_dms:

@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<graphml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://graphml.graphdrawing.org/xmlns"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.1/graphml.xsd">
+    <key id="labelV" for="node" attr.name="labelV" attr.type="string"></key>
+    <key id="mainLabel" for="node" attr.name="label" attr.type="string"></key>
+    <key id="description" for="node" attr.name="description" attr.type="string"></key>
+    <key id="ID" for="node" attr.name="ID" attr.type="string"></key>
+    <key id="sourceURI" for="node" attr.name="sourceURI" attr.type="string" />
+    <key id="labelE" for="edge" attr.name="labelE" attr.type="string"></key>
+    <graph id="G" edgedefault="directed">
+        <node id="41378">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">presents</data>
+            <data key="description">Give an exhibition of to an interested audience</data>
+            <data key="ID">1</data>
+        </node>
+        <node id="41379">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">likes</data>
+            <data key="description">Find enjoyable or agreeable</data>
+            <data key="ID">2</data>
+        </node>
+        <node id="41380">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">leads</data>
+            <data key="description">Be in charge of</data>
+            <data key="ID">3</data>
+        </node>
+        <node id="41381">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">produces</data>
+            <data key="description">Create or manufacture a man-made product</data>
+            <data key="ID">4</data>
+        </node>
+        <node id="41382">
+            <data key="labelV">RelationConcept</data>
+            <data key="sourceURI"></data>
+            <data key="mainLabel">paints</data>
+            <data key="description">Apply a liquid to; e.g., paint the gutters with linseed oil</data>
+            <data key="ID">5</data>
+        </node>
+    </graph>
+</graphml>

@@ -1,4 +1,4 @@
-# PLASMA
+# PLASMA: Platform for Auxiliary Semantic Modeling Approaches
 
 PLASMA is a modular framework for developing and evaluating semantic labeling, modeling and refinement approaches. Alltogether, PLASMA currently consists of the following microservices: 
 
@@ -11,7 +11,7 @@ PLASMA is a modular framework for developing and evaluating semantic labeling, m
 * Data Modeling Service 
 * Semantic Recommendation Service
 * Data Source Service 
-* Auxiliary for Semantic Labeling
+* ARS-L Exact Label Matching
 
 Each of these services takes over a specific task as described in our corresponding ESWC Paper. 
 
@@ -25,18 +25,20 @@ The java version of the shared artifact ist 8.
 * You require Maven to build the services
 * We recommend IntelliJ as an IDE
 * Checkout the repository
-* Please add the following entries to your /etc/hosts file so that services might be able to communicate with each other (required due to a limitation of docker)
+* Please add the following entries to your /etc/hosts file so that services might be able to communicate 
+with each other (required due to a limitation of docker). This is required when developing or running
+a component outside of Docker.
 ```
 127.0.0.1 plasma-discovery-service
 127.0.0.1 plasma-admin-service
-127.0.0.1 plasma-sds-service
-127.0.0.1 plasma-dss-service
+127.0.0.1 plasma-sds
+127.0.0.1 plasma-dss
 127.0.0.1 plasma-gateway-service
-127.0.0.1 plasma-kgs-service
-127.0.0.1 plasma-sas-service
-127.0.0.1 plasma-dms-service
-127.0.0.1 plasma-srs-service
-127.0.0.1 plasma-ars-l-lm-service
+127.0.0.1 plasma-kgs
+127.0.0.1 plasma-sas
+127.0.0.1 plasma-dms
+127.0.0.1 plasma-srs
+127.0.0.1 plasma-ars-l-lm
 ```
 
 ## Development and Building of the Backend Components
@@ -46,7 +48,10 @@ The java version of the shared artifact ist 8.
 
 ## Development and Building of the UI Components
 * Build the docker container for the user interface using the corresponding ```Dockerfile```
+* This is also included when building the whole system via docker-compose
 
 ## Execution
 * After building all docker images, just execute the ```docker-compose``` script
 * You can access the UI at ```localhost:80```
+
+

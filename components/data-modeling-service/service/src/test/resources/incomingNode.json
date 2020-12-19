@@ -1,0 +1,204 @@
+{
+  "@class" : "SetNodeDTO",
+  "uuid" : "79b7c8d2-044b-4b7a-a661-7158027bc840",
+  "children" : [
+    {
+      "id" : null,
+      "node" : {
+        "@class" : "ObjectNodeDTO",
+        "children" : {
+          "c" : {
+            "@class" : "PrimitiveNodeDTO",
+            "uuid" : "7b274e06-b904-4889-bc32-42299303d45b",
+            "entity_type" : null,
+            "data_type" : "UNKNOWN",
+            "cleaning_pattern" : "",
+            "examples" : [
+              "te;st1",
+              "5"
+            ],
+            "entity_concept_suggestions" : []
+          },
+          "d" : {
+            "@class" : "SetNodeDTO",
+            "uuid" : "47c46871-4aee-4e05-a523-96d4feebb9d8",
+            "children" : [
+              {
+                "id" : null,
+                "node" : {
+                  "@class" : "PrimitiveNodeDTO",
+                  "uuid" : "6e29d8aa-d111-4bde-b7d7-3969f85504be",
+                  "entity_type" : null,
+                  "data_type" : "UNKNOWN",
+                  "cleaning_pattern" : "",
+                  "examples" : [
+                    "1",
+                    "2",
+                    "3",
+                    "1",
+                    "2",
+                    "3"
+                  ],
+                  "entity_concept_suggestions" : []
+                },
+                "selector" : {
+                  "@class" : "WildCardSelectorDTO"
+                }
+              }
+            ]
+          },
+          "e" : {
+            "@class" : "SetNodeDTO",
+            "uuid" : "6b136ad8-badb-4439-a98d-1dd63b800efa",
+            "children" : [
+              {
+                "id" : null,
+                "node" : {
+                  "@class" : "ObjectNodeDTO",
+                  "children" : {
+                    "f" : {
+                      "@class" : "PrimitiveNodeDTO",
+                      "uuid" : "c295f0e1-824e-41f2-80eb-fbf4e4a5e852",
+                      "entity_type" : null,
+                      "data_type" : "UNKNOWN",
+                      "cleaning_pattern" : "",
+                      "examples" : [
+                        "lol",
+                        "lol1",
+                        "lol",
+                        "lol1"
+                      ],
+                      "entity_concept_suggestions" : []
+                    },
+                    "g" : {
+                      "@class" : "SetNodeDTO",
+                      "uuid" : "2aabb751-fbe0-4449-b31a-580a0037ec76",
+                      "children" : [
+                        {
+                          "id" : null,
+                          "node" : {
+                            "@class" : "PrimitiveNodeDTO",
+                            "uuid" : "401ea647-8a07-4273-9814-ea5764e228f4",
+                            "entity_type" : null,
+                            "data_type" : "UNKNOWN",
+                            "cleaning_pattern" : "",
+                            "examples" : [
+                              "A",
+                              "B",
+                              "C",
+                              "D",
+                              "E",
+                              "F",
+                              "A",
+                              "B",
+                              "C",
+                              "D",
+                              "E",
+                              "F"
+                            ],
+                            "entity_concept_suggestions" : []
+                          },
+                          "selector" : {
+                            "@class" : "WildCardSelectorDTO"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "uuid" : "60f172ad-fb52-47be-ab5a-7046d16296ef"
+                },
+                "selector" : {
+                  "@class" : "WildCardSelectorDTO"
+                }
+              }
+            ]
+          },
+          "h" : {
+            "@class" : "ObjectNodeDTO",
+            "children" : {
+              "j" : {
+                "@class" : "ObjectNodeDTO",
+                "children" : {
+                  "k" : {
+                    "@class" : "PrimitiveNodeDTO",
+                    "uuid" : "626731bb-02dd-4faf-841d-dad7f38bfd7f",
+                    "entity_type" : null,
+                    "data_type" : "UNKNOWN",
+                    "cleaning_pattern" : "",
+                    "examples" : [
+                      "rofl",
+                      "rofl"
+                    ],
+                    "entity_concept_suggestions" : []
+                  }
+                },
+                "uuid" : "c91ab157-17f9-4040-aaca-0af81a3e3196"
+              }
+            },
+            "uuid" : "28146991-ca64-47ee-8e84-b2900c87af2f"
+          },
+          "l" : {
+            "@class" : "SetNodeDTO",
+            "uuid" : "902fd65a-aa1f-44f5-8ee5-2c5476bfc249",
+            "children" : [
+              {
+                "id" : null,
+                "node" : {
+                  "@class" : "PrimitiveNodeDTO",
+                  "uuid" : "b8836670-3ddc-411d-9d8d-027c79bc88f0",
+                  "entity_type" : null,
+                  "data_type" : "UNKNOWN",
+                  "cleaning_pattern" : "",
+                  "examples" : [
+                    "K",
+                    "2",
+                    "K",
+                    "2"
+                  ],
+                  "entity_concept_suggestions" : []
+                },
+                "selector" : {
+                  "@class" : "WildCardSelectorDTO"
+                }
+              }
+            ]
+          },
+          "m" : {
+            "@class" : "SetNodeDTO",
+            "uuid" : "d47df928-85e7-4f35-8ab0-de64f0b23d86",
+            "children" : [
+              {
+                "id" : null,
+                "node" : {
+                  "@class" : "PrimitiveNodeDTO",
+                  "uuid" : "e772df13-cf50-43b6-988f-9f6226d30f2f",
+                  "entity_type" : null,
+                  "data_type" : "UNKNOWN",
+                  "cleaning_pattern" : "",
+                  "examples" : [
+                    "m1",
+                    "1",
+                    "m2",
+                    "2",
+                    "m3",
+                    "3",
+                    "m4",
+                    "4"
+                  ],
+                  "entity_concept_suggestions" : []
+                },
+                "selector" : {
+                  "@class" : "WildCardSelectorDTO"
+                }
+              }
+            ]
+          }
+        },
+        "uuid" : "8ae8258b-9fff-4a8a-aefb-f712b2f11c3b"
+      },
+      "selector" : {
+        "@class" : "WildCardSelectorDTO"
+      }
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.1/graphml.xsd">
+   <key id="labelV" for="node" attr.name="labelV" attr.type="string" />
+   <key id="sourceURI" for="node" attr.name="sourceURI" attr.type="string" />
+   <key id="description" for="node" attr.name="description" attr.type="string" />
+   <key id="ID" for="node" attr.name="ID" attr.type="string" />
+   <key id="label" for="node" attr.name="label" attr.type="string"/>
+   <key id="mainLabel" for="node" attr.name="mainLabel" attr.type="string"/>
+   <key id="labelE" for="edge" attr.name="labelE" attr.type="string" />
+   <graph id="G" edgedefault="directed">
+      <node id="28">
+         <data key="labelV">RelationConcept</data>
+         <data key="description">existingTestRC1</data>
+         <data key="ID">rc_300e2fe4-4f36-4f8f-b0a3-327bd5afd4fa</data>
+         <data key="sourceURI">kg:rc1</data>
+         <data key="label">existingTestRc1</data>
+      </node>
+      <node id="29">
+         <data key="labelV">RelationConcept</data>
+         <data key="description">existingTestRC2</data>
+         <data key="ID">rc_120e2fg4-12e2-23fv-b0a3-adsfgggag325</data>
+         <data key="sourceURI">kg:rc2</data>
+         <data key="label">existingTestRc2</data>
+      </node>
+      <node id="30">
+         <data key="labelV">EntityConcept</data>
+          <data key="mainLabel">existingEC1label</data>
+         <data key="description">existingEC1desc</data>
+         <data key="sourceURI">kg:ec1</data>
+         <data key="ID">ec_fd27d9f7-bb37-43a0-a578-53d576b6cdec</data>
+      </node>
+      <node id="31">
+         <data key="labelV">EntityConcept</data>
+         <data key="mainLabel">existingEC2abel</data>
+         <data key="description">existingEC2desc</data>
+         <data key="sourceURI">kg:ec2></data>
+         <data key="ID">ec_1d33d23d-3379-40b8-8322-e5f4384a659d</data>
+      </node>
+   </graph>
+</graphml>

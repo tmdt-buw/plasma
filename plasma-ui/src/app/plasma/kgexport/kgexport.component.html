@@ -1,0 +1,40 @@
+<div class="mcontainer" fxLayout.lt-sm fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center start">
+  <mat-card fxFlex="90" fxFill style="margin-bottom: 20px;">
+    <mat-card-header>Export Ontology to RDF</mat-card-header>
+    <mat-card-content fxFill>
+
+      <span>Format:</span>
+      <mat-button-toggle-group name="format" aria-label="Format" [(ngModel)]="format" style="margin-left: 20px; margin-top: 20px">
+        <mat-button-toggle value="xml">XML/RDF</mat-button-toggle>
+        <mat-button-toggle value="turtle">Turtle</mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <span style="margin-left: 20px">Flatten:</span>
+      <mat-button-toggle-group name="flat" aria-label="Flatten" [(ngModel)]="flat" style="margin-left: 20px">
+        <mat-button-toggle value="true">Yes</mat-button-toggle>
+        <mat-button-toggle value="false">No</mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <button (click)="exportRdf()" class="btn btn-primary" style="margin-left: 40px">Export</button>
+
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card fxFlex="90" fxFill style="margin-bottom: 20px;">
+    <mat-card-header>Export Upper Ontology</mat-card-header>
+    <mat-card-content fxFill>
+
+      <span>Format:</span>
+      <mat-button-toggle-group name="format" aria-label="Format" [(ngModel)]="formatUpper" style="margin-left: 20px; margin-top: 20px">
+        <mat-button-toggle value="xml">XML/RDF</mat-button-toggle>
+        <mat-button-toggle value="turtle">Turtle</mat-button-toggle>
+      </mat-button-toggle-group>
+
+
+      <button (click)="getUpperOntology()" class="btn btn-primary" style="margin-left: 40px">Export</button>
+
+    </mat-card-content>
+  </mat-card>
+
+</div>
+

@@ -1,0 +1,69 @@
+<div class="mcontainer" fxLayout.lt-sm fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center start">
+
+  <mat-card fxFlex="90" fxFill style="margin-bottom: 20px;" class="cardPa">
+    <mat-card-header>Select Data Source</mat-card-header>
+    <mat-card-content fxFill>
+      <mat-form-field appearance="fill">
+        <mat-label>Data Source</mat-label>
+        <mat-select [(ngModel)]="selectedDataSource" (load)="changeDatasource()" (selectionChange)="changeDatasource()">
+          <mat-option *ngFor="let ds of allDataSources" [value]="ds">
+            {{ds.title}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-icon *ngIf="this.selectedDataSource && this.dataSourceInitialized" style="margin-left: 20px">check_circle</mat-icon>
+
+      <button class="btn btn-primary" (click)="initSchemaAnalysis()" *ngIf="this.selectedDataSource && !this.dataSourceInitialized" style="margin-left: 20px"><i class="fas fa-arrow-right"></i> Initialize Schema Analysis</button>
+
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card fxFlex="90" fxFill *ngIf="this.dataSourceInitialized" style="margin-bottom: 20px;">
+    <mat-card-header>Add Data Samples</mat-card-header>
+    <mat-card-content fxFill>
+      <div class="row">
+      <textarea title="Data Point"
+                [(ngModel)]="currentDataPoint"
+                name="description"
+                class="form-control"
+                cdkAutosizeMinRows="2"
+                cdkAutosizeMaxRows="10"
+                id="input-datapoint" style="width: 80%; font-family: Consolas; margin-left: 20px">
+                </textarea>
+
+      <button class="btn btn-primary" (click)="addLineSample()" *ngIf="isValidJson()" style="margin-left: 20px"><i class="fas fa-plus-square"></i> Add Sample </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card  fxFlex="90" fxFill *ngIf="this.lastDataPoints.length > 0" style="margin-bottom: 20px;">
+    <mat-card-header>Added Data Samples</mat-card-header>
+    <mat-card-content fxFill>
+      <span class="row" *ngFor="let dp of lastDataPoints; let i = index">
+        <span style="margin-left: 20px; margin-bottom: 20px"> [{{i}}] </span>
+        <span style="font-family: Consolas; margin-left: 20px">{{dp}}</span>
+      </span>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card fxFlex="90" fxFill *ngIf="this.dataSourceInitialized">
+    <mat-card-header>Get Schema</mat-card-header>
+    <mat-card-content fxFill>
+      <button class="btn btn-primary" (click)="finish()" style="margin-left: 20px"><i class="fas fa-stop"></i> Finish Schema Analysis</button>
+      <button class="btn btn-primary" (click)="getResult()" *ngIf="schemaAnalysisReady" style="margin-left: 20px"><i class="fas fa-download"></i> Inspect Raw Schema Analysis Result </button>
+
+      <textarea title="Description"
+                cdkTextareaAutosize
+                *ngIf="schemaAnalysisResult"
+                [(ngModel)]="schemaAnalysisRawResult"
+                name="description"
+                class="form-control"
+                cdkAutosizeMinRows="10"
+                cdkAutosizeMaxRows="20"
+                id="output schema analysis" style="width: 95%; font-family: Consolas; margin-left: 20px; margin-top: 20px">
+                </textarea>
+
+    </mat-card-content>
+  </mat-card>
+</div>

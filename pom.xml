@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+        <groupId>de.buw.tmdt.plasma</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0.0</version>
+    <name>PLASMA Parent</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>components/data-modeling-service</module>
+        <module>components/knowledge-graph-service</module>
+        <module>components/schema-analysis-service</module>
+        <module>components/spring-boot-admin</module>
+        <module>components/discovery-service</module>
+        <module>components/gateway-service</module>
+		<module>components/semantic-recommendation-service</module>
+		<module>components/semantic-database-service</module>
+		<module>components/utilities</module>
+		<module>components/datasource-service</module>
+		<module>auxiliary_services/ARS-L-label-matching</module>
+    </modules>
+
+    <properties>
+        <!-- NAMINGS -->
+        <platform.name>PLASMA</platform.name>
+        <platform.name.prefix>plasma</platform.name.prefix>
+
+        <!-- TECHNICAL -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- VERSIONS =========================================================================================== -->
+
+        <!-- PLASMA -->
+        <plasma.utilities.version>5.0.0</plasma.utilities.version>
+
+        <!-- ==================== Spring ==================== -->
+        <org.springframework.boot.version>2.3.7.RELEASE</org.springframework.boot.version>
+        <org.springframework.cloud.version>Hoxton.SR9</org.springframework.cloud.version>
+        <org.springdoc.openapi.ui.version>1.4.3</org.springdoc.openapi.ui.version>
+
+        <!-- Annotations -->
+        <org.jetbrains.annotations.version>19.0.0</org.jetbrains.annotations.version>
+        <com.github.spotbugs.annotations.version>4.0.1</com.github.spotbugs.annotations.version>
+		<com.fasterxml.jackson.version>2.10.3</com.fasterxml.jackson.version>
+
+        <!-- Testing -->
+        <org.mockito.version>3.1.0</org.mockito.version>
+        <junit.jupiter.version>5.5.2</junit.jupiter.version>
+
+        <!-- Build plugins -->
+        <org.apache.maven.plugin.clean.version>3.1.0</org.apache.maven.plugin.clean.version>
+        <org.apache.maven.plugin.compiler.version>3.8.1</org.apache.maven.plugin.compiler.version>
+        <org.apache.maven.plugin.jar.version>3.2.0</org.apache.maven.plugin.jar.version>
+        <org.apache.maven.plugin.versionplugin.version>2.7</org.apache.maven.plugin.versionplugin.version>
+		<com.google.cloud.tools.jib.version>2.1.0</com.google.cloud.tools.jib.version>
+        <pl.project13.maven.version>4.0.0</pl.project13.maven.version>
+
+        <!-- Deployment plugins -->
+        <org.apache.maven.plugin.deploy.version>3.0.0-M1</org.apache.maven.plugin.deploy.version>
+
+        <!-- Reporting plugins -->
+        <org.apache.maven.plugin.surefire.version>3.0.0-M4</org.apache.maven.plugin.surefire.version>
+        <org.apache.maven.plugin.failsafe.version>3.0.0-M4</org.apache.maven.plugin.failsafe.version>
+        <org.apache.maven.plugin.site.version>3.9.0</org.apache.maven.plugin.site.version>
+        <org.apache.maven.plugin.project-info-reports.version>3.0.0</org.apache.maven.plugin.project-info-reports.version>
+        <org.apache.maven.plugin.javadoc.version>3.2.0</org.apache.maven.plugin.javadoc.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- PLASMA Utilities -->
+            <dependency>
+                <groupId>de.buw.tmdt.plasma</groupId>
+                <artifactId>utilities</artifactId>
+                <version>${plasma.utilities.version}</version>
+            </dependency>
+
+            <!-- Spring Boot Dependency Management -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${org.springframework.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Spring Cloud Dependency Management -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${org.springframework.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Spring API Documentation -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${org.springdoc.openapi.ui.version}</version>
+            </dependency>
+
+            <!-- Annotations -->
+            <dependency>
+                <groupId>org.jetbrains</groupId>
+                <artifactId>annotations</artifactId>
+                <version>${org.jetbrains.annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-annotations</artifactId>
+                <version>${com.github.spotbugs.annotations.version}</version>
+            </dependency>
+
+            <!-- Testing -->
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${org.mockito.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.jupiter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.jupiter.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-annotations</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!-- Build Management -->
+    <build>
+        <plugins>
+        </plugins>
+    </build>
+
+</project>

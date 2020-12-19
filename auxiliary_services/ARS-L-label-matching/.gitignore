@@ -1,0 +1,28 @@
+### generated ###
+target/
+
+### IntelliJ IDEA ###
+#Exclude .idea folder
+.idea/*
+!.idea/.name
+#git submodules with shared configuration
+!.idea/codeStyles/
+!.idea/inspectionProfiles/
+!.idea/copyright/
+#share all dictionaries
+!.idea/dictionaries/
+!.idea/fileTemplates/
+!.idea/runConfigurations/
+
+*.iml
+
+### configuration files
+application-dev-*.*
+application-developer.properties
+application-[a-z][a-z][0-9][0-9][0-9][0-9][0-9][0-9].*
+!application-dev-template.*
+!application-dev-environment.*
+
+### logs
+**.log
+**.log.zip
