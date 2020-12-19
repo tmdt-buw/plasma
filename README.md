@@ -25,6 +25,19 @@ The java version of the shared artifact ist 8.
 * You require Maven to build the services
 * We recommend IntelliJ as an IDE
 * Checkout the repository
+* Please add the following entries to your /etc/hosts file so that services might be able to communicate with each other (required due to a limitation of docker)
+```
+127.0.0.1 plasma-discovery-service
+127.0.0.1 plasma-admin-service
+127.0.0.1 plasma-sds-service
+127.0.0.1 plasma-dss-service
+127.0.0.1 plasma-gateway-service
+127.0.0.1 plasma-kgs-service
+127.0.0.1 plasma-sas-service
+127.0.0.1 plasma-dms-service
+127.0.0.1 plasma-srs-service
+127.0.0.1 plasma-ars-l-lm-service
+```
 
 ## Development and Building of the Backend Components
 * For building the backend components execute ```maven package``` on the parent module
