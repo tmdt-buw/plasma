@@ -1,0 +1,20 @@
+{
+  "name": "@tmdt/dms",
+  "version": "0.0.0-PLACEHOLDER",
+  "author": "TMDT <tlanger@uni-wuppertal.de>",
+  "license": "GPL-3.0",
+  "peerDependencies": {
+    "@angular/cdk": ">=10.0.0",
+    "@angular/core": ">=10.0.0",
+    "@angular/flex-layout": "^10.0.0-beta.32 || ^11.0.0-beta.33 || 12.0.0-beta.34",
+    "ng-zorro-antd": ">=10.0.0",
+    "dagre": "^0.8.5",
+    "graphlib": "^2.1.8",
+    "jointjs": "^3.3.0",
+    "rxjs": "^6.4.0",
+    "svg-pan-zoom": "^3.6.1"
+  },
+  "dependencies": {
+    "tslib": "^2.0.3"
+  }
+}

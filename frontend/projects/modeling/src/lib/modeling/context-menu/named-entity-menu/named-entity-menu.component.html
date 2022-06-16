@@ -1,0 +1,9 @@
+<nz-card class="menu-card">
+  <ul nz-menu nzSelectable>
+    <li *ngIf="node" nz-menu-group nzTitle="Edit named entity">
+      <ul>
+        <li nz-menu-item nzDanger (click)="remove()"><i class="context-icon" nz-icon nzType="delete"></i>Remove named entity</li>
+      </ul>
+    </li>
+  </ul>
+</nz-card>

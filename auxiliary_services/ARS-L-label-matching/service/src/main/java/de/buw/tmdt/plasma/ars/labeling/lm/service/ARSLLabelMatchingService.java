@@ -8,7 +8,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.ConfigurableApplicationContext;
 
 @EnableDiscoveryClient
-@SpringBootApplication(scanBasePackages = "de.buw.tmdt")
+@SpringBootApplication(scanBasePackages = "de.buw.tmdt.plasma")
 public class ARSLLabelMatchingService {
 	private static final Logger logger = LoggerFactory.getLogger(ARSLLabelMatchingService.class);
 

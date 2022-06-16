@@ -22,7 +22,7 @@ public class SchemaAnalysisDataProvisionDTO implements Serializable {
 	}
 
 	@JsonProperty(DATA_PROPERTY)
-	public String getData(){
+	public String getData() {
 		return data;
 	}
 

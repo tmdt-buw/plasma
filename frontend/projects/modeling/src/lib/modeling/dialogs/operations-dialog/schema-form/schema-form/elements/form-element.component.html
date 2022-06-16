@@ -1,0 +1,13 @@
+<pls-schema-form-hidden-form-element *ngIf="getFormElement() == FormElementTypes.Hidden"
+                                     [formElement]="formElement"></pls-schema-form-hidden-form-element>
+
+<pls-schema-form-checkbox-form-element *ngIf="getFormElement() == FormElementTypes.Checkbox"
+                                       [customConfiguration]="getCustomConfiguration()"
+                                       [formElement]="formElement"></pls-schema-form-checkbox-form-element>
+<pls-schema-form-text-form-element *ngIf="getFormElement() == FormElementTypes.Text"
+                                   [formElement]="formElement"></pls-schema-form-text-form-element>
+
+<div *ngIf="getFormElement() == FormElementTypes.Complex">
+  <pls-schema-form-element  *ngFor="let element of formElement.value" [formElement]="element"></pls-schema-form-element>
+</div>
+

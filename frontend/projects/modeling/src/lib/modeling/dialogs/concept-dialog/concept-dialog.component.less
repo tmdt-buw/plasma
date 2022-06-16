@@ -1,0 +1,106 @@
+@import "../../../../../modeling";
+
+.concept-list {
+  border: solid 1px #ccc;
+  min-height: 60px;
+  background: white;
+  border-radius: 4px;
+  display: block;
+  overflow: auto;
+  position: relative;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.concept-box {
+  padding: 2px 5px;
+  border-bottom: solid 1px #ccc;
+  color: rgba(0, 0, 0, 0.87);
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  cursor: move;
+  background: white;
+  font-size: 14px;
+}
+
+.concept-list-container {
+  position: absolute;
+  top: 80px;
+  bottom: 30px;
+  right: 30px;
+  left: 30px;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+  0 8px 10px 1px rgba(0, 0, 0, 0.14),
+  0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.concept-box:last-child {
+  border: none;
+}
+
+.concept-preview {
+  height: 50px;
+  border-radius: 5px;
+  opacity: 0.75;
+
+  .concept-preview-header {
+    height: 25px;
+    width: 100%;
+
+    .concept-preview-header-text {
+      margin: 3px 10px;
+      font-size: 12px;
+    }
+  }
+}
+
+:host {
+  ::ng-deep .ant-tabs {
+    height: 100%;
+
+    .ant-tabs-content {
+      height: 100%;
+    }
+
+    .ant-tabs-tabpane > div {
+      height: 100%
+    }
+
+  }
+}
+
+.named-entity-tag{
+  margin-left: 5px;
+  color: @modeling-named-entity-text-color;
+  background: @modeling-named-entity-color;
+}
+
+.datatype-property-tag {
+  margin-left: 5px;
+  color: @modeling-literal-text-color;
+  background: @modeling-literal-color;
+}
+
+
+
+.provisional-tag {
+  margin-left: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+

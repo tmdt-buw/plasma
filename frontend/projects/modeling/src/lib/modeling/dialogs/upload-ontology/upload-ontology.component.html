@@ -1,0 +1,61 @@
+<div fxLayout="column" fxLayoutGap="30px">
+
+  <form nz-form [formGroup]="form" fxLayout="column">
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzRequired nzFor="label">Label</nz-form-label>
+        <nz-form-control nzExtra="A short but meaningful label to denote this ontology" nzErrorTip="The label has to have between 2 and 6 characters">
+          <input formControlName="label" nz-input id="label"/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzRequired nzFor="uri">URI</nz-form-label>
+        <nz-form-control nzExtra="URI of the concept from an ontology" nzErrorTip="The URI is required.">
+          <input formControlName="uri" nz-input id="uri"/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzRequired nzFor="prefix">Prefix</nz-form-label>
+        <nz-form-control nzExtra="The default prefix used in this ontology" nzErrorTip="A valid prefix is required and needs to have between 2 and 6 characters.">
+          <input formControlName="prefix" nz-input id="prefix"/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzFor="description">Description</nz-form-label>
+        <nz-form-control nzExtra="A short description">
+          <input formControlName="description" nz-input id="description"/>
+        </nz-form-control>
+      </nz-form-item>
+  </form>
+
+  <!--suppress AngularInvalidExpressionResultType --> <!-- It actually is a File object that is returned -->
+  <nz-upload
+    nzType="drag"
+    [nzMultiple]="false"
+    [nzBeforeUpload]="beforeUpload"
+    [(nzFileList)]="ontologyFiles"
+  >
+    <p class="ant-upload-drag-icon">
+      <i nz-icon nzType="inbox"></i>
+    </p>
+    <p class="ant-upload-text">Click or drag ontology file to this area to upload</p>
+    <p class="ant-upload-hint">
+      Only ontologies in Turtle format are currently supported!
+    </p>
+  </nz-upload>
+
+  <!-- error success and submit button -->
+  <div fxLayoutAlign="space-between" fxLayout="column" fxLayoutGap="5px">
+    <nz-alert nzType="error" *ngIf="error" nzMessage="{{error.message}}"></nz-alert>
+    <nz-alert nzType="success" *ngIf="success" nzMessage="{{success}}"></nz-alert>
+    <div fxLayoutAlign="end center">
+      <button nz-button nzType="primary" nz-tooltip nzTooltipTitle="Add ontology" (click)="onSubmit()" [disabled]="!isValid()"><i
+        nz-icon nzType="upload"></i>Add ontology
+      </button>
+    </div>
+
+  </div>
+</div>

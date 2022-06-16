@@ -6,6 +6,8 @@ package de.buw.tmdt.plasma.services.sas.rest.config;
 /// https://github.com/spring-cloud/spring-cloud-netflix/issues/466
 
 import feign.Feign;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 @Configuration
 @ConditionalOnClass({Feign.class})
 public class FeignMappingDefaultConfiguration {
+
 	@Bean
 	public WebMvcRegistrations feignWebRegistrations() {
 		return new WebMvcRegistrations() {
@@ -26,6 +29,11 @@ public class FeignMappingDefaultConfiguration {
 				return new FeignFilterRequestMappingHandlerMapping();
 			}
 		};
+	}
+
+	@Bean
+	public CloseableHttpClient client() {
+		return HttpClients.createDefault();
 	}
 
 	private static class FeignFilterRequestMappingHandlerMapping extends RequestMappingHandlerMapping {

@@ -1,4 +1,4 @@
 # Exact Label Matcher
 ## Auxiliary Recommendation Service for Labeling (ARS-L)
 
-This service matches labels to concepts taken from the KGS if the label and the concept name are identical.
+An example ARS that matches classes to syntax nodes if the syntax node label matches the label of a class.

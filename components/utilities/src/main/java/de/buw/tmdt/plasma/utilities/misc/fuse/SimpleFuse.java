@@ -6,45 +6,44 @@ package de.buw.tmdt.plasma.utilities.misc.fuse;
  */
 public final class SimpleFuse extends AbstractFuse<RuntimeException> {
 
-	private static final long serialVersionUID = -4944414086744562217L;
+    private static final long serialVersionUID = -4944414086744562217L;
 
-	/**
-	 * Creates a new sane Fuse.
-	 */
-	public SimpleFuse() {
+    /**
+     * Creates a new sane Fuse.
+     */
+    public SimpleFuse() {
 
-	}
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public synchronized void destroy() {
-		super.destroy();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized void destroy() {
+        super.destroy();
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public synchronized boolean isSane() {
-		return super.isSane();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized boolean isSane() {
+        return super.isSane();
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized boolean isDestroyed() {
+        return super.isDestroyed();
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public synchronized boolean isDestroyed() {
-		return super.isDestroyed();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public synchronized boolean destroyIfSane() {
-		return super.destroyIfSane();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized boolean destroyIfSane() {
+        return super.destroyIfSane();
+    }
 }

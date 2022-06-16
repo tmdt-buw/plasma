@@ -1,5 +1,6 @@
 package de.buw.tmdt.plasma.services.dms.core.operations.impl.misc;
 
+import de.buw.tmdt.plasma.datamodel.modification.operation.DataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

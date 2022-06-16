@@ -1,6 +1,7 @@
 package de.buw.tmdt.plasma.services.dms.core.operations;
 
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.Node;
+import de.buw.tmdt.plasma.datamodel.CombinedModel;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.SchemaNode;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
@@ -27,11 +28,11 @@ public class OperationLookUp {
 		return result;
 	}
 
-	public HashMap<Node, Set<Operation.Handle>> getOperationHandles(@NotNull Node root) {
-		HashMap<Node, Set<Operation.Handle>> result = new HashMap<>();
+	public HashMap<SchemaNode, Set<Operation.Handle>> getOperationHandles(@NotNull CombinedModel model) {
+		HashMap<SchemaNode, Set<Operation.Handle>> result = new HashMap<>();
 
 		for (Operation<?> operation : operationByNameLookup.values()) {
-			for (Map.Entry<Node, Set<Operation.Handle>> nodeSetEntry : operation.generateParameterDefinitionsOnGraph(root).entrySet()) {
+			for (Map.Entry<SchemaNode, Set<Operation.Handle>> nodeSetEntry : operation.generateHandlesForApplicableNodes(model).entrySet()) {
 				Set<Operation.Handle> resultSet = result.computeIfAbsent(nodeSetEntry.getKey(), ignored -> new HashSet<>());
 				resultSet.addAll(nodeSetEntry.getValue());
 			}

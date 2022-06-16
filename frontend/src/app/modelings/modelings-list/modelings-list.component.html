@@ -1,0 +1,48 @@
+<nz-page-header class="content-header">
+  <nz-page-header-title>Modelings</nz-page-header-title>
+  <nz-page-header-extra>
+    <button [disabled]="error" fxFlex="nogrow" nz-button nzType="primary" [routerLink]="['create']"><i nz-icon nzType="plus"></i>Create new
+      modeling
+    </button>
+  </nz-page-header-extra>
+</nz-page-header>
+
+<div fxFill fxLayout="column" class="content">
+  <div>
+    <nz-table [nzData]="modelings" [nzLoading]="isLoading" nzNoResult="No active model process found."
+              [nzFrontPagination]="false" nzTableLayout="fixed">
+      <thead>
+      <tr>
+      <th nzWidth="400px" nzAlign="left" nzEllipsis>Title</th>
+      <th nzWidth="800px" nzAlign="left" nzEllipsis>Description</th>
+      <th nzWidth="200px" nzAlign="left">Created</th>
+      <th nzWidth="180px" nzAlign="left">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let model of modelings">
+        <td nzEllipsis> {{model.name}}</td>
+        <td nzEllipsis> {{model.description}}</td>
+        <td> {{model.created | date:'medium' }}</td>
+        <td>
+          <div fxLayout="row" fxLayoutGap="4px">
+            <button nz-button nzShape="circle" (click)="showDescriptionModal(model.name, model.description)"><i nz-icon nzType="info"></i></button>
+            <button nz-button nzShape="circle" [routerLink]="['..',modelsRoute,model.id]"><i nz-icon nzType="appstore-add"></i></button>
+            <button nz-button nzShape="circle"
+                    nz-popconfirm
+                    nzPopconfirmTitle="Are you sure to delete this model?"
+                    (nzOnConfirm)="deleteModeling(model)"
+                    nzPopconfirmPlacement="topLeft">
+              <i nz-icon nzType="delete"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+
+    </nz-table>
+  </div>
+</div>
+
+
+

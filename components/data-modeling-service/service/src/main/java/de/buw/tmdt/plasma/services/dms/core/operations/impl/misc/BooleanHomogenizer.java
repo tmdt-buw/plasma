@@ -1,5 +1,6 @@
 package de.buw.tmdt.plasma.services.dms.core.operations.impl.misc;
 
+import de.buw.tmdt.plasma.datamodel.modification.operation.DataType;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,10 +15,10 @@ public class BooleanHomogenizer extends AbstractSyntaxHomogenizer {
 	private static final String TRUE_CONSTANT = "true";
 
 	public BooleanHomogenizer() {
-		super(DataType.BOOLEAN);
+		super(DataType.Boolean);
 	}
 
-	public static boolean parseHomogenizedRepresentation(@NotNull String homogenizedValue) throws SLTDataTypeException {
+	public static boolean parseHomogenizedRepresentation(@NotNull String homogenizedValue) throws DataTypeException {
 		for (String falseConstant : FALSE_CANDIDATES) {
 			if (falseConstant.equalsIgnoreCase(homogenizedValue)) {
 				return false;
@@ -30,10 +31,10 @@ public class BooleanHomogenizer extends AbstractSyntaxHomogenizer {
 			}
 		}
 
-		throw new SLTDataTypeException(
+		throw new DataTypeException(
 				"Passed raw value \"" + homogenizedValue + "\" was neither \"" +
-				BooleanHomogenizer.TRUE_CONSTANT + "\" nor \"" +
-				BooleanHomogenizer.FALSE_CONSTANT + "\"."
+						BooleanHomogenizer.TRUE_CONSTANT + "\" nor \"" +
+						BooleanHomogenizer.FALSE_CONSTANT + "\"."
 		);
 	}
 
@@ -53,26 +54,25 @@ public class BooleanHomogenizer extends AbstractSyntaxHomogenizer {
 	public String homogenizeRepresentation(@NotNull String value, @NotNull DataType dataType) throws HomogenizationException, DataTypeNotSupportedException {
 		assertDataTypeValidity(dataType, BooleanHomogenizer.class.getName());
 
-		try {
-			if (BooleanHomogenizer.parseHomogenizedRepresentation(value)) {
-				return TRUE_CONSTANT;
-			} else {
-				return FALSE_CONSTANT;
-			}
-		} catch (SLTDataTypeException ignored) {
-			logger.trace("Failed to match the value against any of the known constants.");
-		}
+        try {
+            if (BooleanHomogenizer.parseHomogenizedRepresentation(value)) {
+                return TRUE_CONSTANT;
+            } else {
+                return FALSE_CONSTANT;
+            }
+        } catch (DataTypeException ignored) {
+            logger.trace("Failed to match the value against any of the known constants.");
+        }
 
-		logger.trace("Value did not match (case insensitively) any of the known constants for false: {}.", FALSE_CANDIDATES);
-		try {
-			if (Double.parseDouble(value) == 0) {
-				return BooleanHomogenizer.FALSE_CONSTANT;
-			}
-			return BooleanHomogenizer.TRUE_CONSTANT;
-		} catch (NumberFormatException e) {
-			logger.trace("Failed to parse the value as double to do a comparison to 0.", e);
-		}
-		// XXX possible default value?
-		throw new HomogenizationException("unknown boolean type representation");
-	}
+        logger.trace("Value did not match (case insensitively) any of the known constants for false: {}.", (Object) FALSE_CANDIDATES);
+        try {
+            if (Double.parseDouble(value) == 0) {
+                return BooleanHomogenizer.FALSE_CONSTANT;
+            }
+            return BooleanHomogenizer.TRUE_CONSTANT;
+        } catch (NumberFormatException e) {
+            logger.trace("Failed to parse the value as double to do a comparison to 0.", e);
+        }
+        throw new HomogenizationException("unknown boolean type representation");
+    }
 }

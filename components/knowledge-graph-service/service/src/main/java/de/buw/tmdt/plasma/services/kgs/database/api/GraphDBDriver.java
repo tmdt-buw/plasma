@@ -127,6 +127,14 @@ public interface GraphDBDriver {
     Set<EntityConcept> retrieveEntityConceptsByPrefix(@NotNull String prefix);
 
     /**
+     * Retrieves all EntityConcepts whose source URI equals with the given one. Ignores case.
+     *
+     * @return all EntityConcepts.
+     */
+    @NotNull
+    Set<EntityConcept> retrieveEntityConceptsByURI(@NotNull String uri);
+
+    /**
      * Retrieves all EntityConcepts whose main labels contain (or are equal to) the given one. Ignores case.
      *
      * @param mainLabel the main label to search for
@@ -210,6 +218,14 @@ public interface GraphDBDriver {
      */
     @NotNull
     Set<RelationConcept> retrieveRelationConceptsByPrefix(@NotNull String prefix);
+
+    /**
+     * Retrieves all RelationConcepts whose labels start with the given one. Ignores case.
+     *
+     * @return all RelationConcepts.
+     */
+    @NotNull
+    Set<RelationConcept> retrieveRelationConceptsByURI(@NotNull String prefix);
 
     /**
      * Retrieves all RelationConcepts whose labels contain (or are equal to) the given one. Ignores case.

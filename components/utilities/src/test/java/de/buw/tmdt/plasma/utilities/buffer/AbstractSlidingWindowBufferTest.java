@@ -1,14 +1,14 @@
 package de.buw.tmdt.plasma.utilities.buffer;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class AbstractSlidingWindowBufferTest {
 	private static final int BUFFER_SIZE = 5;
@@ -25,7 +25,7 @@ public abstract class AbstractSlidingWindowBufferTest {
 		this.testeeConstructor = testeeConstructor;
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		testee = testeeConstructor.apply(BUFFER_SIZE);
 	}

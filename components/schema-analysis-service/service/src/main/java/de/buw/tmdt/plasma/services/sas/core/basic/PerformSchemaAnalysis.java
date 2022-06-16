@@ -15,7 +15,7 @@ public class PerformSchemaAnalysis {
 	public Node performSchemaAnalysis(String inputData) {
 
 		SchemaAnalysisIdentifyJSONStructure schemaAnalysisIdentifyJSONStructure = new SchemaAnalysisIdentifyJSONStructure();
-		SchemaAnalysisAggregateRecognizedSchema schemaAnalysisAggregateRecognizedSchema = new SchemaAnalysisAggregateRecognizedSchema(1);
+		SchemaAnalysisAggregateRecognizedSchema schemaAnalysisAggregateRecognizedSchema = new SchemaAnalysisAggregateRecognizedSchema(20);
 
 		// Step 1: Identify Json Structure
 

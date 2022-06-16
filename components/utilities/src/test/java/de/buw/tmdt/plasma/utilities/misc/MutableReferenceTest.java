@@ -1,8 +1,9 @@
 package de.buw.tmdt.plasma.utilities.misc;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MutableReferenceTest {
 
@@ -22,10 +23,14 @@ public class MutableReferenceTest {
         assertNull(result);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void getOnUninitializedReference() {
-        final MutableReference<Boolean> ref = new MutableReference<>();
-        final boolean result = ref.get();
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            final MutableReference<Boolean> ref = new MutableReference<>();
+            ref.get();
+        });
+
+
     }
 
     @Test

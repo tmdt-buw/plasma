@@ -5,7 +5,7 @@ import de.buw.tmdt.plasma.services.sas.core.model.syntaxmodel.Node;
 
 public class SchemaAnalysisAggregateRecognizedSchema {
 
-	private int dataPointThreshold;
+	private int dataPointThreshold = 10;
 	/**
 	 * The collected RecognizedSchemas.
 	 */
@@ -22,7 +22,7 @@ public class SchemaAnalysisAggregateRecognizedSchema {
 		if (this.mergedRecognizedNode == null) {
 			this.mergedRecognizedNode = n;
 		} else {
-			this.mergedRecognizedNode.merge(n);
+			this.mergedRecognizedNode = (Node) this.mergedRecognizedNode.merge(n);
 		}
 		collectionCounter++;
 

@@ -1,6 +1,0 @@
-[submodule ".idea/codeStyles"]
-	path = .idea/codeStyles
-	url = ../../intellij-configuration/codeStyles.git
-[submodule ".idea/inspectionProfiles"]
-	path = .idea/inspectionProfiles
-	url = ../../intellij-configuration/inspectionProfiles.git

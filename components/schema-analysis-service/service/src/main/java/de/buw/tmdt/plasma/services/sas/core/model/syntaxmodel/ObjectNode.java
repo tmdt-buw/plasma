@@ -134,9 +134,16 @@ public class ObjectNode extends Node {
 		}
 	}
 
-	private void mergeChild(String key, Node oldChild, Node newChild) throws SchemaAnalysisException{
+	private void mergeChild(String key, Node oldChild, Node newChild) throws SchemaAnalysisException {
 		try {
-			this.children.put(key, oldChild.merge(newChild));
+			if (oldChild == null && newChild != null) {
+				this.children.put(key, newChild);
+			} else if (oldChild != null && newChild == null) {
+				this.children.put(key, oldChild);
+			} else if (oldChild != null) {
+				this.children.put(key, oldChild.merge(newChild));
+			}
+
 		} catch (Exception e) {
 			throw new SchemaAnalysisException("Could not merge chilren: " + oldChild + " and " + newChild);
 		}

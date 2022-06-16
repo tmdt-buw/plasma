@@ -1,0 +1,28 @@
+.modeling-container {
+  position: relative;
+  width: 100%;
+
+
+  ::ng-deep .ant-spin-container, .modeling-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+
+}
+
+::ng-deep .pls-copy-semantic-model {
+  ::ng-deep .ant-modal-content {
+    height: 100%;
+  }
+
+  ::ng-deep .ant-modal-body {
+    height: calc(100% - 55px);
+  }
+}
+
+nz-select {
+  width: 400px;
+}

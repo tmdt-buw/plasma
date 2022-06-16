@@ -1,11 +1,11 @@
 package de.buw.tmdt.plasma.services.dms.core.converter;
 
+import de.buw.tmdt.plasma.datamodel.modification.operation.ParameterDefinition;
+import de.buw.tmdt.plasma.datamodel.modification.operation.SyntacticOperationDTO;
+import de.buw.tmdt.plasma.datamodel.modification.operation.Type;
+import de.buw.tmdt.plasma.datamodel.modification.operation.TypeDefinitionDTO;
 import de.buw.tmdt.plasma.services.dms.core.operations.Operation;
 import de.buw.tmdt.plasma.services.dms.core.operations.OperationLookUp;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.ParameterDefinition;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.SyntacticOperationDTO;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.Type;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.TypeDefinitionDTO;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

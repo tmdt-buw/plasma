@@ -20,9 +20,9 @@ public class GatewayOpenAPIConfig {
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
         List<RouteDefinition> definitions = locator.getRouteDefinitions().collectList().block();
-        if(definitions != null){
+        if (definitions != null) {
             definitions.stream().filter(routeDefinition -> routeDefinition.getId().matches("plasma-.*")).forEach(routeDefinition
                     -> swaggerUiConfigParameters.addGroup(routeDefinition.getId()));
         }

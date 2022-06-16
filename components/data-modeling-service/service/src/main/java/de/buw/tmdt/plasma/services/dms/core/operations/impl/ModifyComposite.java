@@ -1,19 +1,16 @@
 package de.buw.tmdt.plasma.services.dms.core.operations.impl;
 
-import de.buw.tmdt.plasma.services.dms.core.model.Traversable;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.DataSourceSchema;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.semanticmodel.EntityType;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.CompositeNode;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.Node;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.PrimitiveNode;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.members.Splitter;
+import de.buw.tmdt.plasma.datamodel.CombinedModel;
+import de.buw.tmdt.plasma.datamodel.modification.DeltaModification;
+import de.buw.tmdt.plasma.datamodel.modification.operation.ParameterDefinition;
+import de.buw.tmdt.plasma.datamodel.modification.operation.Type;
+import de.buw.tmdt.plasma.datamodel.modification.operation.TypeDefinitionDTO;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.CompositeNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.SchemaNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.Splitting;
 import de.buw.tmdt.plasma.services.dms.core.operations.Operation;
 import de.buw.tmdt.plasma.services.dms.core.operations.OperationLookUp;
 import de.buw.tmdt.plasma.services.dms.core.operations.exceptions.ParameterParsingException;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.DataType;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.ParameterDefinition;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.Type;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.TypeDefinitionDTO;
 import de.buw.tmdt.plasma.utilities.collections.CollectionUtilities;
 import de.buw.tmdt.plasma.utilities.misc.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +21,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class ModifyComposite extends Operation<Pair<CompositeNode, List<Splitter>>> {
+public class ModifyComposite extends Operation<Pair<CompositeNode, List<Splitting>>> {
 
 	private static final String OPERATION_NAME = "ModifyCompositeSplitting";
 	private static final String NODE_ID_PARAMETER_NAME = "NodeId";
@@ -76,11 +73,11 @@ public class ModifyComposite extends Operation<Pair<CompositeNode, List<Splitter
 	}
 
 	@Override
-	protected Pair<CompositeNode, List<Splitter>> parseParameterDefinition(
-			DataSourceSchema schema,
+	protected Pair<CompositeNode, List<Splitting>> parseParameterDefinition(
+			CombinedModel model,
 			ParameterDefinition<?, ?> parameterDefinition
 	) throws ParameterParsingException {
-		final UUID nodeId;
+		final String nodeId;
 		final String[] patterns;
 
 		validateParameterDefinition(parameterDefinition);
@@ -101,26 +98,19 @@ public class ModifyComposite extends Operation<Pair<CompositeNode, List<Splitter
 		}
 		patterns = splitterParameterDefinition.probeValueAs(Type.PATTERN);
 
-		Traversable node = schema.find(new Traversable.Identity<>(nodeId));
-		if (node == null) {
-			throw new ParameterParsingException("Did not find node with id `" + nodeId + "` in schema.");
-		}
-		if (!(node instanceof CompositeNode)) {
-			throw new ParameterParsingException(
-					"Node id identified illegal node type. Expected `" + CompositeNode.class + "` but found `" + node.getClass() + "`."
-			);
-		}
-		final List<Splitter> splitters = Arrays.stream(patterns)
-				.map(Splitter::new)
+		SchemaNode node = model.getSyntaxModel().getNode(nodeId);
+
+		final List<Splitting> splitters = Arrays.stream(patterns)
+				.map(Splitting::new)
 				.collect(Collectors.toList());
 
 		return new Pair<>((CompositeNode) node, splitters);
 	}
 
 	@Override
-	protected DataSourceSchema execute(DataSourceSchema schema, Pair<CompositeNode, List<Splitter>> input) {
+	protected CombinedModel execute(CombinedModel model, Pair<CompositeNode, List<Splitting>> input) {
 		CompositeNode composite = input.getLeft();
-		List<Splitter> splitter = input.getRight();
+		List<Splitting> splitter = input.getRight();
 
 		if (splitter.isEmpty()) {
 			throw new IllegalArgumentException("Splitter list must contain at least one element.");
@@ -128,35 +118,16 @@ public class ModifyComposite extends Operation<Pair<CompositeNode, List<Splitter
 		if (CollectionUtilities.collectionContains(splitter, null)) {
 			throw new IllegalArgumentException("Splitter list must not contain null.");
 		}
+		composite.setSplitter(splitter);
 
-		ArrayList<PrimitiveNode> newComponents = new ArrayList<>(splitter.size() + 1);
-		List<PrimitiveNode> oldComponents = composite.getComponents();
-		for (int i = 0; i < splitter.size() + 1; i++) {
-			EntityType entityType = null;
-			DataType dataType = DataType.UNKNOWN;
-			if (i < oldComponents.size()) {
-				entityType = oldComponents.get(i).getEntityType();
-				dataType = oldComponents.get(i).getDataType();
-			}
-			newComponents.add(new PrimitiveNode(entityType, dataType));
-		}
+		DeltaModification modification = new DeltaModification("local_operation", null, null, List.of(composite), null);
+		model.apply(modification); // this will take care of all needed stuff
 
-		for (String example : composite.getExamples()) {
-			String leftOver = example;
-			for (int i = 0; i < splitter.size(); i++) {
-				Pair<String, String> split = splitter.get(i).apply(leftOver);
-				newComponents.get(i).addExample(split.getLeft());
-				leftOver = split.getRight();
-			}
-			newComponents.get(newComponents.size() - 1).addExample(leftOver);
-		}
-
-		CompositeNode result = new CompositeNode(newComponents, splitter, composite.getExamples(), null, composite.getPosition());
-		return schema.replace(composite.getIdentity(), result);
+		return model;
 	}
 
 	@Override
-	protected Handle getHandleOnNode(Node node) {
+	protected Handle getHandleOnNode(SchemaNode node) {
 		if (!(node instanceof CompositeNode)) {
 			throw new IllegalArgumentException("Can't generate handle for node with wrong type: " + node);
 		}
@@ -164,19 +135,19 @@ public class ModifyComposite extends Operation<Pair<CompositeNode, List<Splitter
 		ParameterDefinition<?, ?> parameterDefinitionClone = getParameterPrototype();
 		parameterDefinitionClone.replaceValue(NODE_ID_PARAMETER_NAME, compositeNode.getUuid());
 
-		String[] splitters = compositeNode.getSplitter().stream().map(Splitter::getPattern).toArray(String[]::new);
+		String[] splitters = compositeNode.getSplitter().stream().map(Splitting::getPattern).toArray(String[]::new);
 		parameterDefinitionClone.replaceValue(SPLITTER_PARAMETER_NAME, splitters);
 		return new Handle(this, parameterDefinitionClone);
 	}
 
 	@Override
-	public Map<Node, Set<Handle>> generateParameterDefinitionsOnGraph(@NotNull Node root) {
-		Map<Node, Set<Handle>> result = new HashMap<>();
-		root.execute(traversable -> {
-			if (traversable instanceof CompositeNode) {
-				result.computeIfAbsent((CompositeNode) traversable, ignored -> new HashSet<>()).add(getHandleOnNode((CompositeNode) traversable));
-			}
-		});
+	public Map<SchemaNode, Set<Handle>> generateHandlesForApplicableNodes(@NotNull CombinedModel model) {
+		Map<SchemaNode, Set<Handle>> result = new HashMap<>();
+
+		// get all primitive nodes
+		model.getSyntaxModel().getNodes().stream()
+				.filter(schemaNode -> schemaNode instanceof CompositeNode)
+				.forEach(schemaNode -> result.computeIfAbsent(schemaNode, ignored -> new HashSet<>()).add(getHandleOnNode(schemaNode)));
 		return result;
 	}
 }

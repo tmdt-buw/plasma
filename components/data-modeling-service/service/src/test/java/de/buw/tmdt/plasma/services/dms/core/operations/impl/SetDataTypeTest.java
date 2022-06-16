@@ -1,14 +1,15 @@
 package de.buw.tmdt.plasma.services.dms.core.operations.impl;
 
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.DataSourceSchema;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.Node;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.ObjectNode;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.PrimitiveNode;
+import de.buw.tmdt.plasma.datamodel.CombinedModel;
+import de.buw.tmdt.plasma.datamodel.modification.operation.DataType;
+import de.buw.tmdt.plasma.datamodel.modification.operation.ParameterDefinition;
+import de.buw.tmdt.plasma.datamodel.modification.operation.Type;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.PrimitiveNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.SchemaNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.SetNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.SyntaxModel;
 import de.buw.tmdt.plasma.services.dms.core.operations.OperationLookUp;
 import de.buw.tmdt.plasma.services.dms.core.operations.exceptions.ParameterParsingException;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.DataType;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.ParameterDefinition;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.Type;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,23 +17,23 @@ import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.UUID;
 
 import static de.buw.tmdt.plasma.services.dms.core.operations.impl.SetDataType.DATA_TYPE_PARAMETER_NAME;
 import static de.buw.tmdt.plasma.services.dms.core.operations.impl.SetDataType.NODE_ID_PARAMETER_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SetDataTypeTest {
 
 	@Mock
 	private OperationLookUp lookUp;
-	@Mock
-	private DataSourceSchema dataSourceSchemaMock;
+
+	private CombinedModel combinedModel;
 
 	private SetDataType testee;
 
@@ -45,48 +46,52 @@ class SetDataTypeTest {
 
 	@Test
 	void testInvoke() throws ParameterParsingException {
-		PrimitiveNode node = new PrimitiveNode(
-				null,
-				DataType.STRING,
-				"",
-				Collections.emptyList(),
-				null,
-				Collections.emptyList(),
-				UUID.randomUUID()
+		SchemaNode node = new PrimitiveNode(
+				"label",
+				true,
+				DataType.String,
+				new ArrayList<>(),
+				null
 		);
 
-		assertEquals(DataType.STRING, node.getDataType());
+		assertEquals(DataType.String, ((PrimitiveNode) node).getDataType());
+		SyntaxModel syntaxModel = new SyntaxModel(node.getUuid(), new ArrayList<>(Collections.singletonList(node)), new ArrayList<>());
 
-		when(dataSourceSchemaMock.getSyntaxModel()).thenReturn(node);
-		when(dataSourceSchemaMock.find(node.getIdentity())).thenReturn(node);
+		combinedModel = new CombinedModel("", syntaxModel, null);
 
-		testee.invoke(dataSourceSchemaMock, setParameters(node.getUuid(), DataType.BOOLEAN));
+		testee.invoke(combinedModel, setParameters(node.getUuid(), DataType.Boolean));
 
-		assertNull(node.getEntityType());
-		assertEquals(DataType.BOOLEAN, node.getDataType());
+		node = combinedModel.getSyntaxModel().getNode(node.getUuid());
+
+		assertEquals(DataType.Boolean, ((PrimitiveNode) node).getDataType());
 	}
 
 	@Test
 	void wrongNodeId() {
+		SchemaNode node = new PrimitiveNode("node1", true, DataType.String);
+
+		SyntaxModel syntaxModel = new SyntaxModel(node.getUuid(), new ArrayList<>(Collections.singletonList(node)), new ArrayList<>());
+
+		combinedModel = new CombinedModel("", syntaxModel, null);
+
 		Assertions.assertThrows(ParameterParsingException.class, () -> {
-			Node root = new PrimitiveNode(null, DataType.STRING);
+			testee.parseParameterDefinition(combinedModel, setParameters(null, null));
+		});
 
-			when(dataSourceSchemaMock.getSyntaxModel()).thenReturn(root);
-
-			testee.parseParameterDefinition(dataSourceSchemaMock, setParameters(null, null));
+		Assertions.assertThrows(ParameterParsingException.class, () -> {
+			testee.parseParameterDefinition(combinedModel, setParameters(UUID.randomUUID().toString(), null));
 		});
 	}
 
 	@Test
 	void wrongNodeType() {
+		SchemaNode node = new SetNode(true);
+
+		SyntaxModel syntaxModel = new SyntaxModel(node.getUuid(), new ArrayList<>(Collections.singletonList(node)), new ArrayList<>());
+		combinedModel = new CombinedModel("", syntaxModel, null);
+
 		Assertions.assertThrows(ParameterParsingException.class, () -> {
-			Node root = new ObjectNode(new HashMap<>(), null);
-			UUID uuid = UUID.randomUUID();
-			root.setUuid(uuid);
-
-			when(dataSourceSchemaMock.getSyntaxModel()).thenReturn(root);
-
-			testee.parseParameterDefinition(dataSourceSchemaMock, setParameters(null, null));
+			testee.parseParameterDefinition(combinedModel, setParameters(node.getUuid(), null));
 		});
 	}
 
@@ -95,7 +100,7 @@ class SetDataTypeTest {
 		verify(lookUp, times(1)).registerOperation(testee);
 	}
 
-	private ParameterDefinition setParameters(UUID uuid, DataType dataType) {
+	private ParameterDefinition setParameters(String nodeUuid, DataType dataType) {
 		return new ParameterDefinition<>(
 				Type.COMPLEX,
 				"",
@@ -111,7 +116,7 @@ class SetDataTypeTest {
 						1,
 						1,
 						true,
-						uuid
+						nodeUuid
 				),
 				new ParameterDefinition<>(
 						Type.DATA_TYPE,

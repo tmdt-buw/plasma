@@ -1,104 +1,81 @@
 package de.buw.tmdt.plasma.services.dms.core.operations.impl;
 
-import de.buw.tmdt.plasma.services.dms.core.model.Traversable;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.DataSourceSchema;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.CompositeNode;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.ObjectNode;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.PrimitiveNode;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.members.Splitter;
+import de.buw.tmdt.plasma.datamodel.CombinedModel;
+import de.buw.tmdt.plasma.datamodel.CombinedModelElement;
+import de.buw.tmdt.plasma.datamodel.modification.operation.DataType;
+import de.buw.tmdt.plasma.datamodel.modification.operation.ParameterDefinition;
+import de.buw.tmdt.plasma.datamodel.modification.operation.Type;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.*;
 import de.buw.tmdt.plasma.services.dms.core.operations.OperationLookUp;
 import de.buw.tmdt.plasma.services.dms.core.operations.exceptions.ParameterParsingException;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.DataType;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.ParameterDefinition;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.Type;
 import de.buw.tmdt.plasma.utilities.misc.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.*;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SplitPrimitiveTest {
 
-	@Mock
-	private PrimitiveNode primitiveNodeMock;
-
-	@Mock
-	private Traversable.Identity<?> primitiveNodeIdentityMock;
-
-	@Mock
-	private ObjectNode rootNodeMock;
+	private PrimitiveNode primitiveNode;
 
 	@Mock
 	private OperationLookUp operationLookUpMock;
 
-	@Mock
-	private DataSourceSchema dataSourceSchemaMock;
-
-	@Captor
-	private ArgumentCaptor<CompositeNode> replacementCaptor;
+	private CombinedModel combinedModel;
 
 	private SplitPrimitive testee;
 	private String[] patterns;
-	private List<Splitter> splitters;
-	private CompositeNode expectation;
+	private List<Splitting> splitters;
+	private List<PrimitiveNode> expectedPrimitiveNodes;
 	private ParameterDefinition<?, ?> parameterDefinition;
 
 	@BeforeEach
 	void setUp() {
 		MockitoAnnotations.initMocks(this);
-		UUID uuid = UUID.randomUUID();
 
-		when(primitiveNodeMock.getUuid()).thenReturn(uuid);
-		when(primitiveNodeMock.getDataType()).thenReturn(DataType.STRING);
-		when(primitiveNodeMock.getExamples()).thenReturn(Arrays.asList("Some;Funny:Value", "SomeOther;NotSoFunny:Shit"));
-		Mockito.<Traversable.Identity<?>>when(primitiveNodeMock.getIdentity()).thenReturn(primitiveNodeIdentityMock);
+		primitiveNode = new PrimitiveNode("primitive", DataType.String);
+		primitiveNode.setExamples(Arrays.asList("Some;Funny:Value", "SomeOther;NotSoFunny:Stuff"));
 
-		when(rootNodeMock.find(eq(new Traversable.Identity<>(uuid)))).thenReturn(primitiveNodeMock);
-		when(rootNodeMock.replace(any(), any())).thenReturn(rootNodeMock);
+		SyntaxModel syntaxModel = new SyntaxModel(primitiveNode.getUuid(), new ArrayList<>(Collections.singletonList(primitiveNode)), new ArrayList<>());
 
-		when(dataSourceSchemaMock.getSyntaxModel()).thenReturn(rootNodeMock);
-		when(dataSourceSchemaMock.find(eq(new Traversable.Identity<>(uuid)))).thenReturn(primitiveNodeMock);
-		when(dataSourceSchemaMock.replace(any(), any())).thenReturn(dataSourceSchemaMock);
+		combinedModel = new CombinedModel("ignored", syntaxModel, null);
 
 		testee = new SplitPrimitive(operationLookUpMock);
 
 		patterns = new String[]{";", ":"};
 		splitters = Arrays.stream(patterns)
-				.map(Splitter::new)
+				.map(Splitting::new)
 				.collect(Collectors.toList());
 
-		expectation = new CompositeNode(
-				Arrays.asList(
-						new PrimitiveNode(
-								null,
-								DataType.UNKNOWN,
-								Arrays.asList("Some", "SomeOther")
-						), new PrimitiveNode(
-								null,
-								DataType.UNKNOWN,
-								Arrays.asList("Funny", "NotSoFunny")
-						), new PrimitiveNode(
-								null,
-								DataType.UNKNOWN,
-								Arrays.asList("Value", "Shit")
-						)
-				),
-				splitters,
-				primitiveNodeMock.getExamples(),
-				null,
-				null
+		expectedPrimitiveNodes = Arrays.asList(
+				new PrimitiveNode(
+						"node1",
+						true,
+						DataType.Unknown,
+						Arrays.asList("Some", "SomeOther"),
+						null),
+				new PrimitiveNode(
+						"node2",
+						true,
+						DataType.Unknown,
+						Arrays.asList("Funny", "NotSoFunny"),
+						null),
+
+				new PrimitiveNode(
+						"node3",
+						true,
+						DataType.Unknown,
+						Arrays.asList("Value", "Stuff"),
+						null)
 		);
+
 		parameterDefinition = new ParameterDefinition<>(
 				Type.COMPLEX,
 				"",
@@ -108,16 +85,16 @@ class SplitPrimitiveTest {
 				1,
 				new ParameterDefinition<>(
 						Type.SYNTAX_NODE_ID,
-						"NodeId",
+						SplitPrimitive.NODE_ID_PARAMETER_NAME,
 						"",
 						"",
 						1,
 						1,
-						primitiveNodeMock.getUuid()
+						primitiveNode.getUuid()
 				),
 				new ParameterDefinition<>(
 						Type.PATTERN,
-						"Splitter",
+						SplitPrimitive.SPLITTER_PARAMETER_NAME,
 						"",
 						"",
 						1,
@@ -129,42 +106,48 @@ class SplitPrimitiveTest {
 
 	@Test
 	void parseRaw() throws ParameterParsingException {
-		Pair<PrimitiveNode, List<Splitter>> parsedInput = testee.parseParameterDefinition(dataSourceSchemaMock, parameterDefinition);
+		Pair<PrimitiveNode, List<Splitting>> parsedInput = testee.parseParameterDefinition(combinedModel, parameterDefinition);
 
 		String[] readPatterns = parsedInput.getRight().stream()
-				.peek(Splitter::getCompiledPattern)
-				.map(Splitter::getPattern)
+				.map(Splitting::getPattern)
 				.toArray(String[]::new);
 
 		assertArrayEquals(patterns, readPatterns);
-		assertEquals(primitiveNodeMock, parsedInput.getLeft());
+		assertEquals(primitiveNode, parsedInput.getLeft());
 	}
 
 	@Test
 	void apply() {
-		DataSourceSchema result = testee.execute(
-				dataSourceSchemaMock,
-				new Pair<>(primitiveNodeMock, new ArrayList<>(splitters))
+
+		combinedModel = testee.execute(
+				this.combinedModel,
+				new Pair<>(primitiveNode, new ArrayList<>(splitters))
 		);
 
-		assertEquals(dataSourceSchemaMock, result);
-		verify(dataSourceSchemaMock, atLeastOnce()).replace(eq(primitiveNodeIdentityMock), replacementCaptor.capture());
-		assertEquals(expectation.toString(), replacementCaptor.getValue().toString());
-	}
+        assertEquals(4, combinedModel.getSyntaxModel().getNodes().size());
+        assertEquals(3, combinedModel.getSyntaxModel().getEdges().size());
 
-	@Test
-	void concatenate() throws ParameterParsingException {
-		DataSourceSchema result = testee.invoke(dataSourceSchemaMock, parameterDefinition);
+        SchemaNode replacementCompositeNode = combinedModel.getSyntaxModel().getNodes().stream().filter(schemaNode -> schemaNode.getUuid().equals(primitiveNode.getUuid())).findFirst().orElseThrow();
 
-		assertEquals(dataSourceSchemaMock, result);
-		verify(dataSourceSchemaMock, atLeastOnce()).replace(eq(primitiveNodeIdentityMock), replacementCaptor.capture());
+        assertTrue(replacementCompositeNode instanceof CompositeNode, "New node has wrong type");
+        assertEquals(2, ((CompositeNode) replacementCompositeNode).getSplitter().size(), "Splitting is missing in new node");
+        assertEquals(primitiveNode.getCleansingPattern(), ((CompositeNode) replacementCompositeNode).getCleansingPattern(), "Cleansing patterns do not match");
 
-		final CompositeNode replacement = replacementCaptor.getValue();
+        // get outgoing edges
+        List<Edge> newEdges = combinedModel.getSyntaxModel().getEdges().stream().filter(edge -> edge.getFromId().equals(replacementCompositeNode.getUuid())).collect(Collectors.toList());
 
-		assertEquals(expectation.getExamples(), replacement.getExamples());
-		assertEquals(expectation.getSplitter(), replacement.getSplitter());
-		assertEquals(expectation.getCleansingPattern(), replacement.getCleansingPattern());
-		assertEquals(expectation.getComponents(), replacement.getComponents());
-		assertEquals(expectation.toString(), replacement.toString());
+        // get the generated nodes
+        List<String> generatedNodesUuids = newEdges.stream().map(Edge::getToId).collect(Collectors.toList());
+        List<PrimitiveNode> generatedNodes = combinedModel.getSyntaxModel().getNodes().stream()
+                .filter(schemaNode -> generatedNodesUuids.contains(schemaNode.getUuid()))
+                .map(schemaNode -> (PrimitiveNode) schemaNode)
+                .sorted(Comparator.comparing(CombinedModelElement::getLabel)).collect(Collectors.toList());
+
+        assertEquals(3, generatedNodes.size());
+
+        // validate example values of generated nodes
+        assertIterableEquals(expectedPrimitiveNodes.get(0).getExamples(), generatedNodes.get(0).getExamples(), "First generated nodes example values do not match");
+        assertIterableEquals(expectedPrimitiveNodes.get(1).getExamples(), generatedNodes.get(1).getExamples(), "Second generated nodes example values do not match");
+		assertIterableEquals(expectedPrimitiveNodes.get(2).getExamples(), generatedNodes.get(2).getExamples(), "Third generated nodes example values do not match");
 	}
 }

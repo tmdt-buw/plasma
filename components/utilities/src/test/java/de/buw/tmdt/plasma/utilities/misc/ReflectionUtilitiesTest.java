@@ -1,6 +1,6 @@
 package de.buw.tmdt.plasma.utilities.misc;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ReflectionUtilitiesTest {
 	private static final Logger logger = LoggerFactory.getLogger(ReflectionUtilitiesTest.class);
@@ -32,7 +32,7 @@ public class ReflectionUtilitiesTest {
 			logger.debug("Array type: {}", arrayType);
 			int arraySize = classListEntry.getValue().size();
 
-			assertTrue("Generated type is no array.", arrayType.isArray());
+			assertTrue(arrayType.isArray(), "Generated type is no array.");
 
 			Object[] array = (Object[]) Array.newInstance(arrayType.getComponentType(), arraySize);
 			for (int i = 0; i < arraySize; i++) {
@@ -40,7 +40,7 @@ public class ReflectionUtilitiesTest {
 				logger.debug("List Element : {} {}", element, element.getClass());
 				array[i] = element;
 				logger.debug("Array Element: {} {}", array[i], array[i].getClass());
-				assertEquals("Elements were changed when assigning to array.", element, array[i]);
+				assertEquals(element, array[i], "Elements were changed when assigning to array.");
 			}
 		}
 	}

@@ -1,15 +1,15 @@
 package de.buw.tmdt.plasma.utilities.collections;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class MapUtilitiesTest {
 
@@ -27,13 +27,15 @@ public class MapUtilitiesTest {
         assertEquals("Thousand", flip.get(1000));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void flipAmbiguous() {
-        final Map<String, Integer> stringToLengthMap = Stream.of("Some", "Piece", "Of", "Text").collect(Collectors.toMap(
-                Function.identity(),
-                String::length
-        ));
-        MapUtilities.flip(stringToLengthMap);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            final Map<String, Integer> stringToLengthMap = Stream.of("Some", "Piece", "Of", "Text").collect(Collectors.toMap(
+                    Function.identity(),
+                    String::length
+            ));
+            MapUtilities.flip(stringToLengthMap);
+        });
     }
 
     @Test
@@ -121,16 +123,18 @@ public class MapUtilitiesTest {
         assertEquals(expectation, result);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void remapFailDuplicateKey() {
-        Map<String, String> input = new HashMap<>(3);
-        input.put("key1", "value1");
-        input.put("key2", "value2");
-        input.put("key3", "value3");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Map<String, String> input = new HashMap<>(3);
+            input.put("key1", "value1");
+            input.put("key2", "value2");
+            input.put("key3", "value3");
 
-        Function<Map.Entry<String, String>, Integer> keyGenerator = entry -> entry.getKey().length();
+            Function<Map.Entry<String, String>, Integer> keyGenerator = entry -> entry.getKey().length();
 
-        final Map<Integer, String> result = MapUtilities.remap(input, keyGenerator);
+            MapUtilities.remap(input, keyGenerator);
+        });
     }
 
     @Test

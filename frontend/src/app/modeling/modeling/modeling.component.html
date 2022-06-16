@@ -1,0 +1,12 @@
+<div fxFill fxLayout="column">
+  <nz-page-header fxFlex="64px" nzBackIcon (nzBack)="goToModelingsList()" class="content-header">
+    <nz-page-header-title>Semantic Modeling</nz-page-header-title>
+    <nz-page-header-subtitle>{{model?.name}}</nz-page-header-subtitle>
+  </nz-page-header>
+
+  <div fxFlex>
+    <pls-modeling [backgroundColor]="'white'" [modelId]="modelId"></pls-modeling>
+  </div>
+
+</div>
+

@@ -1,6 +1,6 @@
 package de.buw.tmdt.plasma.services.dms.shared.feignclient;
 
-import de.buw.tmdt.plasma.services.dms.shared.api.DataModelingAPI;
+import de.buw.tmdt.plasma.services.dms.shared.api.ModelingAPI;
 import org.springframework.cloud.openfeign.FeignClient;
 
 @SuppressWarnings("HardcodedFileSeparator - uris")
@@ -9,6 +9,6 @@ import org.springframework.cloud.openfeign.FeignClient;
         contextId = "plasma-services",
         configuration = DataModelingFeignConfiguration.class
 )
-public interface DataModelingApiClient extends DataModelingAPI {
+public interface DataModelingApiClient extends ModelingAPI {
 
 }

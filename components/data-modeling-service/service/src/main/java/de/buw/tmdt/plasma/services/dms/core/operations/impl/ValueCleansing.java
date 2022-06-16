@@ -1,15 +1,15 @@
 package de.buw.tmdt.plasma.services.dms.core.operations.impl;
 
-import de.buw.tmdt.plasma.services.dms.core.model.Traversable;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.DataSourceSchema;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.Node;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.PrimitiveNode;
+import de.buw.tmdt.plasma.datamodel.CombinedModel;
+import de.buw.tmdt.plasma.datamodel.modification.DeltaModification;
+import de.buw.tmdt.plasma.datamodel.modification.operation.ParameterDefinition;
+import de.buw.tmdt.plasma.datamodel.modification.operation.Type;
+import de.buw.tmdt.plasma.datamodel.modification.operation.TypeDefinitionDTO;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.PrimitiveNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.SchemaNode;
 import de.buw.tmdt.plasma.services.dms.core.operations.Operation;
 import de.buw.tmdt.plasma.services.dms.core.operations.OperationLookUp;
 import de.buw.tmdt.plasma.services.dms.core.operations.exceptions.ParameterParsingException;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.ParameterDefinition;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.Type;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.TypeDefinitionDTO;
 import de.buw.tmdt.plasma.utilities.misc.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,10 +62,10 @@ public class ValueCleansing extends Operation<Pair<PrimitiveNode, String>> {
 
 	@Override
 	protected Pair<PrimitiveNode, String> parseParameterDefinition(
-			DataSourceSchema schema,
+			CombinedModel model,
 			ParameterDefinition<?, ?> parameterDefinition
 	) throws ParameterParsingException {
-		final UUID nodeId;
+		final String nodeId;
 		final String cleansingPattern;
 
 		validateParameterDefinition(parameterDefinition);
@@ -85,59 +85,50 @@ public class ValueCleansing extends Operation<Pair<PrimitiveNode, String>> {
 		}
 		cleansingPattern = getValueAs(splitterParameterDefinition, Type.PATTERN, 0, false);
 
-		Traversable node = schema.find(new Traversable.Identity<>(nodeId));
-		if (node == null) {
-			throw new ParameterParsingException("Did not find node with id `" + nodeId + "` in schema.");
-		}
-		if (!(node instanceof PrimitiveNode)) {
-			throw new ParameterParsingException(
-					"Node id identified illegal node type. Expected `" + PrimitiveNode.class + "` but found `" + node.getClass() + "`."
-			);
-		}
+		PrimitiveNode node = getPrimitiveNode(model, nodeId);
 
-		return Pair.of((PrimitiveNode) node, cleansingPattern);
+		return Pair.of(node, cleansingPattern);
 	}
 
 	@Override
-	protected DataSourceSchema execute(DataSourceSchema schema, Pair<PrimitiveNode, String> input) {
-		final PrimitiveNode node = input.getLeft();
+	protected CombinedModel execute(CombinedModel model, Pair<PrimitiveNode, String> input) {
+		final PrimitiveNode primitiveNode = input.getLeft();
 		final String cleansingPatternString = input.getRight();
 
 		if (cleansingPatternString.isEmpty()) {
 			throw new IllegalArgumentException("Cleansing pattern must not be empty.");
 		}
 
-		final List<String> cleansedExamples = node.getExamples().stream().map(example -> example.replaceAll(
+		final List<String> cleansedExamples = primitiveNode.getExamples().stream().map(example -> example.replaceAll(
 				cleansingPatternString,
 				""
 		)).collect(Collectors.toList());
-		PrimitiveNode result = new PrimitiveNode(
-				node.getEntityType(),
-				node.getDataType(),
-				cleansedExamples,
-				node.getEntityConceptSuggestions(),
-				cleansingPatternString
-		);
 
-		return schema.replace(node.getIdentity(), result);
+		primitiveNode.setExamples(cleansedExamples);
+
+		DeltaModification modification = new DeltaModification("local_operation", null, null, List.of(primitiveNode), null);
+		model.apply(modification);
+
+		return model;
 	}
 
 	@Override
-	protected Handle getHandleOnNode(Node node) {
+	protected Handle getHandleOnNode(SchemaNode node) {
 		ParameterDefinition<?, ?> parameterDefinitionClone = getParameterPrototype();
 		parameterDefinitionClone.replaceValue(NODE_ID_PARAMETER_NAME, node.getUuid());
 		return new Handle(this, parameterDefinitionClone);
 	}
 
 	@Override
-	public Map<Node, Set<Handle>> generateParameterDefinitionsOnGraph(@NotNull Node root) {
-		Map<Node, Set<Handle>> result = new HashMap<>();
-		root.execute(traversable -> {
-			if (traversable instanceof PrimitiveNode && ((PrimitiveNode) traversable).getCleansingPattern().isEmpty()) {
-				final PrimitiveNode primitive = (PrimitiveNode) traversable;
-				result.computeIfAbsent(primitive, ignored -> new HashSet<>()).add(getHandleOnNode(primitive));
-			}
-		});
+	public Map<SchemaNode, Set<Handle>> generateHandlesForApplicableNodes(@NotNull CombinedModel model) {
+		Map<SchemaNode, Set<Handle>> result = new HashMap<>();
+
+		// get all primitive nodes with empty cleansing pattern
+		model.getSyntaxModel().getNodes().stream()
+				.filter(schemaNode -> schemaNode instanceof PrimitiveNode)
+				.map(schemaNode -> (PrimitiveNode) schemaNode)
+				.filter(primitiveNode -> primitiveNode.getCleansingPattern() == null || primitiveNode.getCleansingPattern().isEmpty())
+				.forEach(schemaNode -> result.computeIfAbsent(schemaNode, ignored -> new HashSet<>()).add(getHandleOnNode(schemaNode)));
 		return result;
 	}
 }

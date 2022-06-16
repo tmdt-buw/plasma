@@ -1,0 +1,41 @@
+<nz-page-header nzBackIcon class="content-header">
+  <nz-page-header-title >Add new modeling</nz-page-header-title>
+</nz-page-header>
+<div fxLayout="column" fxLayoutGap="15px" class="content">
+  <!-- Modeling Info Form -->
+  <form nz-form [formGroup]="form" fxLayout="column" fxLayoutAlign="start start">
+    <nz-form-item fxFill fxLayout="row">
+      <nz-form-label [nzSpan]="2" nzRequired nzFor="title">Title</nz-form-label>
+      <nz-form-control nzExtra="A name for the modeling process"
+                       nzErrorTip="The title needs to have at least 2 characters">
+        <input formControlName="title" nz-input id="title"/>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item fxFill fxLayout="row">
+      <nz-form-label [nzSpan]="2" nzRequired nzFor="description">Description</nz-form-label>
+      <nz-form-control
+        nzExtra="A description for the modeling process and / or the data used. You can specify additional information here to be used by assistance technologies">
+        <nz-textarea-count [nzMaxCharacterCount]="4000">
+          <textarea rows="3" formControlName="description" nz-input id="description"></textarea>
+        </nz-textarea-count>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+  <app-schema-analysis [dataId]="dataId" (schemaAvailable)="onSchemaAvailable($event)"
+                       (errorOccurred)="onSchemaAnalysisError($event)"></app-schema-analysis>
+
+  <!-- error and submit button -->
+  <div fxLayoutAlign="space-between" fxLayout="row" fxLayoutGap="30px">
+    <span fxFlex>
+      <nz-alert nzType="error" *ngIf="error" nzMessage="{{error.message}}"></nz-alert>
+      <nz-alert nzType="success" *ngIf="success" nzMessage="{{success}}"></nz-alert>
+    </span>
+    <button nz-button nzType="primary" fxFlex="nogrow" [disabled]="!isValid()"
+            (click)="onSubmit()">
+      <i nz-icon nzType="save"></i>
+      <span>Start modeling</span>
+    </button>
+  </div>
+</div>

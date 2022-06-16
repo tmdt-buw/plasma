@@ -1,18 +1,18 @@
 package de.buw.tmdt.plasma.services.dms.core.operations.impl;
 
-import de.buw.tmdt.plasma.services.dms.core.model.Traversable;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.DataSourceSchema;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.CompositeNode;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.Node;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.PrimitiveNode;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.members.Splitter;
+import de.buw.tmdt.plasma.datamodel.CombinedModel;
+import de.buw.tmdt.plasma.datamodel.CombinedModelElement;
+import de.buw.tmdt.plasma.datamodel.modification.DeltaModification;
+import de.buw.tmdt.plasma.datamodel.modification.operation.ParameterDefinition;
+import de.buw.tmdt.plasma.datamodel.modification.operation.Type;
+import de.buw.tmdt.plasma.datamodel.modification.operation.TypeDefinitionDTO;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.CompositeNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.PrimitiveNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.SchemaNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.Splitting;
 import de.buw.tmdt.plasma.services.dms.core.operations.Operation;
 import de.buw.tmdt.plasma.services.dms.core.operations.OperationLookUp;
 import de.buw.tmdt.plasma.services.dms.core.operations.exceptions.ParameterParsingException;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.DataType;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.ParameterDefinition;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.Type;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.TypeDefinitionDTO;
 import de.buw.tmdt.plasma.utilities.collections.CollectionUtilities;
 import de.buw.tmdt.plasma.utilities.misc.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -28,11 +28,11 @@ import java.util.stream.Collectors;
  * they don't have a CompositeNode as a parent Node.
  */
 @Service
-public class SplitPrimitive extends Operation<Pair<PrimitiveNode, List<Splitter>>> {
+public class SplitPrimitive extends Operation<Pair<PrimitiveNode, List<Splitting>>> {
 
-	private static final String OPERATION_NAME = "SplitPrimitive";
-	private static final String NODE_ID_PARAMETER_NAME = "NodeId";
-	private static final String SPLITTER_PARAMETER_NAME = "Splitter";
+	public static final String OPERATION_NAME = "SplitPrimitive";
+	public static final String NODE_ID_PARAMETER_NAME = "NodeId";
+	public static final String SPLITTER_PARAMETER_NAME = "Splitting";
 
 	private static final ParameterDefinition<TypeDefinitionDTO, ParameterDefinition> PARAMETER_PROTOTYPE =
 			new ParameterDefinition<>(
@@ -77,11 +77,11 @@ public class SplitPrimitive extends Operation<Pair<PrimitiveNode, List<Splitter>
 	}
 
 	@Override
-	protected Pair<PrimitiveNode, List<Splitter>> parseParameterDefinition(
-			DataSourceSchema schema,
+	protected Pair<PrimitiveNode, List<Splitting>> parseParameterDefinition(
+			CombinedModel model,
 			@NotNull ParameterDefinition<?, ?> parameterDefinition
 	) throws ParameterParsingException {
-		final UUID nodeId;
+		final String nodeId;
 		final String[] patterns;
 
 		validateParameterDefinition(parameterDefinition);
@@ -102,73 +102,67 @@ public class SplitPrimitive extends Operation<Pair<PrimitiveNode, List<Splitter>
 		}
 		patterns = splitterParameterDefinition.probeValueAs(Type.PATTERN);
 
-		Traversable node = schema.find(new Traversable.Identity<>(nodeId));
-		if (node == null) {
-			throw new ParameterParsingException("Did not find node with id `" + nodeId + "` in schema.");
-		}
-		if (!(node instanceof PrimitiveNode)) {
-			throw new ParameterParsingException(
-					"Node id identified illegal node type. Expected `" + PrimitiveNode.class + "` but found `" + node.getClass() + "`."
-			);
-		}
+		PrimitiveNode node = getPrimitiveNode(model, nodeId);
 
-		final List<Splitter> splitters = Arrays.stream(patterns)
-				.map(Splitter::new)
+		final List<Splitting> splitters = Arrays.stream(patterns)
+				.map(Splitting::new)
 				.collect(Collectors.toList());
 
-		return new Pair<>((PrimitiveNode) node, splitters);
+		return new Pair<>(node, splitters);
 	}
 
 	@Override
-	protected DataSourceSchema execute(DataSourceSchema schema, Pair<PrimitiveNode, List<Splitter>> primitiveListPair) {
+	protected CombinedModel execute(CombinedModel model, Pair<PrimitiveNode, List<Splitting>> primitiveListPair) {
 		PrimitiveNode primitive = primitiveListPair.getLeft();
-		List<Splitter> splitter = primitiveListPair.getRight();
+		List<Splitting> splitter = primitiveListPair.getRight();
 
 		if (splitter.isEmpty()) {
-			throw new IllegalArgumentException("Splitter list must contain at least one element.");
+			throw new IllegalArgumentException("Splitting list must contain at least one element.");
 		}
 		if (CollectionUtilities.collectionContains(splitter, null)) {
-			throw new IllegalArgumentException("Splitter list must not contain null.");
+			throw new IllegalArgumentException("Splitting list must not contain null.");
 		}
 
-		List<PrimitiveNode> components = new ArrayList<>(splitter.size() + 1);
-		for (int i = 0; i < splitter.size() + 1; i++) {
-			components.add(new PrimitiveNode(null, DataType.UNKNOWN));
-		}
+		// define what we want to have
+		CompositeNode composite = new CompositeNode(primitive.getUuid(),
+                primitive.getLabel(),
+                null,
+                primitive.getXCoordinate(),
+                primitive.getYCoordinate(),
+                primitive.isValid(),
+                primitive.getExamples(),
+                primitive.getCleansingPattern(),
+                primitiveListPair.getRight());
 
-		for (String example : primitive.getExamples()) {
+		DeltaModification modification = new DeltaModification("local_operation", null, null, List.of(composite), null);
+		model.apply(modification); // this will to the magic for us
 
-			String leftOver = example;
-			for (int i = 0; i < splitter.size(); i++) {
-				Pair<String, String> split = splitter.get(i).apply(leftOver);
-				components.get(i).addExample(split.getLeft());
-				leftOver = split.getRight();
-			}
-			components.get(components.size() - 1).addExample(leftOver);
-		}
-
-		CompositeNode result = new CompositeNode(components, splitter, primitive.getExamples(), null, primitive.getPosition());
-		return schema.replace(primitive.getIdentity(), result);
+		return model;
 	}
 
 	@Override
-	public Handle getHandleOnNode(Node node) {
+	public Handle getHandleOnNode(SchemaNode node) {
 		ParameterDefinition<?, ?> parameterDefinitionClone = getParameterPrototype();
 		parameterDefinitionClone.replaceValue(NODE_ID_PARAMETER_NAME, node.getUuid());
 		return new Handle(this, parameterDefinitionClone);
 	}
 
 	@Override
-	public Map<Node, Set<Handle>> generateParameterDefinitionsOnGraph(@NotNull Node root) {
-		HashSet<PrimitiveNode> compositeChildren = new HashSet<>();
-		Map<Node, Set<Handle>> result = new HashMap<>();
-		root.execute(traversable -> {
-			if (traversable instanceof PrimitiveNode && !compositeChildren.contains(traversable)) {
-				result.computeIfAbsent((PrimitiveNode) traversable, ignored -> new HashSet<>()).add(getHandleOnNode((PrimitiveNode) traversable));
-			} else if (traversable instanceof CompositeNode) {
-				compositeChildren.addAll(((CompositeNode) traversable).getComponents());
-			}
-		});
+	public Map<SchemaNode, Set<Handle>> generateHandlesForApplicableNodes(@NotNull CombinedModel model) {
+		Map<SchemaNode, Set<Handle>> result = new HashMap<>();
+
+		// get all composite node children uuids (those cannot be split again)
+		List<String> compositeChildrenIds = model.getSyntaxModel().getNodes().stream()
+				.filter(schemaNode -> schemaNode instanceof CompositeNode)
+				.flatMap(schemaNode -> model.getSyntaxModel().getChildNodesForNode(schemaNode.getUuid()).stream())
+				.map(CombinedModelElement::getUuid)
+				.collect(Collectors.toList());
+
+		// get all primitive nodes that are not child of a composite
+		model.getSyntaxModel().getNodes().stream()
+				.filter(schemaNode -> schemaNode instanceof PrimitiveNode)
+				.filter(schemaNode -> !compositeChildrenIds.contains(schemaNode.getUuid()))
+				.forEach(schemaNode -> result.computeIfAbsent(schemaNode, ignored -> new HashSet<>()).add(getHandleOnNode(schemaNode)));
 		return result;
 	}
 }

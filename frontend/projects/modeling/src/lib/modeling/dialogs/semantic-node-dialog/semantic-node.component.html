@@ -1,0 +1,116 @@
+<i [nzTooltipTitle]="'Type of element.'" nz-tooltip nz-typography
+   nzType="secondary">{{data.node._class}}</i>
+<p *ngIf="isClass() || isNamedEntity()" [nzTooltipTitle]="'Element description as defined by the knowledge source'"
+   nz-tooltip>{{ getDescription() }}</p>
+
+<div *ngIf="isClass() && !getInstance() && !data.finalized">
+  <button (click)="customize()" nz-button nzType="text">Add customization<i nz-icon nzType="edit"></i>
+  </button>
+</div>
+
+<div *ngIf="getInstance()" fxLayout="column">
+  <nz-divider></nz-divider>
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <p
+      [nzTooltipTitle]="'An instance defines a customized class. The changes covered by an instance are only visible and valid in this model.'"
+      nz-tooltip>Customization</p>
+    <ng-container *ngTemplateOutlet="editButtons"></ng-container>
+  </div>
+  <form [formGroup]="form" class="semantic-node-input" nz-form>
+    <nz-form-item>
+      <nz-form-label nzFor="label">Custom label</nz-form-label>
+      <nz-form-control nzErrorTip="Empty labels or labels longer than 20 characters are not allowed!">
+        <input [nz-tooltip]="'Custom label for this element'" [nzBorderless]="!editing" disabled
+               formControlName="label" id="label" nz-input/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzFor="description">Description</nz-form-label>
+      <nz-form-control nzErrorTip="The description must have a most 200 characters.">
+            <textarea [disabled]="!editing" [nz-tooltip]="'Custom description for this element'"
+                      [nzBorderless]="!editing"
+                      formControlName="description" id="description"
+                      nz-input
+            ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>
+<div *ngIf="isLiteral()">
+  <div fxLayout="row" fxLayoutAlign="end center">
+    <ng-container *ngTemplateOutlet="editButtons"></ng-container>
+  </div>
+  <form [formGroup]="form" class="semantic-node-input" nz-form>
+    <nz-form-item>
+      <nz-form-label nzFor="value">Value</nz-form-label>
+      <nz-form-control nzErrorTip="Empty values are not allowed!">
+        <input [nz-tooltip]="'Value of this literal'" [nzBorderless]="!editing" disabled
+               formControlName="value" id="value" nz-input/>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>
+
+
+<div *ngIf="isMappedNode()" fxLayout="column">
+  <nz-divider></nz-divider>
+  <p
+    [nzTooltipTitle]="'Mapping'"
+    nz-tooltip="An mapping defines a link between a semantic model node and a schema node.">Mapping</p>
+  <div fxLayout="row">
+    <p nz-typography nzType="secondary">Original label: </p>
+    <p [nzTooltipTitle]="'Original label: '" nz-tooltip="Original label of the connected syntax node"
+       nz-typography>{{ getAsMappedNode().syntaxLabel }}</p>
+  </div>
+  <nz-collapse *ngIf="hasExampleValues()" [nzBordered]="false" nzGhost>
+    <nz-collapse-panel [nzHeader]="'Example Values'">
+      <div *ngFor="let example of data.examples; let i = index" fxLayout="column" fxLayoutGap="10px">
+        <nz-divider *ngIf="10 > i > 1"></nz-divider>
+        <span *ngIf="10 > i > 0">{{ example }}</span>
+        <span></span>
+      </div>
+    </nz-collapse-panel>
+  </nz-collapse>
+</div>
+
+<div *ngIf="isClass() && !data.finalized && hasRecommendations()" fxLayout="column" fxLayoutAlign="space-between start"
+     fxLayoutGap="10px">
+  <nz-divider></nz-divider>
+  <p [nzTooltipTitle]="'Recommended model extensions related to this node'" nz-tooltip>Extensions</p>
+  <div (mouseenter)="showRecommendation(recommendation)" (mouseleave)="hideRecommendation()"
+       *ngFor="let recommendation of data.recommendations" class="recommendation-box" fxLayout="row"
+       fxLayoutAlign="space-between center" fxLayoutGap="5px">
+    <span nz-typography> {{data.node.label}}
+      <i nz-icon nz-typography nzType="right"></i>
+      {{recommendation.relations[0].label}}
+      <i nz-icon nz-typography nzType="right"></i>
+      {{ recommendation.entities[0].label }}</span>
+    <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="5px">
+      <button (click)="acceptRecommendation(recommendation)" nz-button nzType="default">
+        <i class="green-icon" nz-icon
+           nz-typography nzType="check"></i>
+      </button>
+      <!--      <i (click)="rejectRecommendation(recommendation)" nz-typography nz-icon-->
+      <!--         nzType="close"></i>-->
+    </div>
+  </div>
+</div>
+
+<ng-template #editButtons>
+  <div class="editSection" fxLayout="row" fxLayoutAlign="space-between center">
+    <div *ngIf="!data.finalized">
+      <button (click)="startEdit()" *ngIf="!editing" nz-button nzShape="circle" nzType="text"><i nz-icon
+                                                                                                 nzType="edit"></i>
+      </button>
+      <button (click)="acceptEdit()" *ngIf="editing" nz-button nzShape="circle" nzType="text"><i nz-icon
+                                                                                                 nzType="check"></i>
+      </button>
+      <button (click)="cancelEdit()" *ngIf="editing" nz-button nzShape="circle" nzType="text"><i nz-icon
+                                                                                                 nzType="close"></i>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+
+

@@ -1,10 +1,11 @@
 package de.buw.tmdt.plasma.services.dms.core.operations;
 
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.DataSourceSchema;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.Node;
+import de.buw.tmdt.plasma.datamodel.CombinedModel;
+import de.buw.tmdt.plasma.datamodel.modification.operation.ParameterDefinition;
+import de.buw.tmdt.plasma.datamodel.modification.operation.Type;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.PrimitiveNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.SchemaNode;
 import de.buw.tmdt.plasma.services.dms.core.operations.exceptions.ParameterParsingException;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.ParameterDefinition;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.Type;
 import de.buw.tmdt.plasma.utilities.misc.ObjectUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,6 +17,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Specifies operations applicable to {@link SchemaNode}s.
+ *
+ * @param <I> The type of {@link SchemaNode} this operation is applicable to
+ */
 public abstract class Operation<I> {
 
 	protected final String name;
@@ -38,16 +44,66 @@ public abstract class Operation<I> {
 		operationLookUp.registerOperation(this);
 	}
 
-	protected abstract I parseParameterDefinition(DataSourceSchema schema, ParameterDefinition<?, ?> parameterDefinition) throws ParameterParsingException;
+	/**
+	 * Helper function to find single {@link PrimitiveNode}s in the given {@link CombinedModel}.
+	 *
+	 * @param model    The model containing the nodes
+	 * @param nodeUuid The uuid to search for
+	 * @return The found node
+	 * @throws ParameterParsingException If no matching node could be found or was not a {@link PrimitiveNode}
+	 */
+	public static PrimitiveNode getPrimitiveNode(CombinedModel model, String nodeUuid) throws ParameterParsingException {
+		SchemaNode node = model.getSyntaxModel().getNode(nodeUuid);
+		if (node == null) {
+			throw new ParameterParsingException("Did not find node with id `" + nodeUuid + "` in model.");
+		}
+		if (!(node instanceof PrimitiveNode)) {
+			throw new ParameterParsingException(
+					"Node id identified illegal node type. Expected `" + PrimitiveNode.class + "` but found `" + node.getClass() + "`."
+			);
+		}
+		return (PrimitiveNode) node;
+	}
 
-	protected abstract DataSourceSchema execute(DataSourceSchema schema, I input);
+	/**
+	 * Parses the parameter definition to identify an object this operation is to be applied to.
+	 *
+	 * @param model               The model to use
+	 * @param parameterDefinition The parameter to parse
+	 * @return The object, most likely a sub type of SchemaNode
+	 * @throws ParameterParsingException In case the parameter cannot be parsed or the target element does not exist
+	 */
+	protected abstract I parseParameterDefinition(CombinedModel model, ParameterDefinition<?, ?> parameterDefinition) throws ParameterParsingException;
 
-	protected abstract Handle getHandleOnNode(Node node);
+	/**
+	 * Generates a {@link Handle} (an {@link Operation} with a set of {@link ParameterDefinition}s) on the node.
+	 * The operation will always be that of the operation type itself
+	 *
+	 * @param node The syntax node, most likely a sub type of SchemaNode
+	 * @return The generated handle
+	 */
+	protected abstract Handle getHandleOnNode(SchemaNode node);
 
-	public abstract Map<Node, Set<Handle>> generateParameterDefinitionsOnGraph(@NotNull Node root);
+	/**
+	 * Executes the operation on the identified object.
+	 *
+	 * @param model  The model to use
+	 * @param object The object, most likely a sub type of SchemaNode
+	 * @return The modified model
+	 */
+	protected abstract CombinedModel execute(CombinedModel model, I object);
 
-	public DataSourceSchema invoke(DataSourceSchema schema, ParameterDefinition<?, ?> parameterDefinition) throws ParameterParsingException {
-		return this.execute(schema, this.parseParameterDefinition(schema, parameterDefinition));
+	/**
+	 * Invokes the {@link Operation} with the given {@link ParameterDefinition} on the model.
+	 * Each {@link ParameterDefinition} contains the uuid of the target node and other parameters to use during execution.
+	 *
+	 * @param model               The model to use
+	 * @param parameterDefinition The single parameter set to use (contains in most cases at least the node id)
+	 * @return The modified model
+	 * @throws ParameterParsingException If the parameter cannot be parsed or the operation not applied for any reason
+	 */
+	public CombinedModel invoke(CombinedModel model, ParameterDefinition<?, ?> parameterDefinition) throws ParameterParsingException {
+		return this.execute(model, this.parseParameterDefinition(model, parameterDefinition));
 	}
 
 	@Nullable
@@ -111,6 +167,13 @@ public abstract class Operation<I> {
 		validateParameterDefinition(parameterDefinition, parameterPrototype);
 	}
 
+	/**
+	 * Validates that the passed {@link ParameterDefinition} is valid w.r.t. the given boundaries
+	 *
+	 * @param testee    The definition to test
+	 * @param prototype The default (raw) definition
+	 * @throws ParameterParsingException If the parameter cannot be parsed or is invalid / inconsistent
+	 */
 	private void validateParameterDefinition(
 			ParameterDefinition<?, ?> testee,
 			ParameterDefinition<?, ?> prototype
@@ -123,7 +186,7 @@ public abstract class Operation<I> {
 		if (!prototype.getName().equals(testee.getName())) {
 			throw new ParameterParsingException(
 					"Name of parameterDefinition (" + testee.getName() +
-					") doesn't match expected name of parameterPrototype: " + prototype.getName()
+							") doesn't match expected name of parameterPrototype: " + prototype.getName()
 			);
 		}
 
@@ -132,9 +195,6 @@ public abstract class Operation<I> {
 			if (!(testee.getMaxCardinality() == 1 || testee.getMinCardinality() == 1)) {
 				//noinspection HardcodedFileSeparator
 				throw new ParameterParsingException(
-						"Something was changed on the Complex types. " +
-						"Have a look here: http://youtrack.zlw-ima.rwth-aachen.de/issue/DP-686 " +
-						"or you just created a malformed Complex parameterDefinition"
 				);
 			}
 
@@ -157,9 +217,9 @@ public abstract class Operation<I> {
 		if (prototype.getMinCardinality() > testee.getValue().length) {
 			throw new ParameterParsingException(
 					"Parameter values of `" + testee.getName()
-					+ "` did contain less than " + prototype.getMinCardinality()
-					+ " elements: " + testee.getValue().length
-					+ ". "
+							+ "` did contain less than " + prototype.getMinCardinality()
+							+ " elements: " + testee.getValue().length
+							+ ". "
 			);
 		}
 
@@ -167,12 +227,21 @@ public abstract class Operation<I> {
 		if (prototype.getMaxCardinality() < testee.getValue().length) {
 			throw new ParameterParsingException(
 					"Parameter values of `" + testee.getName()
-					+ "` did contain more than " + prototype.getMaxCardinality()
-					+ " elements: " + testee.getValue().length
-					+ ". "
+							+ "` did contain more than " + prototype.getMaxCardinality()
+							+ " elements: " + testee.getValue().length
+							+ ". "
 			);
 		}
 	}
+
+	/**
+	 * Generates a map of {@link Handle}s for each node of the {@link de.buw.tmdt.plasma.datamodel.syntaxmodel.SyntaxModel}.
+	 * Each operation type decides to which node it is applicable
+	 *
+	 * @param model The model to use
+	 * @return A map of possible operations for each node
+	 */
+	public abstract Map<SchemaNode, Set<Handle>> generateHandlesForApplicableNodes(@NotNull CombinedModel model);
 
 	@Override
 	public int hashCode() {
@@ -208,8 +277,9 @@ public abstract class Operation<I> {
 			return parameterDefinition;
 		}
 
-		public DataSourceSchema invoke(DataSourceSchema dataSourceSchema) throws ParameterParsingException {
-			return operation.invoke(dataSourceSchema, parameterDefinition);
+		public CombinedModel invoke(CombinedModel model) throws ParameterParsingException {
+			model = model.copy();
+			return operation.invoke(model, parameterDefinition);
 		}
 	}
 

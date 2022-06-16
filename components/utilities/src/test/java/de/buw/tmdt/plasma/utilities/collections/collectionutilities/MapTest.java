@@ -3,37 +3,24 @@ package de.buw.tmdt.plasma.utilities.collections.collectionutilities;
 import de.buw.tmdt.plasma.utilities.collections.CollectionUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(Parameterized.class)
 public class MapTest<T, U> {
 
-    private final @NotNull Supplier<Collection<? super U>> targetSupplier;
-    private final @Nullable Iterable<? extends T> source;
-    private final @NotNull Function<? super T, ? extends U> mappingFunction;
-    private final @NotNull Collection<? extends U> expectedResult;
-
-    public MapTest(String ignoredName, Parameter<T, U> parameter) {
-        this.targetSupplier = parameter.targetSupplier;
-        this.source = parameter.source;
-        this.mappingFunction = parameter.mappingFunction;
-        this.expectedResult = parameter.expectedResult;
-    }
-
-    @Parameterized.Parameters(name = "{index}: {0}")
-    public static Collection<Object[]> parameters() {
-        return Arrays.asList(
-                new Object[]{
+    public static Stream<Arguments> parameters() {
+        return Stream.of(
+                Arguments.of(
                         "String length from list to set",
                         new Parameter<>(
                                 asList("foo", "bar"),
@@ -41,7 +28,7 @@ public class MapTest<T, U> {
                                 String::length,
                                 new HashSet<>(asList(3, 3))
                         )
-                }, new Object[]{
+                ), Arguments.of(
                         "Reverse Strings from list to list",
                         new Parameter<>(
                                 asList("Some", "different", "String"),
@@ -49,7 +36,7 @@ public class MapTest<T, U> {
                                 s -> new StringBuilder(s).reverse().toString(),
                                 new ArrayList<>(asList("emoS", "tnereffid", "gnirtS"))
                         )
-                }, new Object[]{
+                ), Arguments.of(
                         "Square integers from iterable to linked list",
                         new Parameter<>(
                                 () -> asList(1, 2, 3, 4, 5).iterator(),
@@ -57,7 +44,7 @@ public class MapTest<T, U> {
                                 i -> i * i,
                                 new LinkedList<>(asList(1, 4, 9, 16, 25))
                         )
-                }, new Object[]{
+                ), Arguments.of(
                         "Empty list input",
                         new Parameter<>(
                                 Collections.emptyList(),
@@ -66,7 +53,7 @@ public class MapTest<T, U> {
                                     throw new RuntimeException("This method should've not been called for an empty list. But was with: `" + s + '`');
                                 }, new ArrayList<>()
                         )
-                }, new Object[]{
+                ), Arguments.of(
                         "null input",
                         new Parameter<>(
                                 null,
@@ -75,20 +62,22 @@ public class MapTest<T, U> {
                                     throw new RuntimeException("This method should've not been called for an empty list. But was with: `" + s + '`');
                                 }, new LinkedHashSet<>()
                         )
-                }
+                )
         );
     }
 
-    @Test
-    public void testNullSafeCopy() {
-        final Collection<? super U> result = CollectionUtilities.map(source, mappingFunction, targetSupplier);
-        assertEquals(result.getClass(), targetSupplier.get().getClass());
-        if (source == null) {
-            assertEquals(result, targetSupplier.get());
+    @ParameterizedTest
+    @MethodSource("parameters")
+    @SuppressWarnings("unchecked")
+    public void testNullSafeCopy(String name, Parameter parameter) {
+        final Collection<? super U> result = CollectionUtilities.map(parameter.source, parameter.mappingFunction, parameter.targetSupplier);
+        assertEquals(result.getClass(), parameter.targetSupplier.get().getClass());
+        if (parameter.source == null) {
+            assertEquals(result, parameter.targetSupplier.get());
         } else {
             //equals with ignore order
-            assertTrue(result.containsAll(expectedResult));
-            assertTrue(expectedResult.containsAll(result));
+            assertTrue(result.containsAll(parameter.expectedResult));
+            assertTrue(parameter.expectedResult.containsAll(result));
         }
     }
 

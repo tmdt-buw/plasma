@@ -1,16 +1,16 @@
 package de.buw.tmdt.plasma.services.dms.core.operations.impl;
 
-import de.buw.tmdt.plasma.services.dms.core.model.Traversable;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.DataSourceSchema;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.Node;
-import de.buw.tmdt.plasma.services.dms.core.model.datasource.syntaxmodel.PrimitiveNode;
+import de.buw.tmdt.plasma.datamodel.CombinedModel;
+import de.buw.tmdt.plasma.datamodel.modification.DeltaModification;
+import de.buw.tmdt.plasma.datamodel.modification.operation.DataType;
+import de.buw.tmdt.plasma.datamodel.modification.operation.ParameterDefinition;
+import de.buw.tmdt.plasma.datamodel.modification.operation.Type;
+import de.buw.tmdt.plasma.datamodel.modification.operation.TypeDefinitionDTO;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.PrimitiveNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.SchemaNode;
 import de.buw.tmdt.plasma.services.dms.core.operations.Operation;
 import de.buw.tmdt.plasma.services.dms.core.operations.OperationLookUp;
 import de.buw.tmdt.plasma.services.dms.core.operations.exceptions.ParameterParsingException;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.DataType;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.ParameterDefinition;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.Type;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.operation.TypeDefinitionDTO;
 import de.buw.tmdt.plasma.utilities.misc.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,9 +72,9 @@ public class SetDataType extends Operation<Pair<PrimitiveNode, DataType>> {
 
 	@Override
 	public Pair<PrimitiveNode, DataType> parseParameterDefinition(
-			DataSourceSchema schema, ParameterDefinition<?, ?> parameterDefinition
+			CombinedModel model, ParameterDefinition<?, ?> parameterDefinition
 	) throws ParameterParsingException {
-		final UUID nodeId;
+		final String nodeId;
 		final DataType dataType;
 
 		validateParameterDefinition(parameterDefinition);
@@ -95,30 +95,29 @@ public class SetDataType extends Operation<Pair<PrimitiveNode, DataType>> {
 		}
 		dataType = getValueAs(dataTypeDefinition, Type.DATA_TYPE, 0, false);
 
-		final Traversable node = schema.find(new Traversable.Identity<>(nodeId));
+		SchemaNode node = model.getSyntaxModel().getNode(nodeId);
 		if (node == null) {
-			throw new ParameterParsingException("Did not find node with id `" + nodeId + "` in schema.");
+			throw new ParameterParsingException("Did not find node with id `" + nodeId + "` in model.");
 		}
 		if (!(node instanceof PrimitiveNode)) {
 			throw new ParameterParsingException("Node id identified illegal node type. Expected `" + PrimitiveNode.class + "` but found `" + node.getClass() +
-			                                    "`.");
+					"`.");
 		}
-
 		return new Pair<>((PrimitiveNode) node, dataType);
 	}
 
 	@Override
-	protected DataSourceSchema execute(DataSourceSchema schema, Pair<PrimitiveNode, DataType> input) {
-		PrimitiveNode primitiveNode = input.getLeft();
-		DataType dataType = input.getRight();
-
-		primitiveNode.setDataType(dataType);
-
-		return schema;
-	}
+	protected CombinedModel execute(CombinedModel model, Pair<PrimitiveNode, DataType> input) {
+        PrimitiveNode primitiveNode = input.getLeft();
+        DataType dataType = input.getRight();
+        primitiveNode.setDataType(dataType);
+        DeltaModification modification = new DeltaModification("local_operation", null, null, List.of(primitiveNode), null);
+        model.apply(modification);
+        return model;
+    }
 
 	@Override
-	protected Handle getHandleOnNode(Node node) {
+	protected Handle getHandleOnNode(SchemaNode node) {
 		ParameterDefinition<?, ?> parameterDefinitionClone = getParameterPrototype();
 		parameterDefinitionClone.replaceValue(NODE_ID_PARAMETER_NAME, node.getUuid());
 		parameterDefinitionClone.replaceValue(DATA_TYPE_PARAMETER_NAME, ((PrimitiveNode) node).getDataType());
@@ -126,14 +125,13 @@ public class SetDataType extends Operation<Pair<PrimitiveNode, DataType>> {
 	}
 
 	@Override
-	public Map<Node, Set<Handle>> generateParameterDefinitionsOnGraph(@NotNull Node root) {
-		Map<Node, Set<Handle>> result = new HashMap<>();
-		root.execute(traversable -> {
-			if (traversable instanceof PrimitiveNode) {
-				result.computeIfAbsent((PrimitiveNode) traversable, ignored -> new HashSet<>())
-						.add(getHandleOnNode((PrimitiveNode) traversable));
-			}
-		});
+	public Map<SchemaNode, Set<Handle>> generateHandlesForApplicableNodes(@NotNull CombinedModel model) {
+		Map<SchemaNode, Set<Handle>> result = new HashMap<>();
+
+		// get all primitive nodes
+		model.getSyntaxModel().getNodes().stream()
+				.filter(schemaNode -> schemaNode instanceof PrimitiveNode)
+				.forEach(schemaNode -> result.computeIfAbsent(schemaNode, ignored -> new HashSet<>()).add(getHandleOnNode(schemaNode)));
 		return result;
 	}
 }

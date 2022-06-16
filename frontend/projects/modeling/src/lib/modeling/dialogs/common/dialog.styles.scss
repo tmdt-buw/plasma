@@ -1,0 +1,29 @@
+.dialog-header {
+  position: relative;
+}
+
+.close-icon {
+  cursor: pointer;
+  position: absolute;
+  top: -15px;
+  right: -15px;
+}
+
+.dialog-subtitle {
+  position: relative;
+  top: -20px;
+  opacity: 0.8;
+}
+
+.dialog-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

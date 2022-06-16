@@ -1,52 +1,55 @@
 package de.buw.tmdt.plasma.utilities.collections;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 
 import static java.util.Collections.emptyList;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-@RunWith(Parameterized.class)
-public class ListUtilitiesTest{
-    private final Function<List<?>, ?> method;
-    private final List<?> input;
-    private final Object expectation;
+public class ListUtilitiesTest {
 
-    public ListUtilitiesTest(Function<List<?>, ?> method, List<?> input, Object expectation) {
-        this.method = method;
-        this.input = input;
-        this.expectation = expectation;
-    }
+    private final List<String> example = Arrays.asList("first", "second", "third", "fourth");
 
-    @Parameterized.Parameters
-    public static Collection<Object[]> parameters() {
-        List<String> example = Arrays.asList("first", "second", "third", "fourth");
-        return Arrays.asList(
-                wrap(ListUtilities::getLastElement, example, "fourth"),
-                wrap(ListUtilities::getLastElement, emptyList(), null),
-                wrap(ListUtilities::truncateFirstElement, example, example.subList(1, 4)),
-                wrap(ListUtilities::truncateFirstElement, emptyList(), emptyList()),
-                wrap(ListUtilities::truncateLastElement, example, example.subList(0, 3)),
-                wrap(ListUtilities::truncateLastElement, emptyList(), emptyList()),
-                wrap(ListUtilities::nullSafeCopy, example, example),
-                wrap(ListUtilities::nullSafeCopy, null, emptyList())
-        );
-    }
-
-    private static <E, R> Object[] wrap(Function<List<E>, R> method, List<E> input, R expectation) {
-        return new Object[]{method, input, expectation};
+    @Test
+    public void test1() {
+        assertEquals(ListUtilities.getLastElement(example), "fourth");
     }
 
     @Test
-    public void test() {
-        Object result = method.apply(input);
-        assertEquals(expectation, result);
+    public void test2() {
+        assertNull(ListUtilities.getLastElement(emptyList()));
     }
 
+    @Test
+    public void test3() {
+        assertEquals(ListUtilities.truncateFirstElement(example), example.subList(1, 4));
+    }
+
+    @Test
+    public void test4() {
+        assertEquals(ListUtilities.truncateFirstElement(emptyList()), emptyList());
+    }
+
+    @Test
+    public void test5() {
+        assertEquals(ListUtilities.truncateLastElement(example), example.subList(0, 3));
+    }
+
+    @Test
+    public void test6() {
+        assertEquals(ListUtilities.truncateLastElement(emptyList()), emptyList());
+    }
+
+    @Test
+    public void test7() {
+        assertEquals(ListUtilities.nullSafeCopy(example), example);
+    }
+
+    @Test
+    public void test8() {
+        assertEquals(ListUtilities.nullSafeCopy(emptyList()), emptyList());
+    }
 }

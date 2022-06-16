@@ -1,0 +1,55 @@
+<form nz-form [formGroup]="form" (submit)="submit()" xmlns="http://www.w3.org/1999/html">
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5" nzRequired nzFor="label">Label</nz-form-label>
+    <nz-form-control nzErrorTip="Label is required"
+                     nzExtra="This will provide a readable name for the concept or named entity. It should be independent from your current modeling.">
+      <input formControlName="label" (change)="onLabelEdited($event)" nz-input/>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5" nzRequired nzFor="description">Description</nz-form-label>
+    <nz-form-control nzErrorTip="Description is required"
+                     nzExtra="Detailed description of the class or named entity.">
+      <textarea nz-input formControlName="description"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+
+  <div fxLayout="row">
+  <nz-form-item fxFlex>
+    <nz-form-label>URI</nz-form-label>
+    <nz-form-control nzExtra="Namespace" nz-tooltip="Namespace of the class or named entity. Should be either a prefix like 'rdfs:' or a HTTP URL">
+      <input (change)="onNamespaceEdited($event)" formControlName="namespace" nz-input/>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item fxFlex>
+    <nz-form-control nz-tooltip="Identifier of the class or named entity. Any identifier is valid. Special characters and whitespaces are converted to '_'." nzExtra="Identifier">
+      <input (change)="onIdentifierEdited($event)" formControlName="identifier" nz-input placeholder="{{generateIdentifier()}}"/>
+    </nz-form-control>
+  </nz-form-item>
+  </div>
+
+
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5" nzFor="namedentity">NamedEntity</nz-form-label>
+    <nz-form-control nzExtra="Check if this is a named entity. Named entities are entities that exist only once and cannot be altered. Examples: 'Los Angeles' or 'George Washington'. ">
+      <label nz-checkbox formControlName="namedEntity"></label>
+    </nz-form-control>
+  </nz-form-item>
+
+</form>
+
+<div fxLayout="column" fxLayoutGap="5px">
+  <nz-alert nzType="error" *ngIf="error">{{ error }}</nz-alert>
+  <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end">
+    <button nz-button (click)="cancel()">Cancel</button>
+    <button (click)="submit()"
+            [disabled]="!form.valid"
+            nz-button nzType="primary">Save
+    </button>
+  </div>
+</div>
+

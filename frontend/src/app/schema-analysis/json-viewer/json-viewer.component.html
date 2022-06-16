@@ -1,0 +1,24 @@
+<cdk-tree [dataSource]="dataSource" [treeControl]="treeControl">
+
+  <!-- This is the tree node template for leaf nodes -->
+  <cdk-nested-tree-node *cdkTreeNodeDef="let node" class="tree-node">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <button nz-button disabled class="toggle-button"></button>
+      <span class="node-key">{{ node.key }}</span>: <span class="node-value" [ngClass]="['node-type-' + node.type]">{{ node.description }}</span>
+    </div>
+  </cdk-nested-tree-node>
+
+  <!-- This is the tree node template for expandable nodes -->
+  <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasChild" class="tree-node">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <button nz-button [attr.aria-label]="'Toggle ' + node.key" cdkTreeNodeToggle class="toggle-button">
+        <i class="json-toggle-icon" nz-icon nzType="{{ treeControl.isExpanded(node) ? 'down' : 'right' }}" cdkTreeNodeToggle>        </i>
+      </button>
+      <span class="node-key">{{ node.key }}</span>: <span class="node-value node-description">{{ treeControl.isExpanded(node) ? shortDescription(node) : node.description }}</span>
+    </div>
+    <div [class.tree-invisible]="!treeControl.isExpanded(node)">
+      <ng-container cdkTreeNodeOutlet></ng-container>
+    </div>
+  </cdk-nested-tree-node>
+
+</cdk-tree>

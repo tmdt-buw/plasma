@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 @FeignClient(
 		name = "plasma-srs",
 		contextId = "plasma-services",
-		configuration = DataModelingFeignConfiguration.class
+		configuration = SemanticRecommendationFeignConfiguration.class
 )
 public interface SemanticRecommendationApiClient extends SemanticRecommendationAPI {
 

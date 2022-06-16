@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-        <groupId>de.buw.tmdt.plasma</groupId>
-        <artifactId>parent</artifactId>
-        <version>1.0.0</version>
+    <groupId>de.buw.tmdt.plasma</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.3.1</version>
     <name>PLASMA Parent</name>
     <packaging>pom</packaging>
 
@@ -17,68 +17,76 @@
         <module>components/spring-boot-admin</module>
         <module>components/discovery-service</module>
         <module>components/gateway-service</module>
-		<module>components/semantic-recommendation-service</module>
-		<module>components/semantic-database-service</module>
-		<module>components/utilities</module>
-		<module>components/datasource-service</module>
-		<module>auxiliary_services/ARS-L-label-matching</module>
+        <module>components/semantic-recommendation-service</module>
+        <module>components/utilities</module>
+        <module>components/datamodel</module>
+        <module>components/config-service</module>
+        <module>auxiliary_services/ARS-L-label-matching</module>
     </modules>
 
     <properties>
         <!-- NAMINGS -->
         <platform.name>PLASMA</platform.name>
         <platform.name.prefix>plasma</platform.name.prefix>
+        <git.registry>${platform.name.prefix}</git.registry>
 
         <!-- TECHNICAL -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <!-- VERSIONS =========================================================================================== -->
-
-        <!-- PLASMA -->
-        <plasma.utilities.version>5.0.0</plasma.utilities.version>
+        <project.java.source.version>11</project.java.source.version>
+        <project.java.target.version>11</project.java.target.version>
 
         <!-- ==================== Spring ==================== -->
-        <org.springframework.boot.version>2.3.7.RELEASE</org.springframework.boot.version>
-        <org.springframework.cloud.version>Hoxton.SR9</org.springframework.cloud.version>
-        <org.springdoc.openapi.ui.version>1.4.3</org.springdoc.openapi.ui.version>
+        <org.springframework.boot.version>2.5.4</org.springframework.boot.version>
+        <org.springframework.cloud.version>2020.0.3</org.springframework.cloud.version>
+        <org.springdoc.openapi.ui.version>1.5.10</org.springdoc.openapi.ui.version>
+        <javax.servlet.version>3.1.0</javax.servlet.version>
 
         <!-- Annotations -->
         <org.jetbrains.annotations.version>19.0.0</org.jetbrains.annotations.version>
         <com.github.spotbugs.annotations.version>4.0.1</com.github.spotbugs.annotations.version>
-		<com.fasterxml.jackson.version>2.10.3</com.fasterxml.jackson.version>
+
+        <!-- Logging -->
+        <slf4j.version>1.7.30</slf4j.version>
+        <log4j.version>2.15.0</log4j.version>
+        <log4j2.version>2.15.0</log4j2.version>
+
+        <!-- RDF -->
+        <org.apache.jena.version>4.4.0</org.apache.jena.version>
+
+        <!-- MariaDB -->
+        <org.mariadb.version>2.5.2</org.mariadb.version>
+
+        <!-- Apache Commons -->
+        <org.apache.commons.lang3.version>3.6</org.apache.commons.lang3.version>
 
         <!-- Testing -->
-        <org.mockito.version>3.1.0</org.mockito.version>
-        <junit.jupiter.version>5.5.2</junit.jupiter.version>
+        <org.testcontainers.version>1.15.1</org.testcontainers.version>
 
         <!-- Build plugins -->
         <org.apache.maven.plugin.clean.version>3.1.0</org.apache.maven.plugin.clean.version>
         <org.apache.maven.plugin.compiler.version>3.8.1</org.apache.maven.plugin.compiler.version>
         <org.apache.maven.plugin.jar.version>3.2.0</org.apache.maven.plugin.jar.version>
+        <org.apache.maven.plugin.source.version>3.2.1</org.apache.maven.plugin.source.version>
         <org.apache.maven.plugin.versionplugin.version>2.7</org.apache.maven.plugin.versionplugin.version>
-		<com.google.cloud.tools.jib.version>2.1.0</com.google.cloud.tools.jib.version>
         <pl.project13.maven.version>4.0.0</pl.project13.maven.version>
+        <com.google.cloud.tools.jib.version>2.7.1</com.google.cloud.tools.jib.version>
+        <com.github.spotbugs.plugin.version>4.1.4</com.github.spotbugs.plugin.version>
+        <org.apache.maven.plugin.checkstyle.version>3.1.1</org.apache.maven.plugin.checkstyle.version>
 
         <!-- Deployment plugins -->
         <org.apache.maven.plugin.deploy.version>3.0.0-M1</org.apache.maven.plugin.deploy.version>
 
         <!-- Reporting plugins -->
-        <org.apache.maven.plugin.surefire.version>3.0.0-M4</org.apache.maven.plugin.surefire.version>
-        <org.apache.maven.plugin.failsafe.version>3.0.0-M4</org.apache.maven.plugin.failsafe.version>
+        <org.apache.maven.plugin.surefire.version>3.0.0-M5</org.apache.maven.plugin.surefire.version>
+        <org.apache.maven.plugin.failsafe.version>3.0.0-M5</org.apache.maven.plugin.failsafe.version>
         <org.apache.maven.plugin.site.version>3.9.0</org.apache.maven.plugin.site.version>
-        <org.apache.maven.plugin.project-info-reports.version>3.0.0</org.apache.maven.plugin.project-info-reports.version>
+        <org.apache.maven.plugin.project-info-reports.version>3.0.0
+        </org.apache.maven.plugin.project-info-reports.version>
         <org.apache.maven.plugin.javadoc.version>3.2.0</org.apache.maven.plugin.javadoc.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- PLASMA Utilities -->
-            <dependency>
-                <groupId>de.buw.tmdt.plasma</groupId>
-                <artifactId>utilities</artifactId>
-                <version>${plasma.utilities.version}</version>
-            </dependency>
-
             <!-- Spring Boot Dependency Management -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -104,6 +112,13 @@
                 <version>${org.springdoc.openapi.ui.version}</version>
             </dependency>
 
+            <!-- Javax Servlet -->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${javax.servlet.version}</version>
+            </dependency>
+
             <!-- Annotations -->
             <dependency>
                 <groupId>org.jetbrains</groupId>
@@ -116,36 +131,420 @@
                 <version>${com.github.spotbugs.annotations.version}</version>
             </dependency>
 
+            <!-- Logging -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+
+
+            <!-- RDF -->
+            <dependency>
+                <groupId>org.apache.jena</groupId>
+                <artifactId>apache-jena-libs</artifactId>
+                <type>pom</type>
+            </dependency>
+
+            <!-- MariaDB -->
+            <dependency>
+                <groupId>org.mariadb.jdbc</groupId>
+                <artifactId>mariadb-java-client</artifactId>
+                <version>${org.mariadb.version}</version>
+            </dependency>
+
+            <!-- Apache Commons -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${org.apache.commons.lang3.version}</version>
+            </dependency>
+
             <!-- Testing -->
             <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>${org.mockito.version}</version>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${org.testcontainers.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-api</artifactId>
-                <version>${junit.jupiter.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>${junit.jupiter.version}</version>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>neo4j</artifactId>
+                <version>${org.testcontainers.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
+        <!-- Annotations -->
         <dependency>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
     </dependencies>
 
     <!-- Build Management -->
     <build>
+        <pluginManagement>
+            <plugins>
+                <!-- Compiler -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${org.apache.maven.plugin.compiler.version}</version>
+                </plugin>
+
+                <!-- Unit Tests -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${org.apache.maven.plugin.surefire.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-report-plugin</artifactId>
+                    <version>${org.apache.maven.plugin.surefire.version}</version>
+                </plugin>
+
+                <!-- Integration Tests -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${org.apache.maven.plugin.failsafe.version}</version>
+                </plugin>
+
+                <!-- Cleaning -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${org.apache.maven.plugin.clean.version}</version>
+                </plugin>
+
+                <!-- Artifact Deployment Plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${org.apache.maven.plugin.deploy.version}</version>
+                </plugin>
+
+                <!-- Docker Build & Deployment -->
+                <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>${com.google.cloud.tools.jib.version}</version>
+                    <configuration>
+                        <extraDirectories>
+                            <permissions>
+                                <permission>
+                                    <file>logs/**</file>
+                                    <mode>777</mode>
+                                </permission>
+                            </permissions>
+                        </extraDirectories>
+                        <container>
+                            <user>1000</user>
+                        </container>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>
+
+                <!-- Reporting -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${org.apache.maven.plugin.site.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>${org.apache.maven.plugin.project-info-reports.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${org.apache.maven.plugin.javadoc.version}</version>
+                </plugin>
+
+                <!-- Versioning -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>${org.apache.maven.plugin.versionplugin.version}</version>
+                </plugin>
+
+                <!-- Git Commit Plugin -->
+                <plugin>
+                    <groupId>pl.project13.maven</groupId>
+                    <artifactId>git-commit-id-plugin</artifactId>
+                    <version>${pl.project13.maven.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>revision</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <offline>true</offline>
+                        <verbose>true</verbose>
+                        <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
+                        <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                        <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+                    </configuration>
+                </plugin>
+
+                <!-- Spring Building -->
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${org.springframework.boot.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>build-info</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <classifier>exec</classifier>
+                        <additionalProperties> <!-- Overwrite this configuration in the corresponding service -->
+                            <title>${project.name}</title>
+                            <description>Description of the Service</description>
+                            <developerName>Maintainer of the Service</developerName>
+                            <developerEMail>Mail Address of Maintainer</developerEMail>
+                        </additionalProperties>
+                    </configuration>
+                </plugin>
+
+                <!-- Source Deployment Plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${org.apache.maven.plugin.source.version}</version>
+                </plugin>
+
+                <!-- Code quality: SpotBugs (follower of FindBugs) -->
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>${com.github.spotbugs.plugin.version}</version>
+                    <configuration>
+                        <excludeFilterFile>
+                            spotbugs-exclude.xml
+                        </excludeFilterFile>
+                    </configuration>
+                </plugin>
+                <!-- Source code style checking. -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${org.apache.maven.plugin.checkstyle.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
+            <!-- Java Compiler Settings -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${project.java.source.version}</source>
+                    <target>${project.java.target.version}</target>
+                </configuration>
+            </plugin>
+
+            <!-- Unit Tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+
+            <!-- Integration Tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <additionalClasspathElements>
+                        <!-- cf. https://sandor-nemeth.github.io/2017/10/16/integration-tests-with-spring-boot-classnotfoundexception.html -->
+                        <additionalClasspathElement>${basedir}/target/classes</additionalClasspathElement>
+                    </additionalClasspathElements>
+                </configuration>
+            </plugin>
+
+            <!-- Cleaning -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+            </plugin>
+
+            <!-- Artifact Deployment Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+            </plugin>
+
+            <!-- Versioning -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- Source Deployment Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Code quality: SpotBugs (follower of FindBugs) -->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <configuration>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.h3xstream.findsecbugs</groupId>
+                            <artifactId>findsecbugs-plugin</artifactId>
+                            <version>1.10.1</version>
+                        </plugin>
+                    </plugins>
+                </configuration>
+            </plugin>
+            <!-- Source code style checking. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <failOnViolation>true</failOnViolation>
+                    <failsOnError>true</failsOnError>
+                    <consoleOutput>true</consoleOutput>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <id>unit-tests</id>
+                        <reports>
+                            <report>report-only</report>
+                        </reports>
+                    </reportSet>
+                    <reportSet>
+                        <id>integration-tests</id>
+                        <reports>
+                            <report>failsafe-report-only</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+                <configuration>
+                    <aggregate>true</aggregate>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <id>aggregate</id>
+                        <configuration>
+                            <destDir>javadoc</destDir>
+                        </configuration>
+                        <reports>
+                            <report>aggregate</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <!-- Repositories for Downloading Dependencies -->
+    <repositories>
+        <repository>
+            <id>buw-gitlab</id>
+            <url>https://git.uni-wuppertal.de/api/v4/groups/tmdt/-/packages/maven</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>buw-gitlab</id>
+            <url>https://git.uni-wuppertal.de/api/v4/groups/tmdt/-/packages/maven</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <!-- Repositories for Deploying Dependencies -->
+    <distributionManagement>
+        <repository>
+            <id>buw-gitlab</id>
+            <url>https://git.uni-wuppertal.de/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
+        </repository>
+        <snapshotRepository>
+            <id>buw-gitlab</id>
+            <url>https://git.uni-wuppertal.de/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>

@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public interface Logging {
-	default @NotNull Logger getLogger() {
-		return LoggerFactory.getLogger(this.getClass());
-	}
+    default @NotNull Logger getLogger() {
+        return LoggerFactory.getLogger(this.getClass());
+    }
 }

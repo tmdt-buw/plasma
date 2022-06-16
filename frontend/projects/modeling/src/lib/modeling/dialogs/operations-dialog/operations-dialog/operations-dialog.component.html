@@ -1,0 +1,15 @@
+<div fxLayout="column" fxLayoutGap="10px">
+<p>
+  {{ operation.description }}
+</p>
+<nz-divider></nz-divider>
+<pls-schema-form [formElement]="operation.parameter"></pls-schema-form>
+
+  <div fxLayout="column" fxLayoutGap="5px">
+    <nz-alert nzType="error" *ngIf="error">{{ error }}</nz-alert>
+    <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end">
+      <button nz-button (click)="cancel()">Cancel</button>
+      <button nz-button nzType="primary" (click)="apply()">Save</button>
+    </div>
+  </div>
+</div>

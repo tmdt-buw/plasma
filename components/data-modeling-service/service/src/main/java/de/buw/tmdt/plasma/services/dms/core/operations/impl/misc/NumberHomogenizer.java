@@ -1,5 +1,6 @@
 package de.buw.tmdt.plasma.services.dms.core.operations.impl.misc;
 
+import de.buw.tmdt.plasma.datamodel.modification.operation.DataType;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,15 +16,15 @@ public class NumberHomogenizer extends AbstractSyntaxHomogenizer {
 	private final NumberFormat numberFormat;
 
 	public NumberHomogenizer() {
-		super(DataType.NUMBER);
-		this.numberFormat = NumberFormat.getNumberInstance(Locale.ENGLISH);
-	}
+        super(DataType.Number);
+        this.numberFormat = NumberFormat.getNumberInstance(Locale.ENGLISH);
+    }
 
-	public static double parseHomogenizedRepresentation(@NotNull String homogenizedValue) throws SLTDataTypeException {
+	public static double parseHomogenizedRepresentation(@NotNull String homogenizedValue) throws DataTypeException {
 		try {
 			return Double.parseDouble(homogenizedValue);
 		} catch (NumberFormatException e) {
-			throw new SLTDataTypeException(e);
+			throw new DataTypeException(e);
 		}
 	}
 
@@ -45,7 +46,7 @@ public class NumberHomogenizer extends AbstractSyntaxHomogenizer {
 		assertDataTypeValidity(dataType, NumberHomogenizer.class.getName());
 		try {
 			return String.valueOf(NumberHomogenizer.parseHomogenizedRepresentation(value));
-		} catch (SLTDataTypeException e) {
+		} catch (DataTypeException e) {
 			logger.debug("Value \"{}\" was not parsable as double.", value, e);
 		}
 

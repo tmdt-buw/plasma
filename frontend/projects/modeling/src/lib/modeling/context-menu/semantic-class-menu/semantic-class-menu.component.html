@@ -1,0 +1,23 @@
+<nz-card class="menu-card">
+  <ul nz-menu nzSelectable>
+    <li *ngIf="node" nz-menu-group nzTitle="Edit class">
+      <ul>
+        <li (click)="unmap()" *ngIf="node.syntaxNodeUuid" nz-menu-item><i class="context-icon" nz-icon
+                                                                          nzType="disconnect"></i>Remove mapping
+        </li>
+        <li (click)="removeInstance()" *ngIf="node.instance" [nzDisabled]="!!node.syntaxNodeUuid" nz-menu-item><i
+          class="context-icon" nz-icon nzType="clear"></i>Remove customization
+        </li>
+        <li nz-menu-item nzDanger (click)="remove()"><i class="context-icon" nz-icon nzType="delete"></i>Remove class
+        </li>
+      </ul>
+    </li>
+    <li nz-menu-divider></li>
+    <li *ngIf="syntaxNode?.operations?.length > 0" nz-menu-group nzTitle="Syntactic Operations">
+      <ul>
+        <li nz-menu-item *ngFor="let operation of syntaxNode?.operations" (click)="onSelectOperation(operation)">
+          <i class="context-icon" nz-icon nzType="setting"></i>{{ operation.label }}</li>
+      </ul>
+    </li>
+  </ul>
+</nz-card>

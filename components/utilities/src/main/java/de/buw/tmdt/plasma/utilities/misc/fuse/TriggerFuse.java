@@ -7,23 +7,26 @@ import java.io.Serializable;
 /**
  * A bi-state object which can switch only from sane to non-sane but not vice versa.
  * When switching from sane to destroyed it executes the given {@link Runnable}. This will be done only once.
+ *
+ * @param <A> An exception type
+ * @param <E> A runnable to be executed when state is changed
  */
 public final class TriggerFuse<E extends Exception, A extends Runnable & Serializable> extends AbstractFuse<E> {
-	private static final long serialVersionUID = 1885379641588750963L;
-	private final A runnable;
+    private static final long serialVersionUID = 1885379641588750963L;
+    private final A runnable;
 
-	public TriggerFuse(@NotNull A runnable) {
-		this.runnable = runnable;
-	}
+    public TriggerFuse(@NotNull A runnable) {
+        this.runnable = runnable;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public synchronized void destroy() throws E {
-		if (isSane()) {
-			runnable.run();
-			super.destroy();
-		}
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized void destroy() throws E {
+        if (isSane()) {
+            runnable.run();
+            super.destroy();
+        }
+    }
 }

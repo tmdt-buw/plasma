@@ -1,6 +1,6 @@
 package de.buw.tmdt.plasma.services.srs.rest.controller;
 
-import de.buw.tmdt.plasma.services.dms.shared.dto.DataSourceSchemaDTO;
+import de.buw.tmdt.plasma.datamodel.CombinedModel;
 import de.buw.tmdt.plasma.services.srs.api.SemanticRecommendationAPI;
 import de.buw.tmdt.plasma.services.srs.handler.SemanticLabelingHandler;
 import de.buw.tmdt.plasma.services.srs.handler.SemanticModelingHandler;
@@ -17,7 +17,6 @@ public class SemanticRecommendationController implements SemanticRecommendationA
 	private final SemanticLabelingHandler labelingHandler;
 	private final SemanticModelingHandler modelingHandler;
 
-
 	@Autowired
 	public SemanticRecommendationController(
 			@NotNull SemanticRefinementHandler refinementHandler,
@@ -29,23 +28,24 @@ public class SemanticRecommendationController implements SemanticRecommendationA
 		this.modelingHandler = modelingHandler;
 	}
 
-	@NotNull
-	@Override
-	@Operation(description = "do a semantic labeling")
-	public DataSourceSchemaDTO performSemanticLabeling(@NotNull String uuid, @NotNull DataSourceSchemaDTO dataSourceSchemaDTO) {
-		return labelingHandler.performLabeling(uuid, dataSourceSchemaDTO);
-	}
+    @NotNull
+    @Override
+    @Operation(description = "do a semantic labeling")
+    public CombinedModel performSemanticLabeling(@NotNull String uuid, String configId, String configToken, @NotNull CombinedModel combinedModel) {
+        return labelingHandler.performLabeling(uuid, configId, configToken, combinedModel);
+    }
 
-	@NotNull
-	@Override
-	@Operation(description = "do a semantic modeling")
-	public DataSourceSchemaDTO performSemanticModeling(@NotNull String uuid, @NotNull DataSourceSchemaDTO dataSourceSchemaDTO) {
-		return modelingHandler.performModeling(uuid,dataSourceSchemaDTO);
-	}
-	@NotNull
-	@Override
-	@Operation(description = "request semantic refinement recommendations")
-	public DataSourceSchemaDTO performSemanticRefinement(@NotNull String uuid, @NotNull DataSourceSchemaDTO dataSourceSchemaDTO) {
-		return refinementHandler.performRefinement(uuid,dataSourceSchemaDTO);
-	}
+    @NotNull
+    @Override
+    @Operation(description = "do a semantic modeling")
+    public CombinedModel performSemanticModeling(@NotNull String uuid, String configId, String configToken, @NotNull CombinedModel combinedModel) {
+        return modelingHandler.performModeling(uuid, configId, configToken, combinedModel);
+    }
+
+    @NotNull
+    @Override
+    @Operation(description = "request semantic refinement recommendations")
+    public CombinedModel performSemanticRefinement(@NotNull String uuid, String configId, String configToken, @NotNull CombinedModel combinedModel) {
+        return refinementHandler.performRefinement(uuid, configId, configToken, combinedModel);
+    }
 }

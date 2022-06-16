@@ -30,8 +30,10 @@ public class PatternSelector extends Selector {
 	private static final String INDEX_LIST_END_SYMBOL = "}";
 	@ElementCollection
 	private final List<Integer> selections;
+
+	// MariaDB prohibits offset as column name
 	@Column
-	private final int offset;
+	private final int theOffset;
 	@Column
 	private final int modulus;
 
@@ -39,12 +41,13 @@ public class PatternSelector extends Selector {
 	//creates invalid state if not properly initialized afterwards
 	public PatternSelector() {
 		selections = null;
-		offset = modulus = -1;
+		theOffset = -1;
+		modulus = -1;
 	}
 
-	public PatternSelector(@NotNull List<Integer> selections, int offset, int modulus) {
-		if (offset < 0) {
-			throw new IllegalArgumentException("Offset must be positive but was " + offset);
+	public PatternSelector(@NotNull List<Integer> selections, int theOffset, int modulus) {
+		if (theOffset < 0) {
+			throw new IllegalArgumentException("Offset must be positive but was " + theOffset);
 		}
 		if (modulus < 1) {
 			throw new IllegalArgumentException("Modulus must be greater 0 but was " + modulus);
@@ -56,7 +59,7 @@ public class PatternSelector extends Selector {
 			throw new IllegalArgumentException("Selections must not contain null.");
 		}
 		this.selections = new ArrayList<>(selections);
-		this.offset = offset;
+		this.theOffset = theOffset;
 		this.modulus = modulus;
 	}
 
@@ -69,8 +72,8 @@ public class PatternSelector extends Selector {
 		return Collections.unmodifiableList(selections);
 	}
 
-	public int getOffset() {
-		return offset;
+	public int getTheOffset() {
+		return theOffset;
 	}
 
 	public int getModulus() {
@@ -79,7 +82,7 @@ public class PatternSelector extends Selector {
 
 	public static PatternSelector parse(@NotNull final String string) {
 		final int modulus;
-		final int offset;
+		final int theOffset;
 		final List<Integer> indexes;
 
 		if (!string.startsWith(PARSING_PREFIX)) {
@@ -112,7 +115,7 @@ public class PatternSelector extends Selector {
 		}
 
 		try {
-			offset = Integer.parseInt(tokens[1]);
+			theOffset = Integer.parseInt(tokens[1]);
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("Failed to parse modulus token `" + tokens[1] + "` as integer in `" + patternString + "`.", e);
 		}
@@ -125,7 +128,7 @@ public class PatternSelector extends Selector {
 					}
 				}).collect(Collectors.toList());
 
-		return new PatternSelector(indexes, offset, modulus);
+		return new PatternSelector(indexes, theOffset, modulus);
 	}
 
 	@NotNull
@@ -133,23 +136,23 @@ public class PatternSelector extends Selector {
 	public String serialize() {
 		StringJoiner stringJoiner = new StringJoiner(INDEX_SEPARATOR_SYMBOL, PARSING_PREFIX + INDEX_LIST_START_SYMBOL, INDEX_LIST_END_SYMBOL);
 		selections.forEach(index -> stringJoiner.add(index.toString()));
-		return stringJoiner.toString() + MODULUS_SYMBOL + modulus + OFFSET_SYMBOL + offset;
+		return stringJoiner + MODULUS_SYMBOL + modulus + OFFSET_SYMBOL + theOffset;
 	}
 
 	@Override
 	@NotNull
 	public Selector copy() {
-		return new PatternSelector(new ArrayList<>(this.selections), this.offset, this.modulus);
+		return new PatternSelector(new ArrayList<>(this.selections), this.theOffset, this.modulus);
 	}
 
 	@Override
 	@SuppressWarnings("MagicCharacter")
 	public String toString() {
 		return "{\"@class\":\"PatternSelector\""
-		       + ", \"@super\":" + super.toString()
-		       + ", \"selections\":" + StringUtilities.listToJson(selections)
-		       + ", \"offset\":\"" + offset + '"'
-		       + ", \"modulus\":\"" + modulus + '"'
-		       + '}';
+				+ ", \"@super\":" + super.toString()
+				+ ", \"selections\":" + StringUtilities.listToJson(selections)
+				+ ", \"offset\":\"" + theOffset + '"'
+				+ ", \"modulus\":\"" + modulus + '"'
+				+ '}';
 	}
 }

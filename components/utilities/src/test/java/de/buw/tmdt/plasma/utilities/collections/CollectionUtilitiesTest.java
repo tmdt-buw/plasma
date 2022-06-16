@@ -1,13 +1,13 @@
 package de.buw.tmdt.plasma.utilities.collections;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CollectionUtilitiesTest {
 
@@ -37,7 +37,7 @@ public class CollectionUtilitiesTest {
      * Tests if the method correctly returns an empty optional if searching for {@code null}.
      */
     @Test
-    public void findFirstNull(){
+    public void findFirstNull() {
         //Optional of null is not present. Method must not throw an exception
         final Optional<String> nullElement = CollectionUtilities.findFirst(asList("First", null, "Third"), Objects::isNull);
         assertFalse(nullElement.isPresent());

@@ -1,6 +1,5 @@
 package de.buw.tmdt.plasma.services.sas.core.model;
 
-import de.buw.tmdt.plasma.services.sas.core.model.semanticmodel.SemanticModel;
 import de.buw.tmdt.plasma.services.sas.core.model.syntaxmodel.Node;
 
 import javax.persistence.*;
@@ -12,6 +11,10 @@ import java.util.UUID;
 @Entity
 public class Analysis {
 
+	public UUID getUuid() {
+		return uuid;
+	}
+
 	@Id
 	@Column(nullable = false, unique = true, length = 16)
 	protected UUID uuid;
@@ -22,13 +25,9 @@ public class Analysis {
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private Node result;
 
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-	private SemanticModel semanticModel;
+	protected Analysis() {
 
-	@ManyToOne
-	private Standard standard;
-
-	protected Analysis() {}
+	}
 
 	public Analysis(UUID uuid) {
 		this.uuid = uuid;
@@ -49,21 +48,5 @@ public class Analysis {
 
 	public Node getResult() {
 		return result;
-	}
-
-	public SemanticModel getSemanticModel() {
-		return semanticModel;
-	}
-
-	public void setSemanticModel(SemanticModel semanticModel) {
-		this.semanticModel = semanticModel;
-	}
-
-	public void setStandard(Standard standard) {
-		this.standard = standard;
-	}
-
-	public Standard getStandard(){
-		return this.standard;
 	}
 }

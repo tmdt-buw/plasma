@@ -1,0 +1,52 @@
+<form nz-form [formGroup]="form" (submit)="submit()" fxLayout="column">
+
+  <nz-form-item>
+    <nz-radio-group formControlName="type" [(ngModel)]="relationType">
+      <label nz-radio [nz-tooltip]="'Creates a relation that can be used to link classes or named entities.'" nzValue="ObjectProperty">ObjectProperty</label>
+      <label nz-radio [nz-tooltip]="'Creates a relation that can be used to add (string) literals to existing classes or named entities.'" nzValue="DataProperty">DatatypeProperty</label>
+    </nz-radio-group>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5" nzRequired nzFor="label">Label</nz-form-label>
+    <nz-form-control nzErrorTip="Label is required"
+                     nzExtra="This will identify the concept in multiple sources, so it should be independent from your current data set.">
+      <input nz-input formControlName="label"/>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5" nzRequired nzFor="description">Description</nz-form-label>
+    <nz-form-control nzErrorTip="Description is required"
+                     nzExtra="Detailed description of the entity concept.">
+      <textarea nz-input [nzAutosize]="{ minRows: 3}" formControlName="description"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+
+  <div fxLayout="row">
+    <nz-form-item fxFlex>
+      <nz-form-label>URI</nz-form-label>
+      <nz-form-control nzExtra="Namespace" nz-tooltip="Namespace of the class or named entity. Should be either a prefix like 'rdfs:' or a HTTP URL">
+        <input (change)="onNamespaceEdited($event)" formControlName="namespace" nz-input/>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item fxFlex>
+      <nz-form-control nz-tooltip="Identifier of the class or named entity. Any identifier is valid. Special characters and whitespaces are converted to '_'." nzExtra="Identifier">
+        <input (change)="onIdentifierEdited($event)" formControlName="identifier" nz-input placeholder="{{generateIdentifier()}}"/>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+</form>
+
+<div fxLayout="column" fxLayoutGap="5px">
+  <nz-alert nzType="error" *ngIf="error">{{ error }}</nz-alert>
+  <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end">
+    <button nz-button (click)="cancel()">Cancel</button>
+    <button (click)="submit()"
+            [disabled]="!form.valid"
+            nz-button nzType="primary">Save
+    </button>
+  </div>
+</div>

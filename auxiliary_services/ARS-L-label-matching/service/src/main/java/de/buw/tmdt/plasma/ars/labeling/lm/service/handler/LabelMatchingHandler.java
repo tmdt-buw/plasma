@@ -1,69 +1,67 @@
 package de.buw.tmdt.plasma.ars.labeling.lm.service.handler;
 
-import de.buw.tmdt.plasma.ars.labeling.lm.service.converter.KGStoSRSDTOConverter;
-import de.buw.tmdt.plasma.services.dms.shared.dto.DataSourceSchemaDTO;
-import de.buw.tmdt.plasma.services.dms.shared.dto.PrimitiveEntityTypeEdgeDTO;
-import de.buw.tmdt.plasma.services.dms.shared.dto.semanticmodel.EntityConceptDTO;
-import de.buw.tmdt.plasma.services.dms.shared.dto.semanticmodel.EntityTypeDTO;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.EdgeDTO;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.PrimitiveDTO;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.SchemaNodeDTO;
-import de.buw.tmdt.plasma.services.dms.shared.dto.syntaxmodel.SyntaxModelDTO;
-import de.buw.tmdt.plasma.services.kgs.shared.api.UniversalKnowledgeApi;
+import de.buw.tmdt.plasma.datamodel.CombinedModel;
+import de.buw.tmdt.plasma.datamodel.semanticmodel.Class;
+import de.buw.tmdt.plasma.datamodel.semanticmodel.MappableSemanticModelNode;
+import de.buw.tmdt.plasma.datamodel.semanticmodel.SemanticModelNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.PrimitiveNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.SchemaNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.SyntaxModel;
+import de.buw.tmdt.plasma.services.kgs.shared.api.OntologyApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Service
 public class LabelMatchingHandler {
 
-    private static Logger log = LoggerFactory.getLogger(LabelMatchingHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(LabelMatchingHandler.class);
 
-    final UniversalKnowledgeApi universalKnowledgeApi;
+    final OntologyApi ontologyApi;
 
-    public LabelMatchingHandler(UniversalKnowledgeApi universalKnowledgeApi) {
-        this.universalKnowledgeApi = universalKnowledgeApi;
+    public LabelMatchingHandler(OntologyApi ontologyApi) {
+        this.ontologyApi = ontologyApi;
     }
 
-    public DataSourceSchemaDTO performLabeling(String dataSourceUUID, DataSourceSchemaDTO combined) {
-        SyntaxModelDTO syntaxModelDTO = combined.getSyntaxModelDTO();
-
-        long counter = -1;
-        for (SchemaNodeDTO node : syntaxModelDTO.getNodes()) {
-            if(!(node instanceof PrimitiveDTO)) {
+    public CombinedModel performLabeling(String dataSourceUUID, String configId, String configToken, CombinedModel combined) {
+        List<String> mappedPrimitiveNodeIds = combined.getSemanticModel().getNodes().stream()
+                .filter(SemanticModelNode::isMapped)
+                .map(n -> (MappableSemanticModelNode) n)
+                .map(MappableSemanticModelNode::getMappedSyntaxNodeUuid)
+                .collect(Collectors.toList());
+        SyntaxModel syntaxModel = combined.getSyntaxModel();
+        for (SchemaNode node : syntaxModel.getNodes()) {
+            if (!(node instanceof PrimitiveNode) || mappedPrimitiveNodeIds.contains(node.getUuid())) {
                 continue;
             }
-
             String label = node.getLabel();
-            Collection<EntityConceptDTO> entityConcepts = KGStoSRSDTOConverter.toDMS(universalKnowledgeApi.getEntityConcepts(label));
-            Optional<EntityConceptDTO> matching = entityConcepts.stream().filter(entityConceptDTO -> entityConceptDTO.getName().equals(label)).findFirst();
-            if(matching.isPresent()){  // we only match on exact equality
-                // we found one
-                // create an EntityType in the semantic model
-                EntityTypeDTO et = new EntityTypeDTO(null,null,counter, label,label,"",matching.get());
-                combined.getSemanticModelDTO().getNodes().add(et);
-                // add a mapping from ET to node
-                Optional<EdgeDTO> firstEdge = syntaxModelDTO.getEdges().stream().filter(edgeDTO -> edgeDTO.getTo().equals(node.getUuid())).findFirst();
-                if(firstEdge.isPresent()){
-                    // we got an edge find where it comes from
-                    EdgeDTO edge = firstEdge.get();
-                    Optional<SchemaNodeDTO> parentNode = syntaxModelDTO.getNodes().stream().filter(schemaNodeDTO -> schemaNodeDTO.getUuid().equals(edge.getFrom())).findFirst();
-                    if(parentNode.isPresent()){
-                        PrimitiveEntityTypeEdgeDTO mapping = new PrimitiveEntityTypeEdgeDTO(parentNode.get().getUuid().toString(),String.valueOf(counter),node.getUUIDString());
-                        combined.getPrimitiveEntityTypeEdgeDTOs().add(mapping);
-                        log.info("Assigned EC '{}' to node '{}'", matching.get().getName(), node.getLabel());
-                        counter--;
-                    }
-                    else {
-                        log.info("Could not assign EC '{}' to node '{}'. No parent found", matching.get().getName(), node.getLabel());
-                    }
-                } else {
-                    log.info("Could not assign EC '{}' to node '{}'. No incoming edge found", matching.get().getName(), node.getLabel());
-                }
+            Collection<SemanticModelNode> candidates = ontologyApi.getElements(null,label, null, null);
+            List<Class> classes = candidates.stream()
+                    .filter(c -> c instanceof Class)
+                    .map(c -> (Class) c)
+                    .collect(Collectors.toList());
 
+
+            Optional<Class> matching = classes.stream().filter(clazz -> clazz.getLabel().equalsIgnoreCase(label)).findFirst();
+            if (matching.isPresent()) {  // we only match on exact equality but case-insensitive
+                // we found one or more, create a mapping
+                Class clazz = matching.get();
+                clazz.createInstance();
+                clazz.setMappedSyntaxNodeLabel(node.getLabel());
+                clazz.setMappedSyntaxNodeUuid(node.getUuid());
+                clazz.setMappedSyntaxNodePath(String.join("->", node.getPath()));
+                clazz.setXCoordinate(node.getXCoordinate());
+                clazz.setYCoordinate(node.getYCoordinate());
+                if (clazz.getInstance() != null) {
+                    clazz.getInstance().setLabel(node.getLabel());
+                }
+                combined.getSemanticModel().getNodes().add(clazz);
             }
         }
         return combined;

@@ -1,14 +1,13 @@
 package de.buw.tmdt.plasma.services.sas.core.basic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.PrimitiveNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.SyntaxModel;
 import de.buw.tmdt.plasma.services.sas.core.basic.exception.SchemaAnalysisException;
-import de.buw.tmdt.plasma.services.sas.core.converter.NodeDTOConverter;
+import de.buw.tmdt.plasma.services.sas.core.converter.CombinedModelConverter;
 import de.buw.tmdt.plasma.services.sas.core.model.syntaxmodel.Node;
 import de.buw.tmdt.plasma.services.sas.shared.dto.SchemaAnalysisDataProvisionDTO;
-import de.buw.tmdt.plasma.services.sas.shared.dto.StandardDTO;
-import de.buw.tmdt.plasma.services.sas.shared.dto.StandardProvisionDTO;
-import de.buw.tmdt.plasma.services.sas.shared.dto.semanticmodel.SemanticModelDTO;
-import de.buw.tmdt.plasma.services.sas.shared.dto.syntaxmodel.NodeDTO;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,23 +15,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
 public class SchemaAnalysisHandler {
 
 	private final AnalysisService analysisService;
-	private final NodeDTOConverter nodeDTOConverter;
-
+	private final CombinedModelConverter combinedModelConverter;
 
 	private final Logger logger = LoggerFactory.getLogger(SchemaAnalysisHandler.class);
 
 	@Autowired
-	public SchemaAnalysisHandler(AnalysisService analysisService, NodeDTOConverter nodeDTOConverter) {
+	public SchemaAnalysisHandler(AnalysisService analysisService,
+	                             CombinedModelConverter combinedModelConverter) {
 		this.analysisService = analysisService;
-		this.nodeDTOConverter = nodeDTOConverter;
 
+		this.combinedModelConverter = combinedModelConverter;
 	}
 
 	public void initAnalysis(UUID uuid) {
@@ -59,15 +58,19 @@ public class SchemaAnalysisHandler {
 		analysisService.addNodeToAnalysis(uuid, result);
 	}
 
-	public NodeDTO getResult(UUID uuid, int exampleLimit) {
+	public @NotNull SyntaxModel getResult(UUID uuid, int exampleLimit) {
 		if (!analysisService.exists(uuid)) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The requested id is not existing: " + uuid);
 		}
 
-		return nodeDTOConverter.nodeToDTO(analysisService.getResult(uuid), exampleLimit);
+		SyntaxModel syntaxModel = combinedModelConverter.toCombinedModel(analysisService.getResult(uuid));
+
+		syntaxModel.getNodes().stream()
+				.filter(schemaNode -> schemaNode instanceof PrimitiveNode)
+				.map(schemaNode -> (PrimitiveNode) schemaNode)
+				.forEach(primitiveNode -> primitiveNode.setExamples(new ArrayList<>(primitiveNode.getExamples().subList(0, Math.min(exampleLimit, primitiveNode.getExamples().size())))));
+		return syntaxModel;
 	}
-
-
 
 	public void finish(UUID uuid) {
 		if (!analysisService.exists(uuid)) {

@@ -2,6 +2,7 @@ package de.buw.tmdt.plasma.services.sas.core.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import de.buw.tmdt.plasma.services.sas.core.model.exception.SchemaAnalysisException;
+import de.buw.tmdt.plasma.services.sas.core.model.syntaxmodel.Node;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -244,7 +245,7 @@ public interface Traversable {
 		}
 	}
 
-	default Traversable merge(Traversable traversable) throws SchemaAnalysisException {
+	default Node merge(Node traversable) throws SchemaAnalysisException {
 		return traversable;
 	}
 }

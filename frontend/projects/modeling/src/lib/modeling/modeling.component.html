@@ -1,0 +1,142 @@
+<div fxLayout="column" fxFill cdkDropListGroup #main="plsFullScreen" plsFullScreen
+     [style.background-color]="backgroundColor">
+  <div fxFlex="40px" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="5px"       class="modeling-toolbar">
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+      <button nz-button nzType="text" nzShape="circle" (click)="undo()" nz-tooltip nzTooltipTitle="Undo" [disabled]="isFinalized()"><i nz-icon
+                                                                                                            nzType="undo"></i>
+      </button>
+      <button nz-button nzType="text" nzShape="circle" (click)="redo()" nz-tooltip nzTooltipTitle="Redo" [disabled]="isFinalized()"><i nz-icon
+                                                                                                            nzType="redo"></i>
+      </button>
+      <button (click)="showAddElementsDialog()" [disabled]="isFinalized()" nz-button nz-tooltip
+              nzTooltipTitle="Add entity or relation" nzType="primary"><i
+        nz-icon nzType="deployment-unit"></i>Add concepts and relations
+      </button>
+
+        <nz-select
+          [nz-tooltip]="'Selected ontologies. Concepts and relations for modeling are obtained only from selected ontologies.'"
+          (ngModelChange)="onOntologySelectionChanged($event)"
+          class="modeling-ontology-selection"
+          [nzMaxTagCount]="3"
+          [nzMaxTagPlaceholder]="tagPlaceHolder"
+          nzMode="multiple"
+          nzPlaceHolder="Select ontologies"
+          [(ngModel)]="selectedOntologies"
+          [nzDisabled]="isFinalized()"
+          [nzDropdownRender]="addOntologyTemplate"
+          [nzShowSearch]="false"
+          [nzDropdownMatchSelectWidth]="false"
+        >
+          <nz-option *ngFor="let item of availableOntologies" [nz-tooltip]="item.uri" [nzLabel]="item.label"
+                     [nzValue]="item.label"></nz-option>
+        </nz-select>
+        <ng-template #tagPlaceHolder let-selectedList>+{{ selectedList.length }}</ng-template>
+        <ng-template #addOntologyTemplate>
+          <button nz-button nzType="text" nz-tooltip nzTooltipTitle="Upload a new ontology" (click)="showUploadOntologyDialog()" [disabled]="isFinalized()"><i
+            nz-icon nzType="upload"></i>Add ontology
+          </button>
+        </ng-template>
+
+
+
+
+      <!-- URI mode toggle -->
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <span nz-typography>Label</span>
+        <nz-switch (ngModelChange)="toggleURIMode($event)" [ngModel]="false"
+                   [nz-tooltip]="'Select to show either the label or the URI of semantic elements'"></nz-switch>
+        <span nz-typography>URI</span>
+      </div>
+    </div>
+
+    <div class="modeling-search-bar-container">
+      <!-- (Magic) assistance functions -->
+      <button [disabled]="isViewerMode()" [nz-tooltip]="'Generate new elements using automated operations'"
+              [nzDropdownMenu]="assistanceFunctionsMenu"
+              nz-button nz-dropdown nzPlacement="bottomLeft" nzTrigger="click"
+              nzType="text">
+        <i [nzType]="'tool'" nz-icon></i>
+      </button>
+      <nz-dropdown-menu #assistanceFunctionsMenu="nzDropdownMenu">
+        <ul nz-menu>
+          <li (click)="openSemanticModelCopyDialog()" nz-menu-item>
+            <a class="dropdown-icon" nz-icon nzType="copy"
+              nz-tooltip="Import a semantic model from another existing modeling."></a>
+              Import semantic model
+          </li>
+          <li (click)="performSemanticLabeling()" [nzDisabled]="!recommendationsEnabled" nz-menu-item>
+            <a class="dropdown-icon" nz-icon nzType="node-index"
+               nz-tooltip="Use an ARS to perform a semantic labeling step."></a>
+            Semantic Labeling
+          </li>
+          <li (click)="performSemanticModeling()" [nzDisabled]="!recommendationsEnabled" nz-menu-item>
+            <a class="dropdown-icon" nz-icon nzType="share-alt"
+               nz-tooltip="Use an ARS to perform a semantic modeling step."></a>
+            Semantic Modeling
+          </li>
+        </ul>
+      </nz-dropdown-menu>
+      <!--      search -->
+      <button (click)="toggleSearch()" *ngIf="false" nz-button nz-tooltip nzShape="circle" nzTooltipTitle="Search"
+              nzType="text"><i
+        nz-icon nzType="search"></i></button>
+      <nz-input-group [nzSuffix]="inputClearTpl" class="modeling-search-bar" @search *ngIf="isSearchExpanded">
+        <input type="text" nz-input [formControl]="searchControl" placeholder="Search"/>
+      </nz-input-group>
+      <ng-template #inputClearTpl>
+        <i nz-icon nzType="close-circle" *ngIf="searchControl.dirty" (click)="searchControl.reset()"></i>
+      </ng-template>
+
+      <nz-select class="modeling-model-filter" nzBorderless [nzPlaceHolder]="filterTpl" [ngModel]="$filter | async"
+                 (ngModelChange)="onFilterChange($event)">
+        <nz-option [nzValue]="Filter.ALL" nzLabel="All"></nz-option>
+        <nz-option [nzValue]="Filter.SEMANTIC" nzLabel="Semantic"></nz-option>
+        <nz-option [nzValue]="Filter.SYNTAX" nzLabel="Syntax"></nz-option>
+      </nz-select>
+      <ng-template #filterTpl let-selected>
+        <i nz-icon nzType="filter"></i> {{selected}}
+      </ng-template>
+
+      <button nz-button nzType="text" nzShape="circle" (click)="$layout.next()" nz-tooltip
+              nzTooltipTitle="Layout graph"><i nz-icon nzType="apartment"></i></button>
+      <button nz-button nzType="text" nzShape="circle" (click)="$center.next()" nz-tooltip
+              nzTooltipTitle="Center graph"><i nz-icon nzType="pic-center"></i></button>
+
+      <button *ngIf="fullScreen" nz-button nzType="text" nzShape="circle" (click)="main.toggleFullScreen()" nz-tooltip
+              nzTooltipTitle="Toggle fullscreen">
+        <i *ngIf="isFullscreen" nz-icon nzType="fullscreen-exit"></i>
+        <i *ngIf="!isFullscreen" nz-icon nzType="fullscreen"></i>
+      </button>
+      <button *ngIf="!hideExportButton" nz-button nz-dropdown nzType="text" nz-tooltip="Export model as TTL"
+              [nzDropdownMenu]="exportDropdown" nzTrigger="click"  nzPlacement="bottomRight">
+        <i nz-icon nzType="download"></i>
+      </button>
+      <nz-dropdown-menu #exportDropdown="nzDropdownMenu">
+        <div fxLayout="column" class="export-dropdown" nz-menu>
+          <label nz-checkbox [(ngModel)]="exportIncludeMappings">Include Mappings</label>
+          <button (click)="exportModel()" nz-menu-item><a class="dropdown-icon" nz-icon nzType="download"></a>Export model          </button>
+        </div>
+      </nz-dropdown-menu>
+    </div>
+  </div>
+
+  <nz-spin fxFlex class="modeling-container" nzTip="Loading..." [nzSpinning]="loading">
+    <div class="modeling-area" *ngIf="combinedModel" #modelingArea>
+      <pls-modeling-diagram [$filter]="$filter" [$center]="$center" [$layout]="$layout" [$URIMode]="$URIMode"
+                            [combinedModel]="combinedModel"
+                            (graphLaidOut)="onGraphLaidOut($event)"
+                            (semanticModelElementsAdded)="onSemanticElementsAdded($event)"
+                            (nodeChanged)="onNodeChanged($event)"
+                            (semanticModelElementsRemoved)="onSemanticElementsRemoved($event)"
+                            [modelId]="modelId"
+                            (nodePositionChanged)="onNodePositionChanged($event)"
+                            [viewerMode]="viewerMode"
+                            (nodeClicked)="onNodeClicked($event)"
+                            (recommendationAccepted)="onRecommendationAccepted($event)">
+      </pls-modeling-diagram>
+      <button *ngIf="!isFinalized() && !hideFinalizeButton" class="action-button" nz-button nzType="primary"
+              (click)="finalizeModel()"><i nz-icon nzType="play-circle"></i>Finalize
+      </button>
+    </div>
+  </nz-spin>
+</div>

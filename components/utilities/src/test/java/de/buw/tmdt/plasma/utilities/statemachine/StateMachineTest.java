@@ -2,8 +2,8 @@ package de.buw.tmdt.plasma.utilities.statemachine;
 
 
 import de.buw.tmdt.plasma.utilities.collections.ArrayUtilities;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,9 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static de.buw.tmdt.plasma.utilities.statemachine.StateMachineTest.TestState.*;
-import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class StateMachineTest {
 	private static final Logger logger = LoggerFactory.getLogger(StateMachineTest.class);
@@ -38,17 +36,19 @@ public class StateMachineTest {
 		assertEquals(transitions, stateMachine.getTransitions());
 
 		logger.trace("Verify that initial state is current state");
-		Assert.assertEquals(STATE1, stateMachine.getCurrentState());
+		assertEquals(STATE1, stateMachine.getCurrentState());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void creationTransitionToUndefined() {
-		logger.trace("Add only one state to StateMachine");
-		Set<TestState> states = Collections.singleton(STATE1);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			logger.trace("Add only one state to StateMachine");
+			Set<TestState> states = Collections.singleton(STATE1);
 
-		Set<Transition<TestState>> transitions = new HashSet<>();
-		transitions.add(new Transition<>(STATE1, STATE2));
-		new StateMachine<>(TEST_NAME, states, STATE1, transitions);
+			Set<Transition<TestState>> transitions = new HashSet<>();
+			transitions.add(new Transition<>(STATE1, STATE2));
+			new StateMachine<>(TEST_NAME, states, STATE1, transitions);
+		});
 	}
 
 	@Test
@@ -66,13 +66,15 @@ public class StateMachineTest {
 		assertTrue(stateMachine.isInState(STATE2));
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void testTakeUndefinedTransition() {
-		Set<TestState> states = ArrayUtilities.toCollection(HashSet::new, STATE1, STATE2);
-		StateMachine<TestState> stateMachine = new StateMachine<>(TEST_NAME, states, STATE1, new HashSet<>());
+		Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+			Set<TestState> states = ArrayUtilities.toCollection(HashSet::new, STATE1, STATE2);
+			StateMachine<TestState> stateMachine = new StateMachine<>(TEST_NAME, states, STATE1, new HashSet<>());
 
-		assertTrue(stateMachine.isInState(STATE1));
-		stateMachine.changeState(STATE2);
+			assertTrue(stateMachine.isInState(STATE1));
+			stateMachine.changeState(STATE2);
+		});
 	}
 
 	@Test
@@ -90,7 +92,7 @@ public class StateMachineTest {
 		assertEquals(transitions, stateMachine.getTransitions());
 
 		logger.trace("Verify that initial state is current state");
-		Assert.assertEquals(STATE1, stateMachine.getCurrentState());
+		assertEquals(STATE1, stateMachine.getCurrentState());
 	}
 
 	@Test
@@ -158,12 +160,14 @@ public class StateMachineTest {
 		assertTrue(stateMachine.changeStateIfCurrentlyIn(STATE2, STATE1));
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void traverseConditionallyIllegalTransition() {
-		Set<TestState> states = ArrayUtilities.toCollection(HashSet::new, STATE1, STATE2);
+		Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+			Set<TestState> states = ArrayUtilities.toCollection(HashSet::new, STATE1, STATE2);
 
-		StateMachine<TestState> stateMachine = new StateMachine<>(TEST_NAME, states, STATE1, new HashSet<>());
-		stateMachine.changeStateIfCurrentlyIn(STATE2, STATE1);
+			StateMachine<TestState> stateMachine = new StateMachine<>(TEST_NAME, states, STATE1, new HashSet<>());
+			stateMachine.changeStateIfCurrentlyIn(STATE2, STATE1);
+		});
 	}
 
 	@Test
@@ -188,31 +192,39 @@ public class StateMachineTest {
 		assertFalse(stateMachine.changeStateIfCurrentlyIn(STATE2, STATE2));
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void traverseIllegalStateExceptionResult() {
-		Set<TestState> states = ArrayUtilities.toCollection(HashSet::new, STATE1, STATE2);
+		Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+			Set<TestState> states = ArrayUtilities.toCollection(HashSet::new, STATE1, STATE2);
 
-		StateMachine<TestState> stateMachine = new StateMachine<>(TEST_NAME, states, STATE1, new HashSet<>());
-		stateMachine.changeState(STATE2);
+			StateMachine<TestState> stateMachine = new StateMachine<>(TEST_NAME, states, STATE1, new HashSet<>());
+			stateMachine.changeState(STATE2);
+		});
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void createWithNullArgs() {
-		//noinspection ConstantConditions
-		new StateMachine<>(TEST_NAME, null, null, null);
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			new StateMachine<>(TEST_NAME, null, null, null);
+			//noinspection ConstantConditions
+		});
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void buildStateMachineWithNull() {
-		StateMachine.Builder<TestState> builder = new StateMachine.Builder<>(TEST_NAME);
-		builder.build();
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			StateMachine.Builder<TestState> builder = new StateMachine.Builder<>(TEST_NAME);
+			builder.build();
+		});
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void buildStateMachineUndefinedStartState() {
-		StateMachine.Builder<TestState> builder = new StateMachine.Builder<>(TEST_NAME);
-		builder.withStartState(STATE1);
-		builder.build();
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			StateMachine.Builder<TestState> builder = new StateMachine.Builder<>(TEST_NAME);
+			builder.withStartState(STATE1);
+			builder.build();
+		});
 	}
 
 	@Test

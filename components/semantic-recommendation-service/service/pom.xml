@@ -5,90 +5,15 @@
     <parent>
         <artifactId>srs-parent</artifactId>
         <groupId>de.buw.tmdt.plasma.services.srs</groupId>
-        <version>1.0.0</version>
+        <version>1.3.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>service</artifactId>
     <name>${project.module.label.prefix} Service</name>
 
-    <properties>
-        <!-- The java version should be 11 if there are no dependencies to a HDP Version which requires 8 -->
-        <java.version>11</java.version>
-        <javax.servlet.version>3.1.0</javax.servlet.version>
-        <org.mariadb.version>2.5.2</org.mariadb.version>
-        <plasma.services.kgs>1.0.0</plasma.services.kgs>
-        <plasma.ars.labeling.lm>1.0.0</plasma.ars.labeling.lm>
-    </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>de.buw.tmdt.plasma.ars.labeling.labelmatching</groupId>
-                <artifactId>feign-client</artifactId>
-                <version>${plasma.ars.labeling.lm}</version>
-            </dependency>
-            <dependency>
-                <groupId>${project.parent.groupId}</groupId>
-                <artifactId>api</artifactId>
-                <version>${project.parent.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>${project.parent.groupId}</groupId>
-                <artifactId>feign-client</artifactId>
-                <version>${project.parent.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>${javax.servlet.version}</version>
-            </dependency>
-
-<!--             Other Microservices -->
-            <dependency>
-                <groupId>de.buw.tmdt.plasma.services.kgs</groupId>
-                <artifactId>dto</artifactId>
-                <version>${plasma.services.kgs}</version>
-            </dependency>
-            <dependency>
-                <groupId>de.buw.tmdt.plasma.services.kgs</groupId>
-                <artifactId>feign-client</artifactId>
-                <version>${plasma.services.kgs}</version>
-            </dependency>
-
-        </dependencies>
-    </dependencyManagement>
-
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>de.buw.tmdt.plasma.services.srs</groupId>
-            <artifactId>api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>de.buw.tmdt.plasma.ars.labeling.labelmatching</groupId>
-            <artifactId>feign-client</artifactId>
-        </dependency>
-        <!-- Spring -->
+        <!-- Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -114,26 +39,48 @@
             <artifactId>spring-boot-starter-jetty</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
-
-        <!-- Logging -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
-
-        <!-- Test -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
+
+        <!-- Spring Cloud -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+        </dependency>
+
+
+        <!-- PLASMA Dependencies -->
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>api</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -142,15 +89,7 @@
     </dependencies>
     <build>
         <plugins>
-            <!-- compiler -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
+            <!-- Deployment -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
@@ -158,45 +97,32 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-            </plugin>
-            <!-- Spring Boot Maven Plugin - creates an executable jar -->
+
+            <!-- Spring Building -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${org.springframework.boot.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>build-info</goal>
-                            <goal>repackage</goal>
-                        </goals>
-                        <configuration>
-                            <additionalProperties>
-                                <title>${project.name}</title>
-                                <description>Service to manage semantic recommendations</description>
-                                <developerName>Alexander Paulus</developerName>
-                                <developerEMail>paulus@uni-wuppertal.de</developerEMail>
-                            </additionalProperties>
-                        </configuration>
-                    </execution>
-                </executions>
+                <configuration>
+                    <additionalProperties> <!-- Overwrite this configuration in the corresponding service -->
+                        <description>Service to manage semantic recommendations</description>
+                        <developerName>Alexander Paulus</developerName>
+                        <developerEMail>paulus@uni-wuppertal.de</developerEMail>
+                    </additionalProperties>
+                </configuration>
             </plugin>
 
-            <!-- docker image build plugin -->
+            <!-- Docker Image Plugin -->
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <version>${com.google.cloud.tools.jib.version}</version>
                 <configuration>
+                    <skip>false</skip>
                     <from>
                         <image>gcr.io/distroless/java:11</image>
                     </from>
                     <to>
                         <!--suppress UnresolvedMavenProperty -->
-                        <image>${platform.name.prefix}/${project.label.short}:${project.version}</image>
+                        <image>${git.registry}/${project.label.short}:${project.version}</image>
                     </to>
                     <container>
                         <ports>
@@ -205,41 +131,10 @@
                         <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                     </container>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>dockerBuild</id>
-                        <goals>
-                            <goal>dockerBuild</goal>
-                        </goals>
-                        <phase>install</phase>
-                    </execution>
-                </executions>
             </plugin>
 
-            <!-- Git Commit Plugin -->
-            <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
-                <version>${pl.project13.maven.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>revision</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <offline>true</offline>
-                    <verbose>true</verbose>
-                    <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
-                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
-                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
-                </configuration>
-            </plugin>
         </plugins>
-        <!-- Git Commit ID is obtained from the Git Commit Plugin -->
-        <!--suppress UnresolvedMavenProperty -->
-        <finalName>${project.artifactId}-${git.commit.id.abbrev}-${project.version}</finalName>
+        <finalName>${project.artifactId}-${project.version}</finalName>
     </build>
 
 </project>

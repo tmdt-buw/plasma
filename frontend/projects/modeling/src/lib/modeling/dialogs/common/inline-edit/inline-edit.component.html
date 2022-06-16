@@ -1,0 +1,18 @@
+<div *ngIf="editing" fxLayout="column">
+  <form nz-form>
+    <nz-form-item>
+      <input *ngIf="type !== 'textarea'" nz-input [readonly]="!editing" [required]="required"
+             (keypress)="keypress($event)" [name]="value" [(ngModel)]="value" [type]="type" [placeholder]="label"/>
+      <textarea *ngIf="type === 'textarea'" nz-input [readonly]="!editing" [required]="required"
+                (keypress)="keypress($event)" [name]="value" [(ngModel)]="value" [placeholder]="label"></textarea>
+    </nz-form-item>
+  </form>
+</div>
+
+<div *ngIf="!editing">
+  <ng-container *ngIf="value">
+    <span *ngIf="type !== 'textarea'">{{ value }}</span>
+    <p *ngIf="type === 'textarea'">{{ value }}</p>
+  </ng-container>
+  <i *ngIf="!value">{{ empty }}</i>
+</div>

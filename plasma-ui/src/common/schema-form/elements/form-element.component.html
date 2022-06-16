@@ -1,9 +1,0 @@
-<app-schema-form-hidden-form-element *ngIf="getFormElement() == FormElementTypes.Hidden"
-                                     [formElement]="formElement"></app-schema-form-hidden-form-element>
-<app-schema-form-complex-form-element *ngIf="getFormElement() == FormElementTypes.Complex"
-                                      [formElement]="formElement"></app-schema-form-complex-form-element>
-<app-schema-form-checkbox-form-element *ngIf="getFormElement() == FormElementTypes.Checkbox"
-                                       [customConfiguration]="getCustomConfiguration()"
-                                       [formElement]="formElement"></app-schema-form-checkbox-form-element>
-<app-schema-form-text-form-element *ngIf="getFormElement() == FormElementTypes.Text"
-                                   [formElement]="formElement"></app-schema-form-text-form-element>

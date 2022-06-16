@@ -2,47 +2,21 @@ version: "3.5"
 
 services:
 ########################### Infrastructure ######################################
-  neo4j:
-    image: neo4j:4.1.3
-    hostname: neo4j
+
+  fuseki:
+    image: stain/jena-fuseki
+    hostname: fuseki
     restart: unless-stopped
-    environment:
-      - NEO4J_AUTH=neo4j/plasma
-      - NEO4J_USERNAME=neo4j
-      - NEO4J_PASSWORD=plasma
-      - NEO4J_dbms_allow__upgrade=true
-    volumes:
-      - neo4j_data:/data
-    healthcheck:
-      test: cypher-shell "match (n) return n;"
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 5s
     ports:
-      - 7473:7473
-      - 7474:7474
-      - 7687:7687
-      
-  mariadb-dss:
-    image: mariadb:latest
-    hostname: mariadb-dss
-    restart: unless-stopped
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+      - 3030:3030
     environment:
-      - MYSQL_DATABASE=plasma-dss
-      - MYSQL_ROOT_PASSWORD=plasma
+      - FUSEKI_DATASET_1=sm
+      - ADMIN_PASSWORD=plasma
     volumes:
-      - mariadb_dss:/var/lib/mysql
-    healthcheck:
-      test: bash -c "mariadb -h 127.0.0.1 -p$$MYSQL_ROOT_PASSWORD  -e \"show databases;\""
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 5s
-    ports:
-     - 3306:3306
-     
+      - fuseki_data:/fuseki
+
+
+
   mariadb-sas:
     image: mariadb:latest
     hostname: mariadb-sas
@@ -60,7 +34,8 @@ services:
       retries: 3
       start_period: 5s
     ports:
-     - 3307:3306      
+      - 3307:3306
+
   mariadb-dms:
     image: mariadb:latest
     hostname: mariadb-dms
@@ -78,15 +53,34 @@ services:
       retries: 3
       start_period: 5s
     ports:
-     - 3308:3306 
-      
-########################### Service Infrastructure ######################################
+      - 3308:3306
+
+  mariadb-ars-m-sm:
+    image: mariadb:latest
+    hostname: mariadb-ars-m-sm
+    restart: unless-stopped
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      - MYSQL_DATABASE=plasma-ars-m-sm
+      - MYSQL_ROOT_PASSWORD=plasma
+    volumes:
+      - mariadb_ars_m_sm:/var/lib/mysql
+    healthcheck:
+      test: bash -c "mariadb -h 127.0.0.1 -p$$MYSQL_ROOT_PASSWORD  -e \"show databases;\""
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    ports:
+      - 3310:3306
+
+  ########################### Service Infrastructure ######################################
   discovery:
     image: "plasma/discovery:${PLASMA_VERSION}"
     hostname: plasma-discovery-service
     restart: unless-stopped
     ports:
-     - 8761:8761  
+      - 8761:8761
 
   admin:
     image: "plasma/admin:${PLASMA_VERSION}"
@@ -111,22 +105,17 @@ services:
   kgs:
     image: "plasma/kgs:${PLASMA_VERSION}"
     hostname: plasma-kgs
+    user: root
     restart: unless-stopped
     depends_on:
       - discovery
-      - neo4j
+      - fuseki
     ports:
-     - 8181:8181
-     
-  dss:
-    image: "plasma/dss:${PLASMA_VERSION}"
-    hostname: plasma-dss
-    restart: unless-stopped
-    depends_on:
-      - discovery
-      - mariadb-dss      
-    ports:
-     - 8185:8185    
+      - 8181:8181
+    environment:
+      - plasma.kgs.ontologies.folder=/var/ontologies
+    volumes:
+      - kgs_ontologies:/var/ontologies
 
   sas:
     image: "plasma/sas:${PLASMA_VERSION}"
@@ -142,11 +131,15 @@ services:
     image: "plasma/dms:${PLASMA_VERSION}"
     hostname: plasma-dms
     restart: unless-stopped
+    volumes:
+      - configs:/var/plasma/configs
     depends_on:
       - discovery
-      - mariadb-dms      
+      - mariadb-dms
     ports:
-     - 8186:8186   
+      - 8186:8186
+    environment:
+      - plasma.dms.feature.recommendations.enabled=true
 
   srs:
     image: "plasma/srs:${PLASMA_VERSION}"
@@ -155,18 +148,22 @@ services:
     depends_on:
       - discovery   
     ports:
-     - 8190:8190 
+     - 8190:8190
+    environment:
+      - plasma.ars.labeling.url=http://plasma-ars-l-lm:8201/api/plasma-ars-l-lm
+      - plasma.ars.modeling.url=
+      - plasma.ars.refinement.url=
 
   ui:
-    build: ./plasma-ui
-    image: "plasma/ui:${PLASMA_VERSION}"
+    build: ./frontend
+    image: "plasma/frontend:${PLASMA_VERSION}"
     hostname: plasma-ui
     restart: unless-stopped
     ports:
      - 80:80
 
 ########################### Auxiliary Services ######################################
-     
+
   ars-l-lm:
     image: "plasma/ars-l-lm:${PLASMA_VERSION}"
     hostname: plasma-ars-l-lm
@@ -174,11 +171,51 @@ services:
     depends_on:
       - discovery
       - kgs
+    volumes:
+      - configs:/var/plasma/configs
     ports:
-     - 8201:8201
+      - 8201:8201
+
+  ars-m-sm:
+    image: "plasma/ars-m-sm:${PLASMA_VERSION}"
+    hostname: plasma-ars-m-sm
+    restart: unless-stopped
+    depends_on:
+      - discovery
+      - kgs
+      - mariadb-ars-m-sm
+    volumes:
+      - configs:/var/plasma/configs
+    ports:
+      - 8202:8202
+
+  ars-r-sr:
+    image: "plasma/ars-r-sr:${PLASMA_VERSION}"
+    hostname: plasma-ars-r-sr
+    restart: unless-stopped
+    depends_on:
+      - discovery
+      - semantic-recommender
+      - kgs
+    volumes:
+      - configs:/var/plasma/configs
+    ports:
+      - 8205:8205
+
+  ########################### External Services ######################################
+
+  semantic-recommender:
+    image: plasma/recommender:${RECOMMENDER_VERSION}
+    hostname: semantic-recommender
+    restart: unless-stopped
+    ports:
+      - 8000:8000
+
 
 volumes:
-  neo4j_data:
-  mariadb_dss: 
+  fuseki_data:
   mariadb_sas:   
   mariadb_dms:
+  mariadb_ars_m_sm:
+  configs:
+  kgs_ontologies:

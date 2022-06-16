@@ -1,6 +1,7 @@
 package de.buw.tmdt.plasma.services.dms.rest.error;
 
-import de.buw.tmdt.plasma.services.dms.shared.dto.error.ErrorDTO;
+import de.buw.tmdt.plasma.datamodel.CombinedModelIntegrityException;
+import de.buw.tmdt.plasma.datamodel.error.ModelError;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,24 +29,32 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 			@NotNull HttpStatus status,
 			@NotNull WebRequest request
 	) {
-		logger.warn("HTTP Message not readable", ex);
-		ErrorDTO errorDTO = new ErrorDTO(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
-		return new ResponseEntity<>(errorDTO, HttpStatus.valueOf(errorDTO.getStatus()));
-	}
+        logger.warn("HTTP Message not readable", ex);
+        ModelError modelError = new ModelError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        return new ResponseEntity<>(modelError, HttpStatus.valueOf(modelError.getStatus()));
+    }
 
 	@NotNull
 	@ExceptionHandler(value = {ResponseStatusException.class})
 	public ResponseEntity<Object> handleResponseStatusException(@NotNull ResponseStatusException ex) {
-		logger.warn("A response Status Exception occurred", ex);
-		ErrorDTO errorDTO = new ErrorDTO(ex.getStatus().value(), ex.getReason(), ex.getMessage());
-		return new ResponseEntity<>(errorDTO, HttpStatus.valueOf(errorDTO.getStatus()));
-	}
+		logger.warn("A ResponseStatusException occurred: {}:{}", ex.getStatus(), ex.getMessage());
+        ModelError modelError = new ModelError(ex.getStatus().value(), ex.getReason(), ex.getMessage());
+        return new ResponseEntity<>(modelError, HttpStatus.valueOf(modelError.getStatus()));
+    }
+
+	@NotNull
+	@ExceptionHandler(value = {CombinedModelIntegrityException.class})
+	public ResponseEntity<Object> handleCombinedModelIntegrityException(@NotNull CombinedModelIntegrityException ex) {
+        logger.warn("A CombinedModelIntegrityException occurred", ex);
+        ModelError modelError = new ModelError(HttpStatus.BAD_REQUEST.value(), "Invalid configuration or state of combined model", ex.getMessage());
+        return new ResponseEntity<>(modelError, HttpStatus.valueOf(modelError.getStatus()));
+    }
 
 	@NotNull
 	@ExceptionHandler(value = {Exception.class})
 	public ResponseEntity<Object> handleGenericException(@NotNull Exception ex) {
-		logger.warn("Unhandled Exception", ex);
-		ErrorDTO errorDTO = new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Unknown Exception", ex.getMessage());
-		return new ResponseEntity<>(errorDTO, HttpStatus.valueOf(errorDTO.getStatus()));
-	}
+        logger.warn("Unhandled Exception", ex);
+        ModelError modelError = new ModelError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Unknown Exception", ex.getMessage());
+        return new ResponseEntity<>(modelError, HttpStatus.valueOf(modelError.getStatus()));
+    }
 }

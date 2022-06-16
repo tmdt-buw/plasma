@@ -5,21 +5,15 @@
     <parent>
         <artifactId>gws-parent</artifactId>
         <groupId>de.buw.tmdt.plasma.services.gws</groupId>
-        <version>1.0.0</version>
+        <version>1.3.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>service</artifactId>
     <name>${project.module.label.prefix} Service</name>
 
-    <properties>
-        <!-- The java version should be 11 if there are no dependencies to a HDP Version which requires 8 -->
-        <java.version>11</java.version>
-        <javax.servlet.version>3.1.0</javax.servlet.version>
-    </properties>
-
     <dependencies>
-        <!-- Spring Boot-->
+        <!-- Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -32,18 +26,18 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
 
-        <!-- Spring Cloud-->
+        <!-- Spring Cloud -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
@@ -52,8 +46,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
-
-        <!-- Spring Doc-->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-webflux-core</artifactId>
@@ -67,15 +59,6 @@
 
     <build>
         <plugins>
-            <!-- compiler -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
@@ -83,44 +66,32 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-            </plugin>
-            <!-- Spring Boot Maven Plugin - creates an executable jar -->
+
+            <!-- Spring Building -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${org.springframework.boot.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>build-info</goal>
-                            <goal>repackage</goal>
-                        </goals>
-                        <configuration>
-                            <additionalProperties>
-                                <title>${project.name}</title>
-                                <description>Example Description for the Service</description>
-                                <developerName>André Pomp</developerName>
-                                <developerEMail>pomp@uni-wuppertal.de</developerEMail>
-                            </additionalProperties>
-                        </configuration>
-                    </execution>
-                </executions>
+                <configuration>
+                    <additionalProperties> <!-- Overwrite this configuration in the corresponding service -->
+                        <description>Gateway service between UI and the other microservices.</description>
+                        <developerName>André Pomp</developerName>
+                        <developerEMail>pomp@uni-wuppertal.de</developerEMail>
+                    </additionalProperties>
+                </configuration>
             </plugin>
+
             <!-- docker image build plugin -->
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <version>${com.google.cloud.tools.jib.version}</version>
                 <configuration>
+                    <skip>false</skip>
                     <from>
                         <image>gcr.io/distroless/java:11</image>
                     </from>
                     <to>
                         <!--suppress UnresolvedMavenProperty -->
-                        <image>${platform.name.prefix}/${project.label.short}:${project.version}</image>
+                        <image>${git.registry}/${project.label.short}:${project.version}</image>
                     </to>
                     <container>
                         <ports>
@@ -129,41 +100,10 @@
                         <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                     </container>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>dockerBuild</id>
-                        <goals>
-                            <goal>dockerBuild</goal>
-                        </goals>
-                        <phase>install</phase>
-                    </execution>
-                </executions>
             </plugin>
 
-            <!-- Git Commit Plugin -->
-            <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
-                <version>${pl.project13.maven.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>revision</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <offline>true</offline>
-                    <verbose>true</verbose>
-                    <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
-                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
-                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
-                </configuration>
-            </plugin>
         </plugins>
-        <!-- Git Commit ID is obtained from the Git Commit Plugin -->
-        <!--suppress UnresolvedMavenProperty -->
-        <finalName>${project.artifactId}-${git.commit.id.abbrev}-${project.version}</finalName>
+        <finalName>${project.artifactId}-${project.version}</finalName>
       </build>
 
 </project>

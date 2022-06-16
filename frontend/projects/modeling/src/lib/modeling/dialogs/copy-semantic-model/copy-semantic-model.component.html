@@ -1,0 +1,36 @@
+<div fxFill fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="5px">
+  <!--      Model selection  -->
+  <div fxFlex="0 0 40px" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+    <label>Select available source model</label>
+    <nz-select
+      (ngModelChange)="onModelSelectionChanged($event)"
+      [ngModel]="sourceModelId"
+      nzPlaceHolder="Select a source model"
+    >
+      <nz-option *ngFor="let item of availableModels" [nzLabel]="item.name"
+                 [nzValue]="item.id"></nz-option>
+    </nz-select>
+  </div>
+
+  <nz-spin [nzSpinning]="loading" class="modeling-container" fxFlex nzTip="Loading...">
+    <div *ngIf="combinedModel" class="modeling-area">
+      <pls-modeling-diagram [$filter]="$filter"
+                            [$URIMode]="$URIMode"
+                            [$center]="$center"
+                            [$layout]="$layout"
+                            [combinedModel]="combinedModel"
+                            [lockDragAndDrop]="true"
+                            [modelId]="sourceModelId"
+      >
+      </pls-modeling-diagram>
+    </div>
+  </nz-spin>
+
+
+  <div fxFlex="0 0 40px">
+    <button (click)="onModelCopyClick()" [disabled]="!sourceModelId || !combinedModel" class="action-button" nz-button
+            nzType="primary"><i nz-icon nzType="play-circle"></i>Copy model
+    </button>
+  </div>
+
+</div>

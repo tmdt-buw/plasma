@@ -1,0 +1,52 @@
+<div fxLayout.lt-sm fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center start">
+  <h5 nz-typography>Add data</h5>
+  <div fxLayout="column" fxLayoutGap="10px" fxFill>
+        <textarea nz-input nz-typography title="Data Point"
+                  [disabled]="isReady"
+                  [(ngModel)]="currentDataPoint"
+                  id="input-datapoint"
+                  [nzAutosize]="{minRows: 3, maxRows: 8}">
+                </textarea>
+    <div fxLayout="row" fxLayoutGap="10px">
+      <div fxFlex class="sample-list" fxLayout="column" fxLayoutGap="5px">
+        <div class="sample-item" nz-typography *ngFor="let dp of lastDataPoints; let i = index">
+          [{{i}}] {{dp}}
+        </div>
+      </div>
+      <div fxFlex="250px" fxLayout="column" fxLayoutGap="15px">
+        <div fxLayout="row" fxLayoutAlign="end">
+          <button nz-button (click)="addLineSample()" [disabled]="!isValidJson() || isReady">
+            <i nz-icon nzType="plus-circle"></i>Add Sample
+          </button>
+        </div>
+        <div fxLayout=" row" fxLayoutAlign="end">
+          <button nz-button [disabled]="lastDataPoints?.length < 1 || loading" (click)="startAnalysis()">
+            <i nz-icon nzType="play-circle"></i>Start Analysis
+          </button>
+        </div>
+        <nz-spin nzSimple *ngIf="loading"></nz-spin>
+        <nz-alert nzShowIcon *ngIf="!loading && result" nzType="success" nzMessage="Analysis complete" [nzAction]="showSchema"></nz-alert>
+        <ng-template #showSchema>
+          <button nz-button nzSize="small" nzType="default" (click)="displaySchema()">Inspect</button>
+        </ng-template>
+        <nz-alert nzShowIcon *ngIf="!loading && error" nzType="error" nzMessage="Analysis failed" [nzAction]="showError"></nz-alert>
+        <ng-template #showError>
+          <button nz-button nzSize="small" nzType="default" nzDanger (click)="displayErrorInfo()">Info</button>
+        </ng-template>
+
+        <nz-modal [(nzVisible)]="displayErrorModal" nzTitle="Schema Analysis Error" (nzOnOk)="closeModals()" [nzCancelDisabled]="true" [nzCancelText]="null"
+        nzClassName="errorModal">
+          <ng-container *nzModalContent>
+            {{error}}
+          </ng-container>
+        </nz-modal>
+        <nz-modal [(nzVisible)]="displaySchemaModal" nzTitle="Schema Analysis Result" (nzOnOk)="closeModals()" [nzCancelDisabled]="true" [nzCancelText]="null"
+        nzWidth="80%">
+          <ng-container *nzModalContent>
+              <app-json-viewer *ngIf="result" [json]="result"></app-json-viewer>
+          </ng-container>
+        </nz-modal>
+      </div>
+    </div>
+  </div>
+</div>

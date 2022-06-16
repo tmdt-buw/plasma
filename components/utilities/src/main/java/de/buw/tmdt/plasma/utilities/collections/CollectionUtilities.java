@@ -1,5 +1,6 @@
 package de.buw.tmdt.plasma.utilities.collections;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +21,8 @@ public final class CollectionUtilities {
     }
 
     /**
-     * Returns true iff the given collection contains the given element. In opposite to {@link Collection#contains(Object)} this method does not throw {@link NullPointerException}s.
+     * Returns true iff the given collection contains the given element. In opposite to {@link Collection#contains(Object)} this method does not throw
+     * {@link NullPointerException}s.
      *
      * @param collection the collection which is searched
      * @param element    the element which is looked for
@@ -31,7 +33,7 @@ public final class CollectionUtilities {
         if (collection == null) {
             return false;
         }
-        for (java.lang.Object o : collection) {
+        for (Object o : collection) {
             if (Objects.equals(o, element)) {
                 return true;
             }
@@ -44,7 +46,8 @@ public final class CollectionUtilities {
     }
 
     /**
-     * Returns true if at least one of the elements of the second collection ({@code testes}) is contained in the first collection ({@code collection}). If either collection is empty or null the method returns false.
+     * Returns true if at least one of the elements of the second collection ({@code testes}) is contained in the first collection ({@code collection}). If
+     * either collection is empty or null the method returns false.
      *
      * @param collection the collection which is searched
      * @param testes     the collection with the testees
@@ -108,24 +111,37 @@ public final class CollectionUtilities {
      *
      * @param <T>                   Input element type
      * @param <U>                   Output element type
-     * @param <COut>                Output collection type
+     * @param <TCOut>               Output collection type
      * @param collection            Collection of input elements
      * @param mapping               The mapping function which projects the input elements to the output collection
      * @param collectionConstructor Provider for the resulting collection.
-     * @return a collection containing all
+     * @return a collection containing all elements mapped using the given function. If {@code collection} is null, an emtpy list is returned.
      */
-    @Contract("_, !null, !null -> !null; _, _, null -> fail; _, null, _ -> fail")
-    public static <T, U, COut extends Collection<? super U>> @NotNull COut map(
+    @SuppressFBWarnings("NP_NONNULL_RETURN_VIOLATION") // Added explicit null check
+    public static <T, U, TCOut extends Collection<? super U>> @NotNull TCOut map(
             @Nullable Iterable<? extends T> collection,
             @NotNull Function<? super T, ? extends U> mapping,
-            @NotNull Supplier<COut> collectionConstructor
+            @NotNull Supplier<TCOut> collectionConstructor
     ) {
-        COut result = collectionConstructor.get();
+        TCOut result = collectionConstructor.get();
+        if (result == null) {
+            throw new UnsupportedOperationException("Cannot construct new instance from given supplier");
+        }
         if (collection != null) {
             for (T t : collection) {
                 result.add(mapping.apply(t));
             }
         }
         return result;
+    }
+
+    /**
+     * Checks if a collection contains any elements.
+     *
+     * @param collection The collection to check
+     * @return False if the collection is null or empty
+     */
+    public static boolean hasElements(@Nullable Collection<?> collection) {
+        return collection != null && !collection.isEmpty();
     }
 }

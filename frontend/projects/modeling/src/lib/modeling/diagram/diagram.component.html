@@ -1,0 +1,10 @@
+<div fxFill class="canvas-container">
+  <div class="canvas" #graph cdkDropList [cdkDropListConnectedTo]="['entityList']"
+       (cdkDropListDropped)="entityDropped($event)" (cdkDropListEntered)="setSelectedModelNode($event.item.data)"
+       (cdkDropListExited)="setSelectedModelNode(null)" id="canvasContainer">
+  </div>
+  <ng-template #literalValueModalTpl>
+    <input [(ngModel)]="tmpLiteralValue" [placeholder]="'Enter literal value'" nz-input nz-typography type="text"/>
+    <nz-alert *ngIf="literalDefinitionError" nzType="error" nzMessage="{{ literalDefinitionError}}"></nz-alert>
+  </ng-template>
+</div>

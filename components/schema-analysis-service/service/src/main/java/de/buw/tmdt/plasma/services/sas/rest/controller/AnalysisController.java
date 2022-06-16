@@ -1,12 +1,9 @@
 package de.buw.tmdt.plasma.services.sas.rest.controller;
 
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.SyntaxModel;
+import de.buw.tmdt.plasma.services.sas.core.basic.SchemaAnalysisHandler;
 import de.buw.tmdt.plasma.services.sas.shared.api.AnalysisApi;
 import de.buw.tmdt.plasma.services.sas.shared.dto.SchemaAnalysisDataProvisionDTO;
-import de.buw.tmdt.plasma.services.sas.shared.dto.StandardDTO;
-import de.buw.tmdt.plasma.services.sas.shared.dto.StandardProvisionDTO;
-import de.buw.tmdt.plasma.services.sas.shared.dto.semanticmodel.SemanticModelDTO;
-import de.buw.tmdt.plasma.services.sas.shared.dto.syntaxmodel.NodeDTO;
-import de.buw.tmdt.plasma.services.sas.core.basic.SchemaAnalysisHandler;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,9 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * An exemplary rest controller with only one api.
- */
 @RestController("Analysis Controller")
 public class AnalysisController implements AnalysisApi {
 
@@ -40,7 +34,13 @@ public class AnalysisController implements AnalysisApi {
 	}
 
 	@Override
-	public @NotNull NodeDTO getResult(String id, int exampleLimit) {
+	public void addDataPoints(String id, List<SchemaAnalysisDataProvisionDTO> schemaAnalysisDataProvisionDTOs) {
+		UUID uuid = UUID.fromString(id);
+		schemaAnalysisDataProvisionDTOs.forEach(schemaAnalysisDataProvisionDTO -> schemaAnalysisHandler.addDataPoint(uuid, schemaAnalysisDataProvisionDTO));
+	}
+
+	@Override
+	public @NotNull SyntaxModel getResult(String id, int exampleLimit) {
 		UUID uuid = UUID.fromString(id);
 		return schemaAnalysisHandler.getResult(uuid, exampleLimit);
 	}
