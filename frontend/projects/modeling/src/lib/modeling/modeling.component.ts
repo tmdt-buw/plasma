@@ -2,12 +2,13 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ModalOptions, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, forkJoin, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import {
   CombinedModel,
   DeltaModification,
   ModelingControllerService,
+  ModelMapping,
   Relation,
   SchemaNode,
   SemanticModelNode
@@ -24,10 +25,10 @@ import { Nodes } from './model/configuration/node';
 import { ContextMenuEvent, ContextMenuEventType } from './model/events/context-menu-event';
 import { NodeChangedEvent } from './model/events/node-changed-event';
 import { Util } from './model/common/util';
-import { UploadOntologyComponent } from './dialogs/upload-ontology/upload-ontology.component';
 import { CopySemanticModelComponent } from './dialogs/copy-semantic-model/copy-semantic-model.component';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { ManageOntologiesDialogComponent } from './dialogs/manage-ontologies-dialog/manage-ontologies-dialog.component';
 
 
 @Component({
@@ -61,13 +62,13 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
   @ViewChild('main') main;
   @ViewChild('modelingArea') modelingArea: ElementRef;
 
-  @Output() finished = new EventEmitter();
+  @Output() finalized = new EventEmitter();
   @Output() clickedNode = new EventEmitter();
 
   // ontologies
-  availableOntologies: Array<OntologyInfo>;
   selectedOntologies: Array<string>;
-  defaultNamespace: string = 'local:';
+  ontologies: Array<OntologyInfo>;
+  namespaces: Array<{ prefix: string, uri: string }>;
 
   // search bar
   searchControl = new FormControl();
@@ -81,15 +82,17 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
 
   exportIncludeMappings: boolean = true;
 
-  // schema
+  // combined model
   combinedModel: CombinedModel;
+  arrayContexts: string[][];
+  modelMappings: ModelMapping[];
   loading: boolean = true;
 
   // dialogs
   private addConceptDialogRef: NzModalRef<any, any>;
   contextMenuSubscription;
-  private uploadOntologyDialogRef: NzModalRef<any, any>;
   private copySemanticModelDialogRef: NzModalRef<any, any>;
+  private manageOntolggiesDialogRef: NzModalRef<any, any>;
 
   // tools
   recommendationsEnabled = true;
@@ -104,24 +107,25 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.ontologyService.listOntologies().subscribe((ontologies: Array<OntologyInfo>) => {
-      this.availableOntologies = ontologies;
-      this.defaultNamespace = ontologies.find(ont => ont.local)?.prefix;
-      if (!this.defaultNamespace) {
-        this.defaultNamespace = '';
-      }
+      this.ontologies = ontologies;
+      this.namespaces = ontologies
+        .sort((ont1, ont2) => ont1.local ? -1 : 1)
+        .map(ont => {
+          return {uri: ont.uri, prefix: ont.prefix};
+        });
     });
     this.modelingService.getSelectedOntologies(this.modelId).subscribe((ontologies: Array<string>) => {
       this.selectedOntologies = ontologies;
     });
 
     // query schema
-    this.getSchema();
+    this.getCombinedModel();
     // subscribe to search
     this.searchControl.valueChanges.pipe(
       distinctUntilChanged(),
       debounceTime(1000)
     ).subscribe((value) => {
-      // TODO
+      // TODO enable search and filtering #34
     });
     this.contextMenuSubscription = this.contextMenu.onClosed.subscribe((event: ContextMenuEvent) => {
       if (event) {
@@ -129,19 +133,24 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
           const delta: DeltaModification = {
             entities: [event.target]
           };
-          this.modelingService.modifyModel(this.modelId, delta).subscribe((res: CombinedModel) => this.combinedModel = res);
+          this.modelingService.modifyModel(this.modelId, delta).subscribe((res: CombinedModel) => this.getCombinedModel());
+        } else if (event.type === ContextMenuEventType.updateRelation) {
+          const delta: DeltaModification = {
+            relations: [event.target]
+          };
+          this.modelingService.modifyModel(this.modelId, delta).subscribe((res: CombinedModel) => this.getCombinedModel());
         } else if (event.type === ContextMenuEventType.removeEntity) {
           const delta: DeltaModification = {
             entities: [event.target],
             deletion: true
           };
-          this.modelingService.modifyModel(this.modelId, delta).subscribe((res: CombinedModel) => this.combinedModel = res);
+          this.modelingService.modifyModel(this.modelId, delta).subscribe((res: CombinedModel) => this.getCombinedModel());
         } else if (event.type === ContextMenuEventType.removeRelation) {
           const delta: DeltaModification = {
             relations: [event.target],
             deletion: true
           };
-          this.modelingService.modifyModel(this.modelId, delta).subscribe((res: CombinedModel) => this.combinedModel = res);
+          this.modelingService.modifyModel(this.modelId, delta).subscribe((res: CombinedModel) => this.getCombinedModel());
         } else if (event.type === ContextMenuEventType.performOperation) {
           const operation = event.operation;
           const config: ModalOptions = {
@@ -154,7 +163,7 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
           const dialogRef = this.modal.create(Object.assign(config, ModalBaseConfig));
           dialogRef.afterClose.subscribe(context => {
             if (context) {
-              this.modelingService.modifySyntacticSchema(this.modelId, context).subscribe((res: CombinedModel) => this.combinedModel = res);
+              this.modelingService.modifySyntacticSchema(this.modelId, context).subscribe((res: CombinedModel) => this.getCombinedModel());
             }
           });
         }
@@ -166,27 +175,57 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
     this.modal.closeAll();
     this.contextMenuSubscription.unsubscribe();
     this.addConceptDialogRef?.close();
-    this.uploadOntologyDialogRef?.close();
+    this.manageOntolggiesDialogRef?.close();
   }
 
-  getSchema(): void {
-    this.modelingService.getCombinedModel(this.modelId).subscribe((schema: CombinedModel) => {
-        this.combinedModel = schema;
-        if (this.viewerMode) {
-          this.$filter.next(Filter.SEMANTIC);
+  getCombinedModel(): void {
+    forkJoin({
+      cm: this.modelingService.getCombinedModel(this.modelId),
+      ac: this.modelingService.getArrayContexts(this.modelId),
+      mm: this.modelingService.getModelMappings(this.modelId)
+    })
+      .subscribe(res => {
+          this.arrayContexts = res.ac;
+          this.modelMappings = res.mm;
+          this.combinedModel = res.cm;
+          if (this.viewerMode) {
+            this.$filter.next(Filter.SEMANTIC);
+          }
+          this.loading = false;
+        },
+        (error: HttpErrorResponse) => {
+          if (error.status === HttpStatusCode.ServiceUnavailable) {
+            this.notification.error('Service not available', 'The modeling service is currently not available, please try again later');
+          } else if (error.status === HttpStatusCode.NotFound) {
+            this.notification.error('Model not found', 'The requested model could not be found');
+          } else {
+            this.notification.error('Error retrieving model or supplementary data', 'An unexpected error occurred.');
+          }
         }
-        this.loading = false;
-      },
-      (error: HttpErrorResponse) => {
-        if (error.status === HttpStatusCode.ServiceUnavailable) {
-          this.notification.error('Service not available', 'The modeling service is currently not available, please try again later');
-        } else if (error.status === HttpStatusCode.NotFound) {
-          this.notification.error('Model not found', 'The requested model could not be found');
-        } else {
-          this.notification.error('Error retrieving model', 'An unexpected error occurred.');
+      );
+  }
+
+  updateModelMappings(): void {
+    forkJoin({
+      mm: this.modelingService.getModelMappings(this.modelId)
+    })
+      .subscribe(res => {
+          this.modelMappings = res.mm;
+          if (this.viewerMode) {
+            this.$filter.next(Filter.SEMANTIC);
+          }
+          this.loading = false;
+        },
+        (error: HttpErrorResponse) => {
+          if (error.status === HttpStatusCode.ServiceUnavailable) {
+            this.notification.error('Service not available', 'The modeling service is currently not available, please try again later');
+          } else if (error.status === HttpStatusCode.NotFound) {
+            this.notification.error('Model not found', 'The requested model could not be found');
+          } else {
+            this.notification.error('Error retrieving model or supplementary data', 'An unexpected error occurred.');
+          }
         }
-      }
-    );
+      );
   }
 
   // ======= Menu functions ===========
@@ -195,14 +234,14 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
     if (this.isFinalized()) {
       return;
     }
-    this.modelingService.undo(this.modelId).subscribe((res: CombinedModel) => this.combinedModel = res);
+    this.modelingService.undo(this.modelId).subscribe((res: CombinedModel) => this.getCombinedModel());
   }
 
   redo(): void {
     if (this.isFinalized()) {
       return;
     }
-    this.modelingService.redo(this.modelId).subscribe((res: CombinedModel) => this.combinedModel = res);
+    this.modelingService.redo(this.modelId).subscribe((res: CombinedModel) => this.getCombinedModel());
   }
 
   onNodeClicked(event: string): void {
@@ -214,7 +253,7 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
       nodes: event.nodes,
       entities: event.entities
     };
-    this.modelingService.modifyModel(this.modelId, delta).subscribe((res) => this.combinedModel = res);
+    this.modelingService.modifyModel(this.modelId, delta).subscribe((res) => this.getCombinedModel());
   }
 
   onSemanticElementsAdded(event: { entities?: Array<SemanticModelNode>, relations?: Array<Relation> }): void {
@@ -222,7 +261,7 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
       relations: event.relations,
       entities: event.entities
     };
-    this.modelingService.modifyModel(this.modelId, delta).subscribe((res) => this.combinedModel = res);
+    this.modelingService.modifyModel(this.modelId, delta).subscribe((res) => this.getCombinedModel());
   }
 
   onSemanticElementsRemoved(event: { entities?: Array<SemanticModelNode>, relations?: Array<Relation> }): void {
@@ -231,7 +270,9 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
       entities: event.entities,
       deletion: true
     };
-    this.modelingService.modifyModel(this.modelId, delta).subscribe((res) => this.combinedModel = res);
+    this.modelingService.modifyModel(this.modelId, delta).subscribe((res) => {
+      this.getCombinedModel();
+    });
   }
 
   onGraphLaidOut(event: CombinedModel): void {
@@ -291,7 +332,9 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
     this.modal.closeAll();
     this.viewerMode = true;
     this.modelingService.finalizeModeling(this.modelId).subscribe(() => {
-      this.finished.emit();
+      this.notification.success('Model finalized', 'The model has been finalized and provisional classes and relations added to the ontology.');
+      this.finalized.emit();
+      this.hideFinalizeButton = true;
     }, () => {
       this.viewerMode = false;
       this.notification.error('Could not finalize model', 'An error occurred during model finalization. Please contact an admin for more information.');
@@ -300,13 +343,19 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
 
   exportModel(): void {
     if (this.combinedModel.semanticModel.id) {
-      this.semanticModelService.exportStoredSemanticModel(this.combinedModel.semanticModel.id, 'TURTLE')
-        .subscribe((res) => Util.download('model.ttl', res),
+      this.semanticModelService.exportStoredSemanticModel(this.combinedModel.semanticModel.id, 'TURTLE', false, 'response')
+        .subscribe((res) => {
+            const filename = res.headers.get('filename');
+            Util.download(filename ? filename : 'model.ttl', res.body);
+          },
           () => this.notification.error('Could not export model', 'An error occurred during model export. Please try again in a few seconds.')
         );
     } else {
-      this.semanticModelService.convertSemanticModel(this.combinedModel, 'TURTLE', this.exportIncludeMappings)
-        .subscribe((res) => Util.download('model.ttl', res), () => this.notification.error('Could not export model', 'An error occurred during model export. Please try again in a few seconds.'));
+      this.semanticModelService.convertSemanticModel(this.combinedModel, 'TURTLE', this.exportIncludeMappings, 'response')
+        .subscribe((res) => {
+          const filename = res.headers.get('filename');
+          Util.download(filename ? filename : 'model.ttl', res.body);
+        }, () => this.notification.error('Could not export model', 'An error occurred during model export. Please try again in a few seconds.'));
     }
   }
 
@@ -324,7 +373,7 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
       this.addConceptDialogRef = undefined;
       return;
     }
-    this.uploadOntologyDialogRef?.close();
+    this.manageOntolggiesDialogRef?.close();
     const rect: DOMRect = this.modelingArea.nativeElement.getBoundingClientRect();
     const config: ModalOptions = {
       nzStyle: {position: 'absolute', top: `${rect.top + 15}px`, left: `10px`, 'max-width': '30%', bottom: '15px'},
@@ -333,7 +382,7 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
       nzContent: PlsConceptDialogComponent,
       nzComponentParams: {
         modelId: this.modelId,
-        defaultNamespace: this.defaultNamespace
+        namespaces: this.namespaces
       }
     };
     this.addConceptDialogRef = this.modal.create(Object.assign(config, ModalMouseEnabledConfig));
@@ -348,26 +397,34 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
     }
   }
 
-  showUploadOntologyDialog(): void {
-    if (this.uploadOntologyDialogRef) {
-      this.uploadOntologyDialogRef.close();
-      this.uploadOntologyDialogRef = undefined;
-      return;
-    }
+  showManageOntologiesDialog(): void {
     this.closeAddConceptDialog();
-    const rect: DOMRect = this.modelingArea.nativeElement.getBoundingClientRect();
+    const boundingBox: DOMRect = this.modelingArea.nativeElement.getBoundingClientRect();
+
     const config: ModalOptions = {
-      nzStyle: {position: 'absolute', top: `${rect.top + 15}px`, right: `10px`, 'max-width': '30%', bottom: '15px'},
-      nzClassName: 'pls-upload-ontology',
-      nzTitle: 'Add ontology',
-      nzContent: UploadOntologyComponent,
-      nzComponentParams: {}
+      nzStyle: {
+        position: 'absolute',
+        top: `${boundingBox.top + 15}px`,
+        left: `50px`,
+        'min-width': '60%',
+        'max-width': '80%',
+        bottom: '15px'
+      },
+      nzClassName: 'pls-manage-ontologies',
+      nzTitle: 'Manage Ontologies',
+      nzContent: ManageOntologiesDialogComponent,
+      nzComponentParams: {boundingBox}
     };
-    this.uploadOntologyDialogRef = this.modal.create(Object.assign(config, ModalMouseEnabledConfig));
-    this.uploadOntologyDialogRef.afterClose.subscribe(() => this.uploadOntologyDialogRef = undefined);
-    this.uploadOntologyDialogRef.getContentComponent().ontologyCreated.subscribe(() => {
+    this.manageOntolggiesDialogRef = this.modal.create(Object.assign(config, ModalMouseEnabledConfig));
+    this.manageOntolggiesDialogRef.afterClose.subscribe(() => this.manageOntolggiesDialogRef = undefined);
+    this.manageOntolggiesDialogRef.getContentComponent().ontologyCreated.subscribe(() => {
       this.ontologyService.listOntologies().subscribe((ontologies: Array<OntologyInfo>) => {
-        this.availableOntologies = ontologies;
+        this.ontologies = ontologies;
+      });
+    });
+    this.manageOntolggiesDialogRef.getContentComponent().ontologyDeleted.subscribe(() => {
+      this.ontologyService.listOntologies().subscribe((ontologies: Array<OntologyInfo>) => {
+        this.ontologies = ontologies;
       });
     });
   }
@@ -398,7 +455,7 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
     });
     this.copySemanticModelDialogRef.getContentComponent().copySuccessful.subscribe(() => {
       this.closeSemanticModelCopyDialog();
-      this.getSchema();
+      this.getCombinedModel();
     });
   }
 
@@ -426,7 +483,6 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
       this.combinedModel = combinedModel;
       this.notification.success('Semantic Modeling', 'Requested a semantic modeling. The result has been applied.');
     }, error => {
-      console.log(error);
       this.notification.error('Could not perform semantic modeling', error.error.message);
     });
   }
@@ -434,4 +490,5 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
   isViewerMode(): boolean {
     return this.viewerMode || this.combinedModel?.finalized;
   }
+
 }

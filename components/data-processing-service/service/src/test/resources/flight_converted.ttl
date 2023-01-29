@@ -1,0 +1,50 @@
+@prefix local:  <http://local.host/ontology#> .
+@prefix plasma: <http://plasma.uni-wuppertal.de/ontology#> .
+@prefix plcm:   <http://plasma.uni-wuppertal.de/cm#> .
+@prefix plsm:   <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:42d8a325-c7ad-2  a  local:airplane ;
+                      local:hasName  "Airbus A350 XPB" ;
+                      local:ownedBy  plsm:42d8a325-c7ad-3 .
+
+plsm:41b685e3-269d-1  a  local:identifier ;
+                      plasma:hasValue  "AL0025-20201123-1456-1734" .
+
+plsm:42d8a325-c7ad-0  a    local:flight ;
+                      local:flightType   "domestic" ;
+                      local:has          plsm:42d8a325-c7ad-1 , plsm:42d8a325-c7ad-4 ;
+                      local:performedBy  plsm:42d8a325-c7ad-2 .
+
+plsm:42d8a325-c7ad-5  a  local:seat_number ;
+                      plasma:hasValue  "FA2" .
+
+plsm:41b685e3-269d-4  a     local:staff ;
+                      local:hasName       "Flight attendant 2" ;
+                      local:scheduledFor  plsm:41b685e3-269d-0 ;
+                      local:seatedAt      plsm:41b685e3-269d-5 .
+
+plsm:42d8a325-c7ad-3  a  local:airline ;
+                      local:hasName  "Lufthansa" .
+
+plsm:41b685e3-269d-2  a  local:airplane ;
+                      local:hasName  "Airbus A350 XPB" ;
+                      local:ownedBy  plsm:41b685e3-269d-3 .
+
+plsm:42d8a325-c7ad-1  a  local:identifier ;
+                      plasma:hasValue  "AL0025-20201123-1456-1634" .
+
+plsm:41b685e3-269d-0  a    local:flight ;
+                      local:flightType   "domestic" ;
+                      local:has          plsm:41b685e3-269d-1 , plsm:41b685e3-269d-4 ;
+                      local:performedBy  plsm:41b685e3-269d-2 .
+
+plsm:41b685e3-269d-5  a  local:seat_number ;
+                      plasma:hasValue  "FA2" .
+
+plsm:42d8a325-c7ad-4  a     local:staff ;
+                      local:hasName       "Flight attendant 2" ;
+                      local:scheduledFor  plsm:42d8a325-c7ad-0 ;
+                      local:seatedAt      plsm:42d8a325-c7ad-5 .
+
+plsm:41b685e3-269d-3  a  local:airline ;
+                      local:hasName  "Lufthansa" .

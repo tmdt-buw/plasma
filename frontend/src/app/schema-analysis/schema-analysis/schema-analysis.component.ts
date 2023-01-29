@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AnalysisControllerService, SchemaAnalysisDataProvisionDTO, SyntaxModel } from '../api/generated';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-schema-analysis',
@@ -10,6 +12,7 @@ import { AnalysisControllerService, SchemaAnalysisDataProvisionDTO, SyntaxModel 
 export class SchemaAnalysisComponent implements OnInit, OnDestroy {
 
   @Input() dataId: string;
+  @Input() usingFiles = false;
   initializing: boolean = true;
   lastDataPoints: string[] = [];
 
@@ -26,7 +29,7 @@ export class SchemaAnalysisComponent implements OnInit, OnDestroy {
   displayErrorModal: boolean = false;
   displaySchemaModal: boolean = false;
 
-  constructor(private schemaService: AnalysisControllerService) {
+  constructor(private schemaService: AnalysisControllerService, private notification: NzNotificationService) {
   }
 
   ngOnInit(): void {
@@ -37,7 +40,10 @@ export class SchemaAnalysisComponent implements OnInit, OnDestroy {
         this.initializing = false;
         this.getIsReady();
       }
-    }, error => this.error = error.error.message);
+    }, error => {
+      this.handleError(error);
+      this.error = error.error.message;
+    });
   }
 
   ngOnDestroy(): void {
@@ -55,7 +61,7 @@ export class SchemaAnalysisComponent implements OnInit, OnDestroy {
       } else {
         this.loading = false;
       }
-    });
+    }, error => this.handleError(error));
   }
 
   addLineSample(): void {
@@ -71,7 +77,7 @@ export class SchemaAnalysisComponent implements OnInit, OnDestroy {
         sendDataDto.forEach(x => {
           this.lastDataPoints.push(x.data);
         });
-      });
+      }, error => this.handleError(error));
 
     } else {
       this.addSample(data);
@@ -84,13 +90,14 @@ export class SchemaAnalysisComponent implements OnInit, OnDestroy {
     const sendDataDto: SchemaAnalysisDataProvisionDTO = {data: sampleString};
     this.schemaService.addDataPoint(this.dataId, sendDataDto).subscribe(() => {
       this.lastDataPoints.push(sampleString);
-    });
+    }, error => this.handleError(error));
   }
 
   startAnalysis(): void {
     if (!this.isReady) {
       this.loading = true;
-      this.schemaService.finish(this.dataId).subscribe(() => this.getIsReady());
+      this.schemaService.finish(this.dataId).subscribe(() => this.getIsReady(),
+        error => this.handleError(error));
     }
   }
 
@@ -99,7 +106,10 @@ export class SchemaAnalysisComponent implements OnInit, OnDestroy {
       this.result = result;
       this.loading = false;
       this.schemaAvailable.emit(result);
-    }, () => this.result = undefined);
+    }, error => {
+      this.handleError(error);
+      this.result = undefined;
+    });
   }
 
   isValidJson(): boolean {
@@ -122,5 +132,17 @@ export class SchemaAnalysisComponent implements OnInit, OnDestroy {
   closeModals(): void {
     this.displayErrorModal = false;
     this.displaySchemaModal = false;
+  }
+
+  handleError(error): void {
+    if (error.status === 0){
+      this.notification.error('Connection error occurred', 'This is most likely caused by a CORS error. Check the system setup.');
+    }
+    else if (error.status === HttpStatusCode.ServiceUnavailable){
+      this.notification.error('Schema Analysis Service Not Available', 'The analysis service could not be reached. Please try again in a few minutes or contact support.');
+    }
+    else{
+      this.notification.error('Unexpected error occurred', 'The analysis service returned:<br>' + error.statusText + ': ' + error.message);
+    }
   }
 }

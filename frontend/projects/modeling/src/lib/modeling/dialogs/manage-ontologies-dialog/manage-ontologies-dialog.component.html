@@ -1,0 +1,41 @@
+
+  <div fxFlex fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px">
+
+    <nz-list nzBordered>
+      <nz-list-item *ngFor="let ont of availableOntologies" (click)="selectOntology(ont)" [ngStyle]="{'background': isSelected(ont) ? 'lightgrey' : null, 'color': isSelected(ont) ? 'white' : null}">
+        <span nz-typography >{{ont.label}} ({{ont.uri}})</span>
+      </nz-list-item>
+    </nz-list>
+    <div *ngIf="selected" fxFill fxFlex fxLayout="column" fxLayoutAlign="start start">
+      <div fxFlex  fxLayout="column" fxLayoutAlign="start start">
+        <nz-descriptions nzTitle="Ontology Information" [nzColumn]="1">
+          <nz-descriptions-item nzType="secondary" nzTitle="Label">{{selected.label}}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="URI">{{selected.uri}}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Prefix">{{selected.prefix}}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="#Classes">{{selected.noClasses}}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="# Properties">
+            {{selected.noProperties}}
+          </nz-descriptions-item>
+        </nz-descriptions>
+          <span>{{selected.description}}</span>
+      </div>
+
+    </div>
+
+    <div *ngIf="!selected" fxFill fxFlex fxLayout="column" fxLayoutAlign="start start">
+      <p>Please select an ontology from the list or upload a new one.</p>
+    </div>
+
+    <div fxFlex="170px" fxFill fxLayout="column" fxLayoutAlign="space-between center">
+        <button nz-button nzType="primary" (click)="showUploadOntologiesDialog()"><i nz-icon  nzType="upload"></i>Upload ontology</button>
+      <div></div>
+      <button *ngIf ="selected" nz-button nzType="default" nzDanger nz-popconfirm="This operation cannot be undone."
+              nzPopconfirmTitle="Are you sure to delete this ontology?"
+              (nzOnConfirm)="deleteOntology(selected)"
+              nzPopconfirmPlacement="topLeft"
+      [disabled]="selected.local"><i nz-icon  nzType="delete"></i>Delete selected ontology</button>
+
+
+  </div>
+
+

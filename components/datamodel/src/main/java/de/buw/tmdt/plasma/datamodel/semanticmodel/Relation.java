@@ -29,6 +29,7 @@ public abstract class Relation extends CombinedModelElement implements Serializa
     public static final String DESCRIPTION_PROPERTY = "description";
     public static final String PROPERTIES_PROPERTY = "properties";
     public static final String PROVISIONAL_PROPERTY = "provisional";
+    public static final String ARRAY_CONTEXT_PROPERTY = "arraycontext";
 
 
     /**
@@ -42,17 +43,18 @@ public abstract class Relation extends CombinedModelElement implements Serializa
     private String to;
 
     @NotNull
-    private final String uri;
-    private final String description;
+    private String uri;
+    private String description;
     private final Set<String> properties;
     private boolean provisional;
+    private boolean arrayContext;
 
     public Relation(
             String from,
             String to,
             @NotNull String uri
     ) {
-        this(null, from, to, uri, null, null, null, false);
+        this(null, from, to, uri, null, null, null, false, false);
     }
 
     public Relation(
@@ -61,7 +63,7 @@ public abstract class Relation extends CombinedModelElement implements Serializa
             @NotNull String uri,
             @NotNull String label
     ) {
-        this(null, from, to, uri, label, null, null, false);
+        this(null, from, to, uri, label, null, null, false, false);
     }
 
     public Relation(
@@ -71,7 +73,7 @@ public abstract class Relation extends CombinedModelElement implements Serializa
             @NotNull String label,
             @Nullable String description
     ) {
-        this(null, from, to, uri, label, description, null, false);
+        this(null, from, to, uri, label, description, null, false, false);
     }
 
     @JsonCreator
@@ -83,9 +85,11 @@ public abstract class Relation extends CombinedModelElement implements Serializa
             @Nullable @JsonProperty(LABEL_PROPERTY) String label,
             @Nullable @JsonProperty(DESCRIPTION_PROPERTY) String description,
             @Nullable @JsonProperty(PROPERTIES_PROPERTY) Set<String> properties,
+            @JsonProperty(ARRAY_CONTEXT_PROPERTY) boolean arrayContext,
             @JsonProperty(PROVISIONAL_PROPERTY) boolean provisional
     ) {
         super(label == null ? "" : label);
+        this.arrayContext = arrayContext;
         setUuid(uuid);
         this.from = from;
         this.to = to;
@@ -118,9 +122,17 @@ public abstract class Relation extends CombinedModelElement implements Serializa
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @JsonProperty(URI_PROPERTY)
     public String getURI() {
         return uri;
+    }
+
+    public void setUri(@NotNull String uri) {
+        this.uri = uri;
     }
 
     @JsonProperty(PROPERTIES_PROPERTY)
@@ -135,6 +147,15 @@ public abstract class Relation extends CombinedModelElement implements Serializa
 
     public void setProvisional(boolean provisional) {
         this.provisional = provisional;
+    }
+
+    @JsonProperty(ARRAY_CONTEXT_PROPERTY)
+    public boolean isArrayContext() {
+        return arrayContext;
+    }
+
+    public void setArrayContext(boolean arrayContext) {
+        this.arrayContext = arrayContext;
     }
 
     @Override
@@ -158,11 +179,10 @@ public abstract class Relation extends CombinedModelElement implements Serializa
     @Override
     @SuppressWarnings("MagicCharacter")
     public String toString() {
-        return "{\"@class\":\"Relation\""
-                + ", \"fromId\":\"" + from + '"'
-                + ", \"toId\":\"" + to + '"'
-                + ", \"URI\":" + uri
-                + '}';
+        if (isTemplate()) {
+            return "Footer -- " + getURI() + " -> Header";
+        }
+        return getUuid().substring(0, 8) + ": " + getFrom().substring(0, 8) + " -- " + getURI() + " -> " + getTo().substring(0, 8);
     }
 
     public abstract Relation copy();

@@ -16,15 +16,37 @@
       <nz-form-label [nzSpan]="2" nzRequired nzFor="description">Description</nz-form-label>
       <nz-form-control
         nzExtra="A description for the modeling process and / or the data used. You can specify additional information here to be used by assistance technologies">
-        <nz-textarea-count [nzMaxCharacterCount]="4000">
+        <nz-textarea-count [nzMaxCharacterCount]="3500">
           <textarea rows="3" formControlName="description" nz-input id="description"></textarea>
         </nz-textarea-count>
       </nz-form-control>
     </nz-form-item>
   </form>
 
-  <app-schema-analysis [dataId]="dataId" (schemaAvailable)="onSchemaAvailable($event)"
-                       (errorOccurred)="onSchemaAnalysisError($event)"></app-schema-analysis>
+  <div *ngIf="dpsAvailable">
+    <h5 nz-typography>Upload File</h5>
+    <nz-upload
+      nzType="drag"
+      [nzMultiple]="false"
+      [nzCustomRequest]="uploadFile"
+      [(nzFileList)]="files"
+    >
+      <p class="ant-upload-drag-icon">
+      <i nz-icon nzType="inbox"></i>
+    </p>
+      <p class="ant-upload-text">Click or drag file to this area to upload</p>
+      <p class="ant-upload-hint">
+        Only files with format csv, json, geojson and esri (zip) are supported
+      </p>
+    </nz-upload>
+  </div>
+
+
+  <span id=outerline *ngIf="dpsAvailable"><span id=linetext>or</span></span>
+
+
+  <app-schema-analysis #schemaAnalysis [dataId]="dataId" (schemaAvailable)="onSchemaAvailable($event)"
+                       (errorOccurred)="onSchemaAnalysisError($event)" [usingFiles]="usingFiles"></app-schema-analysis>
 
   <!-- error and submit button -->
   <div fxLayoutAlign="space-between" fxLayout="row" fxLayoutGap="30px">

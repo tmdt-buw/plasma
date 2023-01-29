@@ -1,0 +1,99 @@
+<nz-page-header class="content-header" nzBackIcon>
+  <nz-page-header-title>Data Processing in PLASMA</nz-page-header-title>
+</nz-page-header>
+
+<div class="content" fxFill fxLayout="column">
+  <h3 nz-typography>Data Conversion</h3>
+  <p nz-typography>
+    Data conversion from JSON to RDF in PLASMA requires the definition of a semantic model.
+    Creating a mapping between a Literal or a Class and a primitive (i.e. leaf) JSON node will result in the contained
+    value to be stored in an RDF literal during conversion.
+    If a class is mapped to a primitive node, the conversion creates a new literal and links it to the class instance
+    using a generic plasma:hasValue relation.
+    During the conversion process, each data point in the input file is converted into RDF, using the semantic model as
+    the basic structure and filling in the data from the JSON values.
+  </p>
+  <h3 nz-typography>Handling Arrays</h3>
+  <p nz-typography> Usually, one primitive node in a data point contains one piece of data that is then represented as a
+    literal in
+    RDF.
+    However, JSON does support array structures which contain multiple values that have to be mapped.
+    The downside is that those values are not visible in the modeling view and their amount might vary between different
+    data points.
+    Thus, during the conversion process, arrays have to be processed in a special way.
+    There are three ways of how arrays are processed: serialization processing, primitive processing and arraycontext
+    processing, the latter being the most complex one.
+  </p>
+  <h4 nz-typography>Serialization Processing of Arrays</h4>
+  <p nz-typography>
+    A class or literal can be mapped right on the array node in PLASMA.
+    This will NOT map the actual values but serialize the whole array context and inject it into the value of the
+    resulting literal.
+    Once the array node has been mapped, all sub-elements of that node will be disabled and cannot be mapped any more
+    (as they will be serialized later on).
+  </p>
+  <img alt="Array with serialization mapping" src="assets/img/arraycontexts/serialization_mapping.png" width="384">
+  <p nz-typography>The resulting TTL shows the array information as a serialized JSON structure:</p>
+  <img alt="TTL for array with serialization mapping" src="assets/img/arraycontexts/serialization_mapping_ttl.png"
+       width="1155">
+  <p></p>
+  <h4 nz-typography>Primitive Processing of Arrays</h4>
+  <p nz-typography>
+    If an array contains only primitive values, e.g. strings or numbers, a class or literal can be mapped onto the
+    single child node of an array node.
+    During conversion, the JSON array is converted to an RDF List with each primitive value being represented as a class
+    or literal.
+    Incoming and outgoing relations in the semantic model to or from the mapped element will use the list as an object
+    or subject.</p>
+  <img alt="Array with primitive mapping" src="assets/img/arraycontexts/primitive_mapping.png" width="348">
+  <p nz-typography>The resulting TTL conversion output shows the primitive array as an RDF array:</p>
+  <img alt="TTL for array with primitive mapping" src="assets/img/arraycontexts/primitive_mapping_ttl.png" width="698">
+  <p></p>
+  <h4 nz-typography>Arraycontext Processing of Arrays</h4>
+  <p nz-typography>
+    Mapping a complex, i.e. non-primitive and non-serialized, array is possible in PLASMA.
+    If some or all child nodes of an array node are mapped, they are treated as individual arrays to parse.</p>
+  <img alt="Array mapping with no arraycontext defined" src="assets/img/arraycontexts/context_mapping_no_context.png"
+       width="422">
+  <p nz-typography>This results in the following TTL output:</p>
+  <img alt="TTL for array mapping with no arraycontext defined"
+       src="assets/img/arraycontexts/context_mapping_no_context_ttl.png"
+       width="947">
+  <p nz-typography>If this behaviour is undesired, e.g. a proper staff instance shall be created with the appropriate
+    values assigned
+    to it, an arraycontext is needed.
+    All semantic nodes that are part of the arraycontext of this array will then be converted into new RDF instances,
+    filled with values obtained from array sub-elements or standalone classes if not mapped.
+    The array context may be extended towards other elements which will then be included in the iteration processing,
+    i.e. be duplicated also.
+  </p>
+  <nz-card nzTitle="Warning">Arraycontexts of different arrays must not be connected. An arraycontext may only include a
+    single array.
+  </nz-card>
+  <p>
+    If an arraycontext is defined, all elements that are not part of the arraycontext will not be duplicated.
+    Also, NamedEntities and unmapped (constant) Literals cannot be duplicated. Relations to those elements will however
+    be replicated for each array value.
+  </p>
+  <p nz-typography>
+    Defining an arraycontext can be done by adding relations to an arraycontext (via the context menu). Relations that
+    are
+    part of an arraycontext are highlighted.</p>
+  <img alt="Adding an edge to an arraycontext" src="assets/img/arraycontexts/context_mapping_add_to_context.png"
+       width="423">
+  <p nz-typography>Defining a proper arraycontext for the staff array will look like this:</p>
+  <img alt="Array mapping with arraycontext defined" src="assets/img/arraycontexts/context_mapping_with_context.png"
+       width="442">
+  <p nz-typography>Converting the data will then generate the following output:</p>
+  <img alt="TTL for a proper array mapping with arraycontext defined"
+       src="assets/img/arraycontexts/context_mapping_with_context_ttl.png"
+       width="959">
+  <p nz-typography>As can be seen, all instances of staff members have been properly created and their respective values
+    are assigned.
+    All staff members are related to the flight using a flo:flightStaff relation and an RDF list.</p>
+  <nz-card nzTitle="Notice">At the current state of PLASMA, it is not possible to create arraycontexts for
+    nested arrays, e.g. an array of arrays, due to parsing inconsistencies.
+  </nz-card>
+  <p></p>
+</div>
+

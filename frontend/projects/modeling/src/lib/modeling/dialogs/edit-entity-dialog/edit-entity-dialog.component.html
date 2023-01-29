@@ -1,0 +1,55 @@
+<form nz-form [formGroup]="form" (submit)="submit()" xmlns="http://www.w3.org/1999/html">
+  <div fxFlex fxLayout="column">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="3" nzFor="label" nzRequired>Label</nz-form-label>
+      <nz-form-control nzErrorTip="Label is required"
+                       nzExtra="This will provide a readable name for the concept or named entity. It should be independent from your current modeling.">
+        <input (change)="onLabelEdited($event)" formControlName="label" nz-input/>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="3" nzFor="description" nzRequired>Description</nz-form-label>
+      <nz-form-control nzErrorTip="Description is required"
+                       nzExtra="Detailed description of the class or named entity.">
+        <textarea formControlName="description" nz-input></textarea>
+      </nz-form-control>
+    </nz-form-item>
+
+    <span *ngIf="uriWarning" fxFlex nz-typography
+          nzType="warning" style="text-align: center">If URI is changed, the existing entity will be updated!</span>
+    <nz-form-item fxFlex>
+      <nz-form-label [nzSpan]="3" nzFor="uri" nzRequired>URI</nz-form-label>
+      <nz-form-control [nzErrorTip]="uriError"
+                       [nzValidateStatus]="uriCheckStatus"
+                       [nzValidatingTip]="'Validating...'">
+
+        <pls-uri-generator #uri_generator (URIChanged)="updateURI($event)" [disableAutoGeneration]="!!editNode"
+                           [identifierUpdate]="identifier" [namespaces]="namespaces"
+                           [uri]="editNode?.uri"></pls-uri-generator>
+      </nz-form-control>
+    </nz-form-item>
+
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="3" nzFor="namedentity">NamedEntity</nz-form-label>
+      <nz-form-control
+        nzExtra="Check if this is a named entity. Named entities are entities that exist only once and cannot be altered. Examples: 'Los Angeles' or 'George Washington'. ">
+        <label [nz-tooltip]="getNamedEntityTooltip()" [nzDisabled]="!!editNode" formControlName="namedEntity"
+               nz-checkbox></label>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</form>
+
+<div fxLayout="column" fxLayoutGap="5px">
+  <nz-alert nzType="error" *ngIf="error">{{ error }}</nz-alert>
+  <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end">
+    <button nz-button (click)="cancel()">Cancel</button>
+    <button (click)="submit()"
+            [disabled]="!form.valid"
+            nz-button nzType="primary">Save
+    </button>
+  </div>
+</div>
+

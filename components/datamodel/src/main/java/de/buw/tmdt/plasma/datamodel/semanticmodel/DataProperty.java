@@ -23,7 +23,7 @@ public class DataProperty extends Relation {
     }
 
     public DataProperty(String uuid, String fromId, String toId, @NotNull String uri, String label, String description, Set<String> properties) {
-        this(uuid, fromId, toId, uri, label, description, properties, false);
+        this(uuid, fromId, toId, uri, label, description, properties, false, false);
     }
 
     @JsonCreator
@@ -35,19 +35,16 @@ public class DataProperty extends Relation {
             @Nullable @JsonProperty(LABEL_PROPERTY) String label,
             @Nullable @JsonProperty(DESCRIPTION_PROPERTY) String description,
             @Nullable @JsonProperty(PROPERTIES_PROPERTY) Set<String> properties,
+            @JsonProperty(ARRAY_CONTEXT_PROPERTY) boolean arrayContext,
             @JsonProperty(PROVISIONAL_PROPERTY) boolean provisional
     ) {
-        super(uuid, from, to, uri, label, description, properties, provisional);
+        super(uuid, from, to, uri, label, description, properties, arrayContext, provisional);
     }
 
     @Override
     @SuppressWarnings("MagicCharacter")
     public String toString() {
-        return "{\"@class\":\"DataProperty\""
-                + ", \"fromId\":\"" + getFrom() + '"'
-                + ", \"toId\":\"" + getTo() + '"'
-                + ", \"URI\":" + getURI()
-                + '}';
+        return "DataProperty " + super.toString();
     }
 
     /**
@@ -63,6 +60,7 @@ public class DataProperty extends Relation {
                 getLabel(),
                 getDescription(),
                 getProperties(),
+                isArrayContext(),
                 isProvisional()
         );
     }

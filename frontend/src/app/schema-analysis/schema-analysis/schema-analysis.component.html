@@ -1,8 +1,8 @@
 <div fxLayout.lt-sm fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center start">
-  <h5 nz-typography>Add data</h5>
+  <h5 nz-typography>Manually add sample data</h5>
   <div fxLayout="column" fxLayoutGap="10px" fxFill>
         <textarea nz-input nz-typography title="Data Point"
-                  [disabled]="isReady"
+                  [disabled]="isReady || usingFiles"
                   [(ngModel)]="currentDataPoint"
                   id="input-datapoint"
                   [nzAutosize]="{minRows: 3, maxRows: 8}">
@@ -15,7 +15,7 @@
       </div>
       <div fxFlex="250px" fxLayout="column" fxLayoutGap="15px">
         <div fxLayout="row" fxLayoutAlign="end">
-          <button nz-button (click)="addLineSample()" [disabled]="!isValidJson() || isReady">
+          <button nz-button (click)="addLineSample()" [disabled]="!isValidJson() || isReady || usingFiles">
             <i nz-icon nzType="plus-circle"></i>Add Sample
           </button>
         </div>
@@ -40,7 +40,7 @@
             {{error}}
           </ng-container>
         </nz-modal>
-        <nz-modal [(nzVisible)]="displaySchemaModal" nzTitle="Schema Analysis Result" (nzOnOk)="closeModals()" [nzCancelDisabled]="true" [nzCancelText]="null"
+        <nz-modal [(nzVisible)]="displaySchemaModal" nzTitle="Schema Analysis Result" (nzOnOk)="closeModals()" [nzCancelDisabled]="true" [nzClosable]="false" [nzCancelText]="null"
         nzWidth="80%">
           <ng-container *nzModalContent>
               <app-json-viewer *ngIf="result" [json]="result"></app-json-viewer>

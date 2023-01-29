@@ -27,18 +27,16 @@
           [nzShowSearch]="false"
           [nzDropdownMatchSelectWidth]="false"
         >
-          <nz-option *ngFor="let item of availableOntologies" [nz-tooltip]="item.uri" [nzLabel]="item.label"
-                     [nzValue]="item.label"></nz-option>
+          <nz-option *ngFor="let item of ontologies" [nz-tooltip]="item.uri" [nzLabel]="item.label"
+                     [nzValue]="item.label">
+          </nz-option>
         </nz-select>
         <ng-template #tagPlaceHolder let-selectedList>+{{ selectedList.length }}</ng-template>
         <ng-template #addOntologyTemplate>
-          <button nz-button nzType="text" nz-tooltip nzTooltipTitle="Upload a new ontology" (click)="showUploadOntologyDialog()" [disabled]="isFinalized()"><i
-            nz-icon nzType="upload"></i>Add ontology
+          <button nz-button nzType="text" (click)="showManageOntologiesDialog()"><i
+            nz-icon nzType="apartment"></i>Manage ontologies
           </button>
         </ng-template>
-
-
-
 
       <!-- URI mode toggle -->
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
@@ -123,6 +121,8 @@
   <nz-spin fxFlex class="modeling-container" nzTip="Loading..." [nzSpinning]="loading">
     <div class="modeling-area" *ngIf="combinedModel" #modelingArea>
       <pls-modeling-diagram [$filter]="$filter" [$center]="$center" [$layout]="$layout" [$URIMode]="$URIMode"
+                            [modelMappings]="modelMappings"
+                            [arrayContexts]="arrayContexts"
                             [combinedModel]="combinedModel"
                             (graphLaidOut)="onGraphLaidOut($event)"
                             (semanticModelElementsAdded)="onSemanticElementsAdded($event)"

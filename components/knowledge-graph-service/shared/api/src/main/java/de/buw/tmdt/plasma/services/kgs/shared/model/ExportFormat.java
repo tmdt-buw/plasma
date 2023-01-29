@@ -26,4 +26,9 @@ public enum ExportFormat {
                 .filter(format -> format.getFormatString().equalsIgnoreCase(formatString))
                 .findFirst();
     }
+
+    @Override
+    public String toString() {
+        return getFormatString();
+    }
 }

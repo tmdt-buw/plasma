@@ -7,6 +7,7 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/cacheRelationRequest.ts
 model/class.ts
 model/classAllOf.ts
 model/collisionSchema.ts
@@ -27,6 +28,7 @@ model/models.ts
 model/namedEntity.ts
 model/namedEntityAllOf.ts
 model/objectNode.ts
+model/objectNodeAllOf.ts
 model/objectProperty.ts
 model/positionedCombinedModelElement.ts
 model/primitiveNode.ts
@@ -40,4 +42,5 @@ model/splitting.ts
 model/syntacticOperationDTO.ts
 model/syntaxModel.ts
 model/typeDefinitionDTOObject.ts
+model/updatePositionsRequestInner.ts
 variables.ts

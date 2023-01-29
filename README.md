@@ -13,6 +13,7 @@ PLASMA currently consists of the following (micro)services:
 * **Knowledge Graph Service**: Stores ontologies and created semantic models
 * **Schema Analysis Service**: Analyses sample data to extract a syntactic schema on which the semantic model can be built
 * **Semantic Recommendation Service**: Connecting service for all auxiliary services
+* **Data Processing Service**: Processes files and converts JSON data to RDF
 * Semantic Modeling UI: A modeling UI with focus on simplifying the modeling process
 * Discovery Service: Enables service discovery using Eureka
 * Spring Boot Admin Service: Monitoring
@@ -37,11 +38,12 @@ The included web-based frontend is written using Angular 13.
 ### Docker Setup
 * Checkout the repository
 * To build the services execute `mvn package` on the parent module in the `components` folder
-* To build the Docker containers execute mvn install jib:dockerBuild -DskipTests on the parent module
+* Alternatively, to also build the Docker containers execute `mvn package jib:dockerBuild -DskipTests` on the parent
+  module
 
 **Note**: Ensure that your docker is running on the local machine and can be reached
 
-* Build the UI by running `npm build:dms` and `npm build` in `frontend` directory
+* Build the UI by running `npm run build:dms` and `npm run build` in `frontend` directory
 * Build the docker container for the UI using the corresponding `Dockerfile` in `frontend`
 
 ### Starting PLASMA
@@ -51,7 +53,8 @@ For an explanation of most parameters, check the individual README files of thos
 * Access the UI at `localhost:80`
 
 ### Stopping PLASMA
-* PLASMA can be stopped by halting all Docker containers, e.g. docker-compose down
+
+* PLASMA can be stopped by halting all Docker containers, e.g. `docker-compose down`
 
 
 ## Development Setup
@@ -66,6 +69,7 @@ This is required due to a limitation of docker. Example:
 127.0.0.1 plasma-sas
 127.0.0.1 plasma-dms
 127.0.0.1 plasma-srs
+127.0.0.1 plasma-dps
 ```
 
 **Note**: This is only required when developing or running one or more component(s) outside of Docker.

@@ -20,6 +20,8 @@ public class Edge extends CombinedModelElement {
     public static final String FROM_PROPERTY = "from";
     public static final String TO_PROPERTY = "to";
     public static final String ANNOTATIONS_PROPERTY = "annotations";
+    public static final String VISIBLE_PROPERTY = "visible";
+    public static final String DISABLED_PROPERTY = "disabled";
 
     /**
      * An identifier of the origin node, references to a {@link SchemaNode#getUuid()}.
@@ -40,9 +42,12 @@ public class Edge extends CombinedModelElement {
     @Nullable
     private String annotation;
 
+    private boolean visible;
+    private boolean disabled;
+
     @SuppressFBWarnings("NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION") // does not intent to override
     public Edge(@NotNull String fromId, @NotNull String toId) {
-        this(UUID.randomUUID().toString(), "", fromId, toId, null);
+        this(UUID.randomUUID().toString(), "", fromId, toId, null, false,true);
     }
 
     public Edge(
@@ -51,7 +56,7 @@ public class Edge extends CombinedModelElement {
             @NotNull String fromId,
             @NotNull String toId
     ) {
-        this(uuid, label, fromId, toId, null);
+        this(uuid, label, fromId, toId, null, false, true);
     }
 
     @JsonCreator
@@ -60,13 +65,17 @@ public class Edge extends CombinedModelElement {
             @NotNull @JsonProperty(LABEL_PROPERTY) String label,
             @NotNull @JsonProperty(FROM_PROPERTY) String fromId,
             @NotNull @JsonProperty(TO_PROPERTY) String toId,
-            @Nullable @JsonProperty(ANNOTATIONS_PROPERTY) String annotation
+            @Nullable @JsonProperty(ANNOTATIONS_PROPERTY) String annotation,
+            @JsonProperty(DISABLED_PROPERTY) boolean disabled,
+            @JsonProperty(VISIBLE_PROPERTY) boolean visible
     ) {
         super(label);
         setUuid(uuid);
         this.fromId = fromId;
         this.toId = toId;
         this.annotation = annotation;
+        this.disabled = disabled;
+        this.visible = visible;
     }
 
     @JsonProperty(FROM_PROPERTY)
@@ -99,6 +108,24 @@ public class Edge extends CombinedModelElement {
         this.annotation = annotation;
     }
 
+    @JsonProperty(VISIBLE_PROPERTY)
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    @JsonProperty(DISABLED_PROPERTY)
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
     /**
      * Creates a deep clone of the current entity.
      *
@@ -106,7 +133,7 @@ public class Edge extends CombinedModelElement {
      */
     @Override
     public Edge copy() {
-        return new Edge(getUuid(), getLabel(), getFromId(), getToId(), getAnnotation());
+        return new Edge(getUuid(), getLabel(), getFromId(), getToId(), getAnnotation(), isDisabled(), isVisible());
     }
 
     @Override

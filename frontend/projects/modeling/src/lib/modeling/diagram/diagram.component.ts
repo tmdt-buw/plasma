@@ -26,6 +26,7 @@ import {
   DeltaModification,
   Instance,
   Literal,
+  ModelMapping,
   NamedEntity,
   ObjectProperty,
   PrimitiveNode,
@@ -33,6 +34,7 @@ import {
   SchemaNode,
   SemanticModel,
   SemanticModelNode,
+  SetNode,
   SyntaxModel
 } from '../../api/generated/dms';
 import { ContextMenuService } from '../context-menu/context-menu.service';
@@ -70,10 +72,6 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
 
   @Input() viewerMode: boolean = false; // if set to true hides all input and interaction options that modify the model
 
-  get combinedModel(): CombinedModel {
-    return this._combinedModel;
-  }
-
   @Input() modelId: string;
   // external controls
   @Input() $center: Subject<any>;
@@ -89,6 +87,8 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
   // data
   initializing = true;
   _combinedModel: CombinedModel;
+  _modelMappings: ModelMapping[];
+  _arrayContexts: string[][];
 
   // graph elements
   @ViewChild('graph') canvas: ElementRef;
@@ -101,12 +101,24 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
   // dialog
   private nodeDialogRef: NzModalRef<any>;
 
-  // create graph if input schema changes and graph has already been initialized
+  get combinedModel(): CombinedModel {
+    return this._combinedModel;
+  }
+
+  // create graph if input graph changes and graph has already been initialized
   @Input() set combinedModel(combinedModel: CombinedModel) {
     this._combinedModel = combinedModel;
     if (!this.initializing) {
       this.createGraph(this.$URIMode?.getValue());
     }
+  }
+
+  @Input() set arrayContexts(arrayContexts: string[][]) {
+    this._arrayContexts = arrayContexts;
+  }
+
+  @Input() set modelMappings(modelMappings: ModelMapping[]) {
+    this._modelMappings = modelMappings;
   }
 
   // modeling
@@ -233,10 +245,12 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
           return (el.id !== clazzId);
         });
         if (Nodes.isClass(elementView) && elementBelow) {
+          // map an existing class to a syntax node
           const syntaxNode = this.findSyntaxNodeById(elementBelow.id as string);
           const classNode = this.findSemanticNodeById(clazzId as string) as Class;
-          if (syntaxNode._class === 'PrimitiveNode' && !classNode.syntaxNodeUuid) {
-            // TODO add a confirm here?
+
+          if ((syntaxNode._class === 'PrimitiveNode' || syntaxNode._class === 'SetNode' || syntaxNode._class === 'ObjectNode')
+            && !classNode.syntaxNodeUuid && !syntaxNode.disabled) {
             if (!classNode.instance) {
               classNode.instance = {
                 label: syntaxNode.label,
@@ -245,7 +259,7 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
             }
             classNode.syntaxNodeUuid = syntaxNode.uuid;
             classNode.syntaxLabel = syntaxNode.label;
-            classNode.syntaxPath = syntaxNode.path.join('->');
+            classNode.syntaxPath = syntaxNode.pathAsJSONPointer;
             classNode.instance.label = syntaxNode.label;
             classNode.x = syntaxNode.x;
             classNode.y = syntaxNode.y;
@@ -264,7 +278,7 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
       // Highlights for modeling
       'element:mouseover': (elementView: dia.ElementView) => {
         // console.log('element:mouseover');
-        if (this.modelNode?._class === 'Class' && this.getIfLeafNode(elementView)) {
+        if (this.modelNode?._class === 'Class' && this.getIfMappableNode(elementView)) {
           elementView.highlight();
           this.hoveredElement = elementView;
         }
@@ -358,7 +372,7 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
             uri: this.relation.uri
           };
           const tmpNode: dia.Element = this.addLiteralNode(literal.uuid, 'Set Value', 'text_fields', literal.x, literal.y);
-          const tmpRel = this.addDataPropertyLink(relation.uuid, relation.from, relation.to, relation.label);
+          const tmpRel = this.addDataPropertyLink(relation.uuid, relation.from, relation.to, relation.label, undefined);
 
           this.literalValueModalRef = this.modal.create({
             nzStyle: {
@@ -401,7 +415,7 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
               uuid: uuidv4(),
               syntaxNodeUuid: syntaxNode.uuid,
               syntaxLabel: syntaxNode.label,
-              syntaxPath: syntaxNode.path.join('->'),
+              syntaxPath: syntaxNode.pathAsJSONPointer,
             };
             const from = source;
             const to = literal.uuid;
@@ -433,9 +447,11 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
         }
         const id = cellView.model.attributes.id;
         if (Links.isSemanticLink(cellView)) {
-          const link = this.combinedModel.semanticModel.edges.find(edge => edge.uuid === id);
+          const link: Relation = this.combinedModel.semanticModel.edges.find(edge => edge.uuid === id);
+          const arrayContextAvailable = this.isArrayContextAvailable(link);
           this.contextMenu.open(cellView.el, PlsRelationConceptMenuComponent, this.viewContainerRef, {
-            relation: link
+            relation: link,
+            arrayContextAvailable
           });
         }
         if (Nodes.isClass(cellView)) {
@@ -525,13 +541,52 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
     });
   }
 
+  private isArrayContextAvailable(link: Relation): boolean {
+    const from: SemanticModelNode = this.combinedModel.semanticModel.nodes.find(n => n.uuid === link.from);
+    const to: SemanticModelNode = this.combinedModel.semanticModel.nodes.find(n => n.uuid === link.to);
+    console.log('checking link', from, to);
+    // check if any of those two nodes is mapped to a sub-array node
+    if (from.mapped && ['Class', 'Literal'].includes(to._class)) {
+      // treating as literal here as we only need the mapping info and openapi does not provide the shared abstract class
+      const mappedNodeUuid = (from as Literal).syntaxNodeUuid;
+      const mappedFrom: SyntaxNode = this.combinedModel.syntaxModel.nodes.find(n => n.uuid === mappedNodeUuid);
+      const depthFrom = mappedFrom.path.filter(v => v === '0').length;
+      console.log('depthFrom', depthFrom);
+      if (depthFrom > 0) {
+        // prevent array contexts with depth > 1 (remove with #68)
+        if (depthFrom > 1) {
+          return false;
+        }
+        return true;
+      }
+    }
+    if (to.mapped && ['Class', 'Literal'].includes(to._class)) {
+      // treating as literal here as we only need the mapping info and openapi does not provide the shared abstract class
+      const mappedNodeUuid = (to as Literal).syntaxNodeUuid;
+      const mappedTo: SyntaxNode = this.combinedModel.syntaxModel.nodes.find(n => n.uuid === mappedNodeUuid);
+      const depthTo = mappedTo.path.filter(v => v === '0').length;
+      if (depthTo > 0) {
+        // prevent array contexts with depth > 1 (remove with #68)
+        if (depthTo > 1) {
+          return false;
+        }
+        return true;
+      }
+    }
+    // check if any of from/to nodes are part of an array context
+    console.log(this._arrayContexts, this.combinedModel);
+    const b = this._arrayContexts.some(ac => ac.some(id => id === from.uuid || id === to.uuid));
+    console.log(b);
+    return b;
+  }
+
   /**
    * Handles entity dropped event
    * @param event dropped event
    */
   entityDropped(event): void {
     // test if valid target
-    const node = this.hoveredElement ? this.getIfLeafNode(this.hoveredElement) : null;
+    const node = this.hoveredElement ? this.getIfMappableNode(this.hoveredElement) : null;
     // create new semantic model node
     if (node) {
       const position = this.hoveredElement.model.attributes.position;
@@ -549,7 +604,7 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
             x: position.x,
             y: position.y,
             syntaxLabel: node.label,
-            syntaxPath: node.path.join('->'),
+            syntaxPath: node.pathAsJSONPointer,
             syntaxNodeUuid: node.uuid,
             instance
           };
@@ -640,8 +695,12 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
    */
   private createSyntaxGraph(syntaxModel: SyntaxModel): void {
     if (syntaxModel.nodes.length > 0) {
-      syntaxModel.nodes.forEach(node => this.addSyntaxNode(node.uuid, node.label, Icons.getIcon(node), node._class, node.x, node.y));
-      syntaxModel.edges.forEach(edge => this.addSyntaxLink(edge.from, edge.to));
+      syntaxModel.nodes
+        // .filter(value => value.visible)
+        .forEach(node => {
+          this.addSyntaxNode(node.uuid, node.label, Icons.getIcon(node), node._class, node.x, node.y, node.disabled);
+        });
+      syntaxModel.edges.forEach(edge => this.addSyntaxLink(edge.from, edge.to, edge.disabled));
     }
   }
 
@@ -662,31 +721,43 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
     switch (this.$filter.getValue()) {
       case Filter.ALL:
         // filter syntax nodes
-        const map = this.combinedModel.modelMappings;
+
+        const mappings = this._modelMappings;
         const mappedSyntaxNodes = this.combinedModel.syntaxModel.nodes
-          .filter(node => this.combinedModel.modelMappings
+          .filter(node => this._modelMappings
             .some(mapping => mapping.schemaNodeUuid === node.uuid)
           );
         const hiddenSyntaxNodesIds = mappedSyntaxNodes.map(node => node.uuid);
+        // update all edge from or to uuids if one of the nodes has been replaced by a semantic node
+        const edges = this.combinedModel.syntaxModel.edges
+          // .filter(edge => edge.visible)
+          .map(edge => {
+            if (hiddenSyntaxNodesIds.includes(edge.from) || hiddenSyntaxNodesIds.includes(edge.to)) {
+              let mappedEdgeFrom = edge.from;
+              let mappedEdgeTo = edge.to;
+              if (hiddenSyntaxNodesIds.includes(edge.from)) {
+                mappedEdgeFrom = mappings.filter(mapping => mapping.schemaNodeUuid === edge.from).pop().semanticNodeUuid;
+              }
+              if (hiddenSyntaxNodesIds.includes(edge.to)) {
+                mappedEdgeTo = mappings.filter(mapping => mapping.schemaNodeUuid === edge.to).pop().semanticNodeUuid;
+              }
+              return {
+                from: mappedEdgeFrom,
+                to: mappedEdgeTo
+              };
+            }
+            return {
+              from: edge.from,
+              to: edge.to
+            };
+          });
+
         const reducedSyntaxModel = {
           root: this.combinedModel.syntaxModel.root,
           nodes: this.combinedModel.syntaxModel.nodes.filter(node => !mappedSyntaxNodes.includes(node)),
-          edges: map.map(mapping => {
-            return {
-              from: mapping.parentUuid,
-              to: mapping.semanticNodeUuid
-            };
-          }).concat(
-            this.combinedModel.syntaxModel.edges
-              .filter(edge => !hiddenSyntaxNodesIds.includes(edge.from) && !hiddenSyntaxNodesIds.includes(edge.to))
-              .map(edge => {
-                return {
-                  from: edge.from,
-                  to: edge.to
-                };
-              })
-          )
+          edges
         };
+
         this.createSyntaxGraph(reducedSyntaxModel);
 
         // show semantic nodes and links
@@ -711,10 +782,10 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
   /**
    * Add syntax node to graph
    */
-  private addSyntaxNode(id: string, label: string, icon: string, subtype: string, x?: number, y?: number): void {
+  private addSyntaxNode(id: string, label: string, icon: string, subtype: string, x?: number, y?: number, disabled?: boolean): void {
     const dim = this.calcDimensionsForLabel(label, !!icon);
     const position = {x, y};
-    const node = Nodes.createSyntaxNode(id, label, icon, position, dim[0], dim[1], subtype);
+    const node = Nodes.createSyntaxNode(id, label, icon, position, dim[0], dim[1], subtype, disabled);
     this.graph.addCell(node);
   }
 
@@ -722,8 +793,9 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
    * Add syntax link to graph
    * @param source of link
    * @param target of link
+   * @param disabled If this is a disabled link
    */
-  private addSyntaxLink(source: string, target: string): void {
+  private addSyntaxLink(source: string, target: string, disabled?: boolean): void {
     const link = Links.createSyntaxLink(source, target);
     this.graph.addCell(link);
   }
@@ -773,30 +845,34 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
    * @param showURI maps labels to URIs where possible
    */
   private createSemanticGraph(semanticModel: SemanticModel, showURI: boolean): void {
-    if (semanticModel.nodes.length > 0) {
-      semanticModel.nodes.forEach(node => {
-        if (node._class === 'Class') {
-          // get icon from syntax node
-          let icon = '';
-          if ((node as Class).syntaxNodeUuid) {
-            icon = Icons.getIcon(this.findSyntaxNodeById((node as Class).syntaxNodeUuid));
-          }
-          this.addClassNode(node.uuid, showURI ? node.uri : node.label, node.x, node.y, 1, (node as Class).instance?.label, icon);
-        } else if (node._class === 'NamedEntity') {
-          this.addNamedEntityNode(node.uuid, showURI ? node.uri : node.label, node.x, node.y);
-        } else if (node._class === 'Literal') {
-          this.addLiteralNode(node.uuid, node.label, 'text_fields', node.x, node.y);
-        }
-      });
-
-      semanticModel.edges.forEach(edge => {
-        if (edge._class === 'DataProperty') {
-          this.addDataPropertyLink(edge.uuid, edge.from, edge.to, showURI ? edge.uri : edge.label);
-        } else {
-          this.addObjectPropertyLink(edge.uuid, edge.from, edge.to, showURI ? edge.uri : edge.label);
-        }
-      });
+    if (semanticModel.nodes.length === 0) {
+      return;
     }
+    semanticModel.nodes.forEach(node => {
+      if (node._class === 'Class') {
+        // get icon from syntax node
+        let icon = '';
+        if ((node as Class).syntaxNodeUuid) {
+          icon = Icons.getIcon(this.findSyntaxNodeById((node as Class).syntaxNodeUuid));
+        }
+        this.addClassNode(node.uuid, showURI ? node.uri : node.label, node.x, node.y, 1, (node as Class).instance?.label, icon);
+      } else if (node._class === 'NamedEntity') {
+        this.addNamedEntityNode(node.uuid, showURI ? node.uri : node.label, node.x, node.y);
+      } else if (node._class === 'Literal') {
+        this.addLiteralNode(node.uuid, node.label, 'text_fields', node.x, node.y);
+      }
+    });
+
+
+    semanticModel.edges.forEach(edge => {
+      if (edge.arraycontext) {
+        this.addArrayContextLink(edge.uuid, edge.from, edge.to, showURI ? edge.uri : edge.label);
+      } else if (edge._class === 'DataProperty') {
+        this.addDataPropertyLink(edge.uuid, edge.from, edge.to, showURI ? edge.uri : edge.label);
+      } else {
+        this.addObjectPropertyLink(edge.uuid, edge.from, edge.to, showURI ? edge.uri : edge.label);
+      }
+    });
   }
 
   /**
@@ -858,14 +934,23 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
     return link;
   }
 
-  private createConfig(title: string, content: any, data: SyntaxNode | PlsSemanticNodeDetailsData): ModalOptions {
+  /**
+   * Add array context property link to graph
+   */
+  private addArrayContextLink(id: string, source: string, target: string, label: string, opacity?: number): dia.Link {
+    const link = Links.createArrayContextLink(id, source, target, label, opacity);
+    this.graph.addCell(link);
+    return link;
+  }
+
+  private createConfig(title: string, content: any, node: SyntaxNode | PlsSemanticNodeDetailsData): ModalOptions {
     const rect: DOMRect = this.viewContainerRef.element.nativeElement.getBoundingClientRect();
     return Object.assign({
       nzStyle: {position: 'absolute', top: `${rect.top + 15}px`, right: `15px`},
       nzTitle: title,
       nzContent: content,
       nzComponentParams: {
-        data
+        node
       }
     }, ModalMouseEnabledConfig);
   }
@@ -986,6 +1071,20 @@ export class PlsDiagramComponent implements OnInit, AfterViewInit {
     if (Nodes.isSyntaxNode(elementView)) {
       const node = this.findSyntaxNodeById(elementView.model.id.toString());
       if (node._class === 'PrimitiveNode') {
+        return node;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Returns a node as a MappableSyntaxNode if the given node is of that type
+   * @param elementView search element
+   */
+  private getIfMappableNode(elementView: dia.ElementView): (PrimitiveNode | SetNode) {
+    if (Nodes.isSyntaxNode(elementView)) {
+      const node = this.findSyntaxNodeById(elementView.model.id.toString());
+      if ((node._class === 'PrimitiveNode' || node._class === 'SetNode' || node._class === 'ObjectNode') && !node.disabled) {
         return node;
       }
     }

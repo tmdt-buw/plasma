@@ -12,9 +12,10 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { FormsModule} from '@angular/forms';
-import { ApiModule } from './api/generated';
+import { ApiModule, Configuration } from './api/generated';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { environment } from '../../environments/environment';
 
 @NgModule({
   declarations: [SchemaAnalysisComponent, JsonViewerComponent],
@@ -34,7 +35,11 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     NzSpinModule,
     NzTypographyModule,
     FormsModule,
-    ApiModule,
+    ApiModule.forRoot(() => {
+      return new Configuration({
+        basePath: environment.baseUrl,
+      });
+    }),
     NzAlertModule,
     NzModalModule
   ]

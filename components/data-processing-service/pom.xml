@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>parent</artifactId>
+        <groupId>de.buw.tmdt.plasma</groupId>
+        <version>1.5.0</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <groupId>de.buw.tmdt.plasma.services.dps</groupId>
+    <artifactId>dps-parent</artifactId>
+    <name>${project.module.label.prefix} Parent</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>service</module>
+        <module>shared</module>
+    </modules>
+
+    <properties>
+        <project.label>Data Processing Service</project.label>
+        <project.label.short>dps</project.label.short>
+        <project.label.abbrv>DPS</project.label.abbrv>
+        <project.module.label.prefix>${platform.name} ${project.label.abbrv}</project.module.label.prefix>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>de.buw.tmdt.plasma</groupId>
+            <artifactId>utilities</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.buw.tmdt.plasma</groupId>
+            <artifactId>datamodel</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

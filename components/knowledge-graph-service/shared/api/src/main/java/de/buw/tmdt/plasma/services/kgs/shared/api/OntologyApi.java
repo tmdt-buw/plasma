@@ -2,16 +2,16 @@ package de.buw.tmdt.plasma.services.kgs.shared.api;
 
 import de.buw.tmdt.plasma.datamodel.semanticmodel.Relation;
 import de.buw.tmdt.plasma.datamodel.semanticmodel.SemanticModelNode;
+import de.buw.tmdt.plasma.services.kgs.shared.model.ExportFormat;
 import de.buw.tmdt.plasma.services.kgs.shared.model.OntologyInfo;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("HardcodedFileSeparator")
 @RequestMapping("/api/plasma-kgs/ontologies")
@@ -54,12 +54,48 @@ public interface OntologyApi {
     /**
      * Add ontology.
      */
-    @PostMapping(value = "/ontologies",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/ontologies", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     void addOntology(@RequestParam(value = "label") String label,
                      @RequestParam(value = "prefix") String prefix,
                      @RequestParam(value = "uri") String uri,
                      @RequestParam("file") MultipartFile ontologyFile);
 
+    /**
+     * Delete an ontology.
+     */
+    @DeleteMapping(value = "/ontologies/{label}")
+    void deleteOntology(@PathVariable(value = "label") String label);
+
+    /**
+     * Get a list of all available ontologies.
+     * This call returns ontologies to be provided to the GUI.
+     */
     @GetMapping(value = "/ontologies", produces = MediaType.APPLICATION_JSON_VALUE)
     List<OntologyInfo> listOntologies();
+
+
+    /**
+     * Downloads the current local ontology.
+     */
+    @GetMapping(value = "/ontologies/local", produces = MediaType.TEXT_PLAIN_VALUE)
+    ResponseEntity<String> downloadLocalOntology(@NotNull @RequestParam(name = "format", defaultValue = "TURTLE") ExportFormat format);
+
+
+    /**
+     * Get prefix map.
+     * This endpoint returns a mapping of all prefixes to their namespaces currently known to the service.
+     */
+    @GetMapping(value = "/prefixes", produces = MediaType.APPLICATION_JSON_VALUE)
+    Map<String, String> getNamespaces();
+
+    /**
+     * Validate the given URI.
+     * Checks if the given URI is valid according to RFC3987 and 3986.
+     * Also checks if this URI is already taken in the local ontology.
+     * @param uri The uri to check
+     * @throws org.springframework.web.server.ResponseStatusException 406 if the URI is not valid
+     * @throws org.springframework.web.server.ResponseStatusException 409 if an element with that URI already exists
+     */
+    @GetMapping(value = "/validate", produces = MediaType.APPLICATION_JSON_VALUE)
+    void validateURI(@RequestParam(name = "uri") String uri);
 }

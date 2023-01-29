@@ -1,9 +1,7 @@
 package de.buw.tmdt.plasma.services.kgs.core;
 
 import de.buw.tmdt.plasma.datamodel.semanticmodel.Class;
-import de.buw.tmdt.plasma.datamodel.semanticmodel.NamedEntity;
-import de.buw.tmdt.plasma.datamodel.semanticmodel.Relation;
-import de.buw.tmdt.plasma.datamodel.semanticmodel.SemanticModelNode;
+import de.buw.tmdt.plasma.datamodel.semanticmodel.*;
 import org.apache.jena.arq.querybuilder.DescribeBuilder;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.QueryExecution;
@@ -97,7 +95,8 @@ public class LocalOntologyManagement {
             }
              */
             Resource r = m.createResource(m.expandPrefix(relation.getURI()));
-            m.add(new StatementImpl(r, RDF.type, OWL.ObjectProperty));
+
+            m.add(new StatementImpl(r, RDF.type, relation instanceof ObjectProperty ? OWL.ObjectProperty : OWL.DatatypeProperty));
             if (relation.getDescription() != null && !relation.getDescription().isBlank()) {
                 m.add(new StatementImpl(r, RDFS.comment, m.createLiteral(relation.getDescription())));
             }

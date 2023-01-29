@@ -27,7 +27,7 @@ export interface PlsSemanticNodeDetailsData {
 })
 export class PlsSemanticNodeDetailsComponent implements OnInit {
 
-  @Input() data: PlsSemanticNodeDetailsData;
+  @Input() node: PlsSemanticNodeDetailsData;
 
   $edit: BehaviorSubject<EditState> = new BehaviorSubject<EditState>(EditState.confirm);
   label: string;
@@ -54,7 +54,7 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
         label: [{
           value: this.getInstance()?.label,
           disabled: !this.editing
-        }, [Validators.required, Validators.maxLength(20)]],
+        }, [Validators.required, Validators.maxLength(40)]],
         description: [{
           value: this.getInstance()?.description,
           disabled: !this.editing
@@ -63,7 +63,7 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
     } else if (this.isLiteral()) {
       this.form = this.fb.group({
         value: [{
-          value: (this.data.node as Literal).label,
+          value: (this.node.node as Literal).label,
           disabled: !this.editing
         }, Validators.required]
       });
@@ -82,7 +82,7 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
   }
 
   startEdit(): void {
-    switch (this.data.node._class) {
+    switch (this.node.node._class) {
       case 'Class':
         const instance = this.getInstance();
         if (!instance) {
@@ -96,7 +96,7 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
         break;
       case 'Literal':
         this.$edit.next(EditState.start);
-        this.label = this.data.node.label;
+        this.label = this.node.node.label;
         break;
     }
   }
@@ -104,28 +104,28 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
   acceptEdit(): void {
     this.$edit.next(EditState.confirm);
     if (this.isClass()) {
-      const clazz = this.data.node as Class;
+      const clazz = this.node.node as Class;
       clazz.instance.label = this.form.controls.label.value;
       clazz.instance.description = this.form.controls.description.value;
     } else if (this.isLiteral()) {
-      const literal = this.data.node as Literal;
+      const literal = this.node.node as Literal;
       literal.label = this.form.controls.value.value;
     }
 
     const delta: DeltaModification = {
-      entities: [this.data.node]
+      entities: [this.node.node]
     };
 
-    this.modelingService.modifyModel(this.data.modelId, delta).subscribe(() => {
-      this.nodeEdited.next(this.data.node);
+    this.modelingService.modifyModel(this.node.modelId, delta).subscribe(() => {
+      this.nodeEdited.next(this.node.node);
     }, () => {
-      switch (this.data.node._class) {
+      switch (this.node.node._class) {
         case 'Class':
           this.getInstance().label = this.label;
           this.getInstance().description = this.description;
           break;
         case 'Literal':
-          const literal: Literal = this.data.node as Literal;
+          const literal: Literal = this.node.node as Literal;
           literal.label = this.label;
       }
     });
@@ -157,51 +157,48 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
   }
 
   getDescription(): string {
-    switch (this.data.node._class) {
+    switch (this.node.node._class) {
       case 'Class':
-        return (this.data.node as Class).description;
+        return (this.node.node as Class).description;
       case 'NamedEntity':
-        return (this.data.node as NamedEntity).description;
+        return (this.node.node as NamedEntity).description;
     }
     return 'No description available';
   }
 
   isNamedEntity(): boolean {
-    return this.data.node._class === 'NamedEntity';
+    return this.node.node._class === 'NamedEntity';
   }
 
   isClass(): boolean {
-    return this.data.node._class === 'Class';
+    return this.node.node._class === 'Class';
   }
 
   isLiteral(): boolean {
-    return this.data.node._class === 'Literal';
+    return this.node.node._class === 'Literal';
   }
 
   isMappedNode(): boolean {
-    if (this.data.node._class === 'Class') {
-      const clazz = this.data.node as Class;
+    if (this.node.node._class === 'Class') {
+      const clazz = this.node.node as Class;
       return !!clazz.syntaxNodeUuid;
-    } else if (this.data.node._class === 'Literal') {
-      const literal = this.data.node as Literal;
+    } else if (this.node.node._class === 'Literal') {
+      const literal = this.node.node as Literal;
       return !!literal.syntaxNodeUuid;
     }
     return false;
   }
 
   hasExampleValues(): boolean {
-    if (!this.isMappedNode()) {
-      return false;
-    }
     // console.log('examples');
-    return this.data.examples?.length >= 0;
+    return this.node.examples?.length > 0;
   }
 
   getInstance(): Instance {
-    if (this.data.node._class !== 'Class') {
+    if (this.node.node._class !== 'Class') {
       return;
     }
-    const clazz = this.data.node as Class;
+    const clazz = this.node.node as Class;
     if (!clazz.instance) {
       return;
     }
@@ -210,19 +207,19 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
 
   getAsMappedNode(): Literal | Class {
     if (this.isClass()) {
-      return this.data.node as Class;
+      return this.node.node as Class;
     }
     if (this.isLiteral()) {
-      return this.data.node as Literal;
+      return this.node.node as Literal;
     }
   }
 
   getClassOrNamedEntity(): Class | NamedEntity {
     if (this.isClass()) {
-      return this.data.node as Class;
+      return this.node.node as Class;
     }
     if (this.isNamedEntity()) {
-      return this.data.node as NamedEntity;
+      return this.node.node as NamedEntity;
     }
   }
 
@@ -233,14 +230,14 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
     if (this.getInstance()) {
       return;
     }
-    (this.data.node as Class).instance = {
-      label: this.data.node.label
+    (this.node.node as Class).instance = {
+      label: this.node.node.label
     };
 
     this.startEdit();
   }
 
   hasRecommendations(): boolean {
-    return this.isClass() && this.data.recommendations && this.data.recommendations.length > 0;
+    return this.isClass() && this.node.recommendations && this.node.recommendations.length > 0;
   }
 }

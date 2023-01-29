@@ -1,0 +1,43 @@
+<div fxFill fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="20px">
+  <!--  List selector -->
+  <div fxFill fxLayout="column" fxFlex>
+    <span nz-typography>Available files</span>
+    <div fxFill fxLayout="column" class="filename-list">
+      <div *ngFor="let fileName of fileList"
+           (click)="selectFile(fileName)"
+           [ngStyle]="{'background': isSelected(fileName) ? 'lightgrey' : null, 'color': isSelected(fileName) ? 'white' : null}"
+           class="filename-item" fxLayout="column">
+
+        <span nz-typography nzEllipsis>{{ fileName }}</span>
+      </div>
+    </div>
+  </div>
+
+
+  <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="30px">
+    <span nz-typography>Upload new file</span>
+    <nz-upload
+      nzType="drag"
+      [nzMultiple]="false"
+      [nzCustomRequest]="uploadFile"
+      [nzShowUploadList]="false"
+    >
+      <p class="ant-upload-drag-icon">
+        <i nz-icon nzType="inbox"></i>
+      </p>
+      <p class="ant-upload-text">Click or drag file to this area to upload</p>
+      <p class="ant-upload-hint">
+        Only files with format csv, json, geojson and esri (zip) are supported
+      </p>
+    </nz-upload>
+
+    <div fxFlex="0 0 40px" >
+      <button (click)="triggerConversion()" [disabled]="!selectedFile" class="action-button" nz-button
+              nzType="primary"><i nz-icon nzType="play-circle"></i>Start conversion
+      </button>
+    </div>
+  </div>
+
+
+
+</div>

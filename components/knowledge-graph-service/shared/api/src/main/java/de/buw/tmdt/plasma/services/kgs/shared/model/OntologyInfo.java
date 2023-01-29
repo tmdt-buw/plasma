@@ -9,18 +9,23 @@ public class OntologyInfo {
     private final String label;
 
     private boolean local = false;
+    private final String description;
+    private int noProperties;
+    private int noClasses;
 
     public OntologyInfo(String label, String prefix, String uri) {
         this.prefix = prefix;
         this.uri = uri;
         this.label = label;
+        this.description = null;
     }
 
-    public OntologyInfo(String label, String prefix, String uri, boolean local) {
+    public OntologyInfo(String label, String prefix, String uri, boolean local, String description) {
         this.prefix = prefix;
         this.uri = uri;
         this.label = label;
         this.local = local;
+        this.description = description;
     }
 
     public String getPrefix() {
@@ -37,5 +42,25 @@ public class OntologyInfo {
 
     public boolean isLocal() {
         return local;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setPropertiesCount(int size) {
+        this.noProperties = size;
+    }
+
+    public void setClassesCount(int size) {
+        this.noClasses = size;
+    }
+
+    public int getNoProperties() {
+        return noProperties;
+    }
+
+    public int getNoClasses() {
+        return noClasses;
     }
 }

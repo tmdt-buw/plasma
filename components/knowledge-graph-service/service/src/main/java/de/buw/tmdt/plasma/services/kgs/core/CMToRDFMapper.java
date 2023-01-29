@@ -53,8 +53,17 @@ public class CMToRDFMapper {
                 Instance i = clazz.getInstance();
                 Resource resource;
                 if (i != null) {
+                    String originInstanceURI = smPrefix + semanticModelId + "-" + convertToInstanceId(i.getLabel());
+                    int counter = 1;
+                    String instanceURI = originInstanceURI + "_" + counter;
+
+                    Resource res = ResourceFactory.createResource(instanceURI);
+                    while (m.containsResource(res)) {
+                        instanceURI = originInstanceURI + "_" + counter++;
+                        res = ResourceFactory.createResource(instanceURI);
+                    }
                     resource =
-                            m.createResource(smPrefix + semanticModelId + "-" + convertToInstanceId(i.getLabel())); // will reuse if already existent
+                            m.createResource(instanceURI); // will reuse if already existent
                     resource.addProperty(PLCM.label, m.createLiteral(i.getLabel()));
                     if (i.getDescription() != null && !i.getDescription().isBlank()) {
                         resource.addProperty(PLCM.description, m.createLiteral(i.getDescription()));
@@ -122,7 +131,8 @@ public class CMToRDFMapper {
     }
 
 
-    public static SemanticModel convertToSemanticModel(Model model, Function<String, SemanticModelNode> elementRetrieverByURI) {
+    public static SemanticModel convertToSemanticModel(Model model, Function<String, SemanticModelNode> nodeRetrieverByURI,
+                                                       Function<String, Relation> relationRetrieverByURI) {
         String modelId = null;
         List<SemanticModelNode> nodes = new ArrayList<>();
         List<Relation> relations = new ArrayList<>();
@@ -146,7 +156,7 @@ public class CMToRDFMapper {
             if (convertedSubject == null) {
                 // we have to create a new one
                 Resource superclass = s.getRequiredProperty(RDF.type).getObject().asResource();
-                SemanticModelNode supernode = elementRetrieverByURI.apply(superclass.getURI());
+                SemanticModelNode supernode = nodeRetrieverByURI.apply(superclass.getURI());
                 convertedSubject = createSemanticModelNode(s, supernode);
                 nodes.add(convertedSubject);
                 mappedNodes.put(s, convertedSubject);
@@ -167,7 +177,7 @@ public class CMToRDFMapper {
                 if (convertedObject == null) {
                     // we have to create a new one
                     Resource superclass = object.getRequiredProperty(RDF.type).getObject().asResource();
-                    SemanticModelNode supernode = elementRetrieverByURI.apply(superclass.getURI());
+                    SemanticModelNode supernode = nodeRetrieverByURI.apply(superclass.getURI());
                     convertedObject = createSemanticModelNode(object, supernode);
                     nodes.add(convertedObject);
                     mappedNodes.put(object, convertedObject);
@@ -184,11 +194,19 @@ public class CMToRDFMapper {
             // handle properties
             if (o.isResource()) {
                 // this is an ObjectProperty
+                Relation ontologyInstance = relationRetrieverByURI.apply(stmt.getPredicate().getURI());
                 Relation r = new ObjectProperty(convertedSubject.getUuid(), convertedObject.getUuid(), PREFIXES.shortForm(stmt.getPredicate().getURI()));
+                if (ontologyInstance != null) {
+                    r.setLabel(ontologyInstance.getLabel());
+                }
                 relations.add(r);
             } else if (o.isLiteral()) {
                 // this is a DataProperty
+                Relation ontologyInstance = relationRetrieverByURI.apply(stmt.getPredicate().getURI());
                 Relation r = new DataProperty(convertedSubject.getUuid(), convertedObject.getUuid(), PREFIXES.shortForm(stmt.getPredicate().getURI()));
+                if (ontologyInstance != null) {
+                    r.setLabel(ontologyInstance.getLabel());
+                }
                 relations.add(r);
             }
         }
@@ -294,13 +312,23 @@ public class CMToRDFMapper {
         return r.hasProperty(property) ? r.getProperty(property).getDouble() : null;
     }
 
+    /**
+     * Convert a label to an instance id usable in a URI.
+     * Jena does not offer proper support for IRIs yet, thus many special symbols are converted to '_' characters.
+     *
+     * @param label The input label
+     * @return A cleansed label
+     */
     public static String convertToInstanceId(String label) {
         String formatted = label.trim().toLowerCase().replace(" ", "_");
         formatted = HtmlUtils.htmlEscape(formatted);
+        formatted = formatted.replaceAll("##", "_");
+        formatted = formatted.replaceAll("#", "_");
         formatted = formatted.replaceAll("\\[", "_");
         formatted = formatted.replaceAll("\\]", "_");
         formatted = formatted.replaceAll("\\)", "_");
         formatted = formatted.replaceAll("\\(", "_");
+        formatted = formatted.replaceAll("__", "_");
         return formatted;
     }
 

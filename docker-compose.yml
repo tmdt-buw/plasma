@@ -4,7 +4,7 @@ services:
 ########################### Infrastructure ######################################
 
   fuseki:
-    image: stain/jena-fuseki
+    image: saiye/fuseki:4.4.0
     hostname: fuseki
     restart: unless-stopped
     ports:
@@ -14,8 +14,6 @@ services:
       - ADMIN_PASSWORD=plasma
     volumes:
       - fuseki_data:/fuseki
-
-
 
   mariadb-sas:
     image: mariadb:latest
@@ -141,6 +139,20 @@ services:
     environment:
       - plasma.dms.feature.recommendations.enabled=true
 
+  dps:
+    image: "plasma/dps:${PLASMA_VERSION}"
+    hostname: plasma-dps
+    user: root
+    restart: unless-stopped
+    depends_on:
+      - discovery
+    ports:
+      - 8193:8193
+    environment:
+      - plasma.localstorage.directory=/var/plasma/localstorage
+    volumes:
+      - dps_storage:/var/plasma/localstorage
+
   srs:
     image: "plasma/srs:${PLASMA_VERSION}"
     hostname: plasma-srs
@@ -154,13 +166,13 @@ services:
       - plasma.ars.modeling.url=
       - plasma.ars.refinement.url=
 
-  ui:
+  frontend:
     build: ./frontend
-    image: "plasma/frontend:${PLASMA_VERSION}"
+    image: "plasma/ui:${PLASMA_VERSION}"
     hostname: plasma-ui
     restart: unless-stopped
     ports:
-     - 80:80
+      - 80:80
 
 ########################### Auxiliary Services ######################################
 
@@ -204,12 +216,12 @@ services:
 
   ########################### External Services ######################################
 
-  semantic-recommender:
-    image: plasma/recommender:${RECOMMENDER_VERSION}
-    hostname: semantic-recommender
-    restart: unless-stopped
-    ports:
-      - 8000:8000
+#  semantic-recommender:
+#    image: plasma/recommender:${RECOMMENDER_VERSION}
+#    hostname: semantic-recommender
+#    restart: unless-stopped
+#    ports:
+#      - 8000:8000
 
 
 volumes:
@@ -219,3 +231,4 @@ volumes:
   mariadb_ars_m_sm:
   configs:
   kgs_ontologies:
+  dps_storage:

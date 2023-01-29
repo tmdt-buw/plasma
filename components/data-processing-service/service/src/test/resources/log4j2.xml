@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration shutdownHook="disable">
+    <!-- Appenders -->
+    <Appenders>
+        <!-- Console Appender -->
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout disableAnsi="false">
+                <pattern>
+                    %d{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%-5level}{FATAL=black, ERROR=red, WARN=yellow, INFO=blue, DEBUG=green,
+                    TRACE=white}[%-40.40logger{10}] [%t] - %msg%n
+                </pattern>>
+            </PatternLayout>
+        </Console>
+    </Appenders>
+
+    <!-- Loggers -->
+    <Loggers>
+        <Root level="DEBUG">
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>

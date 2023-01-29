@@ -9,9 +9,7 @@ import { SemanticModelControllerService } from './api/semanticModelController.se
   imports:      [],
   declarations: [],
   exports:      [],
-  providers: [
-    OntologyControllerService,
-    SemanticModelControllerService ]
+  providers: []
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {

@@ -12,7 +12,7 @@ model/combinedModel.ts
 model/dataProperty.ts
 model/deltaModification.ts
 model/edge.ts
-model/modelMapping.ts
+model/getRelations200ResponseInner.ts
 model/models.ts
 model/objectProperty.ts
 model/ontologyInfo.ts

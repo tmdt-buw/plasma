@@ -1,17 +1,15 @@
 package de.buw.tmdt.plasma.datamodel.semanticmodel;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import de.buw.tmdt.plasma.datamodel.syntaxmodel.PrimitiveNode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = Literal.class, name = "Literal"),
         @JsonSubTypes.Type(value = Class.class, name = "Class"),
+        @JsonSubTypes.Type(value = Literal.class, name = "Literal"),
 })
 public abstract class MappableSemanticModelNode extends SemanticModelNode {
 
@@ -20,7 +18,7 @@ public abstract class MappableSemanticModelNode extends SemanticModelNode {
     public static final String MAPPED_SYNTAX_NODE_PATH_PROPERTY = "syntaxPath";
 
     /**
-     * The id of the syntax {@link PrimitiveNode} this object is mapped to.
+     * The id of the syntax {@link de.buw.tmdt.plasma.datamodel.syntaxmodel.MappableSyntaxNode} this object is mapped to.
      * Will be null if not mapped.
      */
     private String mappedSyntaxNodeUuid;
@@ -85,7 +83,6 @@ public abstract class MappableSemanticModelNode extends SemanticModelNode {
     }
 
     @Override
-    @JsonIgnore
     public boolean isMapped() {
         return getMappedSyntaxNodeUuid() != null;
     }

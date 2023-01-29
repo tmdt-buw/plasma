@@ -2,7 +2,7 @@ export * from './combinedModel';
 export * from './dataProperty';
 export * from './deltaModification';
 export * from './edge';
-export * from './modelMapping';
+export * from './getRelations200ResponseInner';
 export * from './objectProperty';
 export * from './ontologyInfo';
 export * from './relation';

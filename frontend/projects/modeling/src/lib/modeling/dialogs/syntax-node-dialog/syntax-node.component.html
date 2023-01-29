@@ -1,12 +1,14 @@
+<p>Syntax nodes give a representation of an element in the original data schema. If it's a leaf node, it contains data
+  which can be inspected in the examples. Non-leaf nodes indicates a structural element in the data, e.g. an object or
+  an array.</p>
 <i nz-typography nzType="secondary" nz-tooltip
-   [nzTooltipTitle]="'Type of element.'">Syntax Node</i>
-<p *ngIf="data.label == 'ROOT'">The ROOT node is the beginning syntax node of your data source. It cannot be mapped</p>
-<p *ngIf="data.label != 'ROOT'">A syntax node is a representation of an element in the original data schema. If it's a leaf node, a semantic class can be mapped to it by dragging.
-If it's not a leaf node, it indicates a structural element in the data, e.g. an object or an array. Those cannot be mapped but used for orientation.</p>
-<div *ngIf="data.examples">
+   [nzTooltipTitle]="'Type of element.'">{{getLabel()}}</i>
+<p>{{getDescription()}}</p>
+<p> JSONPointer: {{ node.path.join('/')}}</p>
+<div *ngIf="hasExamples()">
   <nz-divider></nz-divider>
   <h4 nz-typography>Example values</h4>
-  <div *ngFor="let example of data.examples; let i = index" fxLayout="column" fxLayoutGap="10px">
+  <div *ngFor="let example of getExamples(); let i = index" fxLayout="column" fxLayoutGap="10px">
     <nz-divider *ngIf="10 > i > 1"></nz-divider>
     <span *ngIf="10 > i > 0">{{ example }}</span>
     <span></span>

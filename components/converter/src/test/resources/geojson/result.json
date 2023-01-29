@@ -1,0 +1,224 @@
+[
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinate": {
+        "longitude": 7.2746115909,
+        "latitude": 51.2778283936
+      }
+    },
+    "properties": {
+      "key1": "value1",
+      "key2": "value2"
+    },
+    "collectionName": "TestCollection",
+    "crs": null
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "LineString",
+      "line": [
+        {
+          "longitude": 7.2746115909,
+          "latitude": 51.2778283936
+        },
+        {
+          "longitude": 7.2747184496,
+          "latitude": 51.2778641239
+        }
+      ]
+    },
+    "properties": {
+      "key1": "value1",
+      "key2": "value2"
+    },
+    "collectionName": "TestCollection",
+    "crs": null
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "Polygon",
+      "outerPolygon": [
+        {
+          "longitude": 7.2746115909,
+          "latitude": 51.2778283936
+        },
+        {
+          "longitude": 7.2747184496,
+          "latitude": 51.2778641239
+        },
+        {
+          "longitude": 7.2746115909,
+          "latitude": 51.2778283936
+        }
+      ],
+      "innerPolygon": [
+        {
+          "longitude": 7.2746115909,
+          "latitude": 51.2778283936
+        },
+        {
+          "longitude": 7.2747184496,
+          "latitude": 51.2778641239
+        },
+        {
+          "longitude": 7.2746115909,
+          "latitude": 51.2778283936
+        }
+      ]
+    },
+    "properties": {
+      "key1": "value1",
+      "key2": "value2"
+    },
+    "collectionName": "TestCollection",
+    "crs": null
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "MultiPoint",
+      "points": [
+        {
+          "type": "Point",
+          "coordinate": {
+            "longitude": 7.2746115909,
+            "latitude": 51.2778283936
+          }
+        },
+        {
+          "type": "Point",
+          "coordinate": {
+            "longitude": 7.2747184496,
+            "latitude": 51.2778641239
+          }
+        }
+      ]
+    },
+    "properties": {
+      "key1": "value1",
+      "key2": "value2"
+    },
+    "collectionName": "TestCollection",
+    "crs": null
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "MultiLineString",
+      "lines": [
+        {
+          "type": "LineString",
+          "line": [
+            {
+              "longitude": 7.2746115909,
+              "latitude": 51.2778283936
+            },
+            {
+              "longitude": 7.2747184496,
+              "latitude": 51.2778641239
+            }
+          ]
+        },
+        {
+          "type": "LineString",
+          "line": [
+            {
+              "longitude": 7.2746115909,
+              "latitude": 51.2778283936
+            },
+            {
+              "longitude": 7.2747184496,
+              "latitude": 51.2778641239
+            }
+          ]
+        }
+      ]
+    },
+    "properties": {
+      "key1": "value1",
+      "key2": "value2"
+    },
+    "collectionName": "TestCollection",
+    "crs": null
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "MultiPolygon",
+      "polygons": [
+        {
+          "type": "Polygon",
+          "outerPolygon": [
+            {
+              "longitude": 7.2746115909,
+              "latitude": 51.2778283936
+            },
+            {
+              "longitude": 7.2747184496,
+              "latitude": 51.2778641239
+            },
+            {
+              "longitude": 7.2746115909,
+              "latitude": 51.2778283936
+            }
+          ],
+          "innerPolygon": [
+            {
+              "longitude": 7.2746115909,
+              "latitude": 51.2778283936
+            },
+            {
+              "longitude": 7.2747184496,
+              "latitude": 51.2778641239
+            },
+            {
+              "longitude": 7.2746115909,
+              "latitude": 51.2778283936
+            }
+          ]
+        },
+        {
+          "type": "Polygon",
+          "outerPolygon": [
+            {
+              "longitude": 7.2746115909,
+              "latitude": 51.2778283936
+            },
+            {
+              "longitude": 7.2747184496,
+              "latitude": 51.2778641239
+            },
+            {
+              "longitude": 7.2746115909,
+              "latitude": 51.2778283936
+            }
+          ],
+          "innerPolygon": [
+            {
+              "longitude": 7.2746115909,
+              "latitude": 51.2778283936
+            },
+            {
+              "longitude": 7.2747184496,
+              "latitude": 51.2778641239
+            },
+            {
+              "longitude": 7.2746115909,
+              "latitude": 51.2778283936
+            }
+          ]
+        }
+      ]
+    },
+    "properties": {
+      "key1": "value1",
+      "key2": "value2"
+    },
+    "collectionName": "TestCollection",
+    "crs": null
+  }
+]

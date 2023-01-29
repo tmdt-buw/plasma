@@ -1,0 +1,27 @@
+<div fxFill fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="5px">
+  <form [formGroup]="form" fxFill fxLayout="column" fxLayoutAlign="start start" nz-form>
+    <nz-form-item fxFill fxLayout="row">
+      <nz-form-label [nzSpan]="2" nzFor="title" nzRequired>Title</nz-form-label>
+      <nz-form-control nzErrorTip="The title needs to have at least 2 characters"
+                       nzExtra="A name for the modeling process">
+        <input formControlName="title" id="title" nz-input/>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item fxFill fxLayout="row">
+      <nz-form-label [nzSpan]="2" nzFor="description" nzRequired>Description</nz-form-label>
+      <nz-form-control
+        nzExtra="A description for the modeling process and / or the data used. You can specify additional information here to be used by assistance technologies">
+        <nz-textarea-count [nzMaxCharacterCount]="3500">
+          <textarea formControlName="description" id="description" nz-input rows="6"></textarea>
+        </nz-textarea-count>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  <div fxFill fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
+    <button (click)="submit()" nz-button nzType="primary">Update</button>
+    <button (click)="cancel()" nz-button>Cancel</button>
+  </div>
+
+
+</div>

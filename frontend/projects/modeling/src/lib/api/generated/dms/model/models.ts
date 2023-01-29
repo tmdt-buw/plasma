@@ -1,3 +1,4 @@
+export * from './cacheRelationRequest';
 export * from './class';
 export * from './classAllOf';
 export * from './collisionSchema';
@@ -17,6 +18,7 @@ export * from './modelingInfo';
 export * from './namedEntity';
 export * from './namedEntityAllOf';
 export * from './objectNode';
+export * from './objectNodeAllOf';
 export * from './objectProperty';
 export * from './positionedCombinedModelElement';
 export * from './primitiveNode';
@@ -30,3 +32,4 @@ export * from './splitting';
 export * from './syntacticOperationDTO';
 export * from './syntaxModel';
 export * from './typeDefinitionDTOObject';
+export * from './updatePositionsRequestInner';

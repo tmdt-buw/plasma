@@ -1,0 +1,112 @@
+[
+  {
+    "id": "AL0025-20201123-1456-1634",
+    "vessel": {
+      "vessel_name": "Airbus A350 XPB",
+      "owner": {
+        "carrier": "Lufthansa",
+        "carrier_code": "LH"
+      }
+    },
+    "origin": {
+      "airport_name": "Flughafen Berlin Brandenburg",
+      "identification_numbers": [
+        1.24,
+        4.67,
+        726,
+        82783,
+        99.5,
+        24,
+        22,
+        333,
+        2765
+      ]
+    },
+    "staff": [
+      {
+        "name": "Pilot 1",
+        "seat": "P1",
+        "tags": [
+          {
+            "key": "tag1",
+            "value": "tagvalue1"
+          },
+          {
+            "key": "tag2",
+            "value": "tagvalue2"
+          }
+        ]
+      },
+      {
+        "name": "Pilot 2",
+        "seat": "P2",
+        "tags": [
+          {
+            "key": "tag3",
+            "value": "tagvalue3"
+          },
+          {
+            "key": "tag4",
+            "value": "tagvalue4"
+          }
+        ]
+      },
+      {
+        "name": "Flight attendant 1",
+        "seat": "FA1",
+        "tags": [
+          {
+            "key": "tag5",
+            "value": "tagvalue5"
+          },
+          {
+            "key": "tag6",
+            "value": "tagvalue6"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "AL0025-20201123-1456-1734",
+    "vessel": {
+      "vessel_name": "Airbus A350 XPB",
+      "owner": {
+        "carrier": "Lufthansa",
+        "carrier_code": "LH"
+      }
+    },
+    "origin": {
+      "airport_name": "Flughafen Berlin Brandenburg",
+      "identification_numbers": [
+        1.24,
+        4.67,
+        726,
+        82783,
+        99.5,
+        24,
+        22,
+        333,
+        2765
+      ]
+    },
+    "staff": [
+      {
+        "name": "Pilot 1",
+        "seat": "P1"
+      },
+      {
+        "name": "Pilot 2",
+        "seat": "P2"
+      },
+      {
+        "name": "Flight attendant 1",
+        "seat": "FA1"
+      },
+      {
+        "name": "Flight attendant 2",
+        "seat": "FA2"
+      }
+    ]
+  }
+]

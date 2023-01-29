@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.buw.tmdt.plasma</groupId>
     <artifactId>parent</artifactId>
-    <version>1.3.1</version>
+    <version>1.5.0</version>
     <name>PLASMA Parent</name>
     <packaging>pom</packaging>
 
@@ -21,7 +21,8 @@
         <module>components/utilities</module>
         <module>components/datamodel</module>
         <module>components/config-service</module>
-        <module>auxiliary_services/ARS-L-label-matching</module>
+        <module>components/converter</module>
+        <module>components/data-processing-service</module>
     </modules>
 
     <properties>
@@ -57,7 +58,7 @@
         <org.mariadb.version>2.5.2</org.mariadb.version>
 
         <!-- Apache Commons -->
-        <org.apache.commons.lang3.version>3.6</org.apache.commons.lang3.version>
+        <org.apache.commons.lang3.version>3.12.0</org.apache.commons.lang3.version>
 
         <!-- Testing -->
         <org.testcontainers.version>1.15.1</org.testcontainers.version>

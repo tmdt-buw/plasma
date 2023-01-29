@@ -3,12 +3,22 @@ import { FormControl } from '@angular/forms';
 import { ModalOptions, NzModalService } from 'ng-zorro-antd/modal';
 import { NzTabChangeEvent } from 'ng-zorro-antd/tabs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { DeltaModification, ModelingControllerService, Relation, SemanticModelNode } from '../../../api/generated/dms';
+import {
+  Class,
+  DataProperty,
+  DeltaModification,
+  ModelingControllerService,
+  NamedEntity,
+  ObjectProperty,
+  Relation,
+  SemanticModelNode
+} from '../../../api/generated/dms';
 import { ModelingService } from '../../modeling.service';
 import { ModalBaseConfig } from '../common/modal.base-config';
-import { PlsNewEntityDialogComponent } from '../new-entity-dialog/new-entity-dialog.component';
-import { PlsNewRelationDialogComponent } from '../new-relation-dialog/new-relation-dialog.component';
+import { PlsEditEntityDialogComponent } from '../edit-entity-dialog/edit-entity-dialog.component';
+import { PlsEditRelationDialogComponent } from '../edit-relation-dialog/edit-relation-dialog.component';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { OntologyInfo } from '../../../api/generated/kgs';
 
 
 @Component({
@@ -20,7 +30,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 export class PlsConceptDialogComponent implements OnInit, OnDestroy {
 
   @Input() modelId: string;
-  @Input() defaultNamespace: string;
+  @Input() namespaces: OntologyInfo[];
 
   @ViewChild('colorEl') color;
 
@@ -94,11 +104,12 @@ export class PlsConceptDialogComponent implements OnInit, OnDestroy {
 
   newSemanticNode(): void {
     const config: ModalOptions = {
+      nzStyle: {width: '50%'},
       nzTitle: 'Add new modeling element',
-      nzContent: PlsNewEntityDialogComponent,
+      nzContent: PlsEditEntityDialogComponent,
       nzComponentParams: {
         modelId: this.modelId,
-        defaultNamespace: this.defaultNamespace
+        namespaces: this.namespaces
       }
     };
     const ref = this.modal.create(Object.assign(config, ModalBaseConfig));
@@ -109,13 +120,14 @@ export class PlsConceptDialogComponent implements OnInit, OnDestroy {
     });
   }
 
-  newRelationConcept(): void {
+  newRelation(): void {
     const config: ModalOptions = {
+      nzStyle: {width: '50%'},
       nzTitle: 'Add new relation',
-      nzContent: PlsNewRelationDialogComponent,
+      nzContent: PlsEditRelationDialogComponent,
       nzComponentParams: {
         modelId: this.modelId,
-        defaultNamespace: this.defaultNamespace
+        namespaces: this.namespaces
       }
     };
     const ref = this.modal.create(Object.assign(config, ModalBaseConfig));
@@ -128,6 +140,25 @@ export class PlsConceptDialogComponent implements OnInit, OnDestroy {
 
   setRecommendation(recommendation: DeltaModification): void {
     this.modeling.recommendation.next(recommendation);
+  }
+
+  editProvisionalNode(e: MouseEvent, node: SemanticModelNode): void {
+    const config: ModalOptions = {
+      nzStyle: {width: '50%'},
+      nzTitle: 'Edit modeling element',
+      nzContent: PlsEditEntityDialogComponent,
+      nzComponentParams: {
+        modelId: this.modelId,
+        namespaces: this.namespaces,
+        editNode: node
+      }
+    };
+    const ref = this.modal.create(Object.assign(config, ModalBaseConfig));
+    ref.afterClose.subscribe(res => {
+      if (res) {
+        this.getSemanticNodeTemplates();
+      }
+    });
   }
 
   deleteProvisionalNode(e: MouseEvent, node: SemanticModelNode): void {
@@ -144,6 +175,25 @@ export class PlsConceptDialogComponent implements OnInit, OnDestroy {
     });
   }
 
+  editProvisionalRelation(e: MouseEvent, rel: Relation): void {
+    const config: ModalOptions = {
+      nzStyle: {width: '50%'},
+      nzTitle: 'Edit provisional relation',
+      nzContent: PlsEditRelationDialogComponent,
+      nzComponentParams: {
+        modelId: this.modelId,
+        namespaces: this.namespaces,
+        editRelation: rel
+      }
+    };
+    const ref = this.modal.create(Object.assign(config, ModalBaseConfig));
+    ref.afterClose.subscribe(res => {
+      if (res) {
+        this.getRelationTemplates();
+      }
+    });
+  }
+
   deleteProvisionalRelation(e: MouseEvent, rel: Relation): void {
     this.modal.confirm({
       nzTitle: 'Remove provisional element?',
@@ -156,5 +206,21 @@ export class PlsConceptDialogComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  getDescription(element: SemanticModelNode): string {
+    if (element._class === 'Class') {
+      return (element as Class).description;
+    }
+    if (element._class === 'NamedEntity') {
+      return (element as NamedEntity).description;
+    }
+    if (element._class === 'ObjectProperty') {
+      return (element as ObjectProperty).description;
+    }
+    if (element._class === 'DataProperty') {
+      return (element as DataProperty).description;
+    }
+    return 'No description available.';
   }
 }

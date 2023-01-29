@@ -52,7 +52,7 @@ public class CompositeNode extends SchemaNode {
             @JsonProperty(CLEANSING_PATTERN_PROPERTY) String cleansingPattern,
             @NotNull @JsonProperty(SPLITTINGS_PROPERTY) List<Splitting> splitter
     ) {
-        super(uuid, label, path, xCoordinate, yCoordinate, isValid);
+        super(uuid, label, path, xCoordinate, yCoordinate, isValid, true, false);
         this.examples = examples;
         this.cleansingPattern = cleansingPattern;
         this.splitter = splitter;

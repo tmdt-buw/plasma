@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PerformSchemaAnalysis {
 
-	private Logger logger = LoggerFactory.getLogger(PerformSchemaAnalysis.class);
+	private final Logger logger = LoggerFactory.getLogger(PerformSchemaAnalysis.class);
 
 	public Node performSchemaAnalysis(String inputData) {
 
@@ -32,9 +32,6 @@ public class PerformSchemaAnalysis {
 			schemaAnalysisAggregateRecognizedSchema.addNode(recognizedSchemaTree);
 		}
 
-		// Step 3: Suggest Entity Concepts
-
-		// Step 4: Publish
 		return schemaAnalysisAggregateRecognizedSchema.getMergedRecognizedNode();
 	}
 }

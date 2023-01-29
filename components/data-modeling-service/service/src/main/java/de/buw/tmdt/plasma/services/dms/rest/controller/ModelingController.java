@@ -2,6 +2,7 @@ package de.buw.tmdt.plasma.services.dms.rest.controller;
 
 import de.buw.tmdt.plasma.datamodel.CombinedModel;
 import de.buw.tmdt.plasma.datamodel.CombinedModelElement;
+import de.buw.tmdt.plasma.datamodel.ModelMapping;
 import de.buw.tmdt.plasma.datamodel.PositionedCombinedModelElement;
 import de.buw.tmdt.plasma.datamodel.modification.DeltaModification;
 import de.buw.tmdt.plasma.datamodel.modification.operation.SyntacticOperationDTO;
@@ -18,11 +19,13 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -34,6 +37,9 @@ public class ModelingController implements ModelingAPI {
 
     private final ModelingHandler modelingHandler;
     private final ModelingRepository modelingRepository;
+
+    @Value("${plasma.dms.feature.finalizemodels.enabled:true}")
+    private Boolean finalizeModelsEnabled;
 
     @Autowired
     public ModelingController(
@@ -67,7 +73,8 @@ public class ModelingController implements ModelingAPI {
                 modeling.getName(),
                 modeling.getDescription(),
                 modeling.getCreated(),
-                modeling.getDataId());
+                modeling.getDataId(),
+                false);
     }
 
     @Override
@@ -79,9 +86,23 @@ public class ModelingController implements ModelingAPI {
                         modeling.getName(),
                         modeling.getDescription(),
                         modeling.getCreated(),
-                        modeling.getDataId()))
+                        modeling.getDataId(),
+                        modeling.getCurrentModel().isFinalized()))
                 .sorted(Comparator.comparing(ModelingInfo::getCreated).reversed())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Operation(description = "Update secondary information of a modeling.")
+    public ModelingInfo updateModeling(@NotNull String modelId, @Nullable String name, @Nullable String description, @Nullable String dataId) {
+        Modeling updated = modelingHandler.updateModeling(modelId, name, description, dataId);
+        return new ModelingInfo(
+                updated.getId(),
+                updated.getName(),
+                updated.getDescription(),
+                updated.getCreated(),
+                updated.getDataId(),
+                updated.getCurrentModel().isFinalized());
     }
 
     @Override
@@ -96,7 +117,7 @@ public class ModelingController implements ModelingAPI {
 
     @Override
     @Operation(description = "Copy the semantic model from source model to target model")
-    public CombinedModel copySemanticModelFromOtherModel(@NotNull String modelId, @NotNull String sourceModelId) {
+    public @NotNull CombinedModel copySemanticModelFromOtherModel(@NotNull String modelId, @NotNull String sourceModelId) {
         return modelingHandler.copySemanticModelFromOtherModel(modelId, sourceModelId);
     }
 
@@ -109,6 +130,20 @@ public class ModelingController implements ModelingAPI {
         //combinedModel = modelingHandler.requestRecommendations(modelId, combinedModel);
         modelingHandler.prepareForFrontend(combinedModel);
         return combinedModel;
+    }
+
+    @NotNull
+    @Override
+    @Operation(description = "Requests all array context represented by element ids (nodes and edges) for the given model")
+    public List<Set<String>> getArrayContexts(@NotNull String modelId) {
+        return modelingHandler.getArrayContexts(modelId);
+    }
+
+    @NotNull
+    @Override
+    @Operation(description = "Requests all model mappings for the given model")
+    public List<ModelMapping> getModelMappings(@NotNull String modelId) {
+        return modelingHandler.getModelMappings(modelId);
     }
 
     @Override
@@ -142,23 +177,40 @@ public class ModelingController implements ModelingAPI {
 
     @NotNull
     @Override
-    @Operation(description = "Adds a new provisional node to the cache of the model.")
-    public CombinedModelElement cacheElement(@NotNull String modelId, @NotNull SemanticModelNode node) {
-        return modelingHandler.cacheNode(modelId, node);
+    @Operation(description = "Adds a new provisional node to the cache of the modeling.")
+    public CombinedModelElement cacheElement(@NotNull String modelingId, @NotNull SemanticModelNode node) {
+        return modelingHandler.cacheNode(modelingId, node);
     }
 
     @NotNull
     @Override
-    @Operation(description = "Adds a new provisional relation to the cache of the model.")
-    public CombinedModelElement cacheRelation(@NotNull String modelId, @NotNull Relation relation) {
-        return modelingHandler.cacheRelation(modelId, relation);
+    @Operation(description = "Updates provisional node in the cache of the modeling.")
+    public CombinedModelElement updateProvisionalNode(@NotNull String modelingId, @NotNull SemanticModelNode node, @Nullable String oldURI) {
+        return modelingHandler.updateCachedNode(modelingId, node, oldURI);
     }
 
     @Override
     @Operation(description = "Removes a cached element identified by the given URI")
     public void deleteCachedElement(@NotNull String modelId, @NotNull String uri) {
-        modelingHandler.uncacheElement(modelId, uri);
+        modelingHandler.uncacheNode(modelId, uri);
     }
+
+
+    @NotNull
+    @Override
+    @Operation(description = "Adds a new provisional relation to the cache of the modeling.")
+    public CombinedModelElement cacheRelation(@NotNull String modelingId, @NotNull Relation relation) {
+        return modelingHandler.cacheRelation(modelingId, relation);
+    }
+
+
+    @NotNull
+    @Override
+    @Operation(description = "Updates provisional relation in the cache of the modeling.")
+    public CombinedModelElement updateProvisionalRelation(@NotNull String modelingId, @NotNull Relation relation, @Nullable String oldURI) {
+        return modelingHandler.updateCachedRelation(modelingId, relation, oldURI);
+    }
+
 
     @Override
     @Operation(description = "Removes a cached relation identified by the given URI")
@@ -212,6 +264,27 @@ public class ModelingController implements ModelingAPI {
     @Operation(description = "End modelling process and finalize model.")
     public CombinedModel finalizeModeling(@NotNull String modelId) {
         return modelingHandler.finalizeModeling(modelId);
+    }
+
+    @NotNull
+    @Override
+    @Operation(description = "Clone an existing modeling.")
+    public ModelingInfo cloneModeling(@NotNull String modelId) {
+        Modeling modeling = modelingHandler.cloneModeling(modelId);
+        return new ModelingInfo(
+                modeling.getId(),
+                modeling.getName(),
+                modeling.getDescription(),
+                modeling.getCreated(),
+                modeling.getDataId(),
+                false);
+    }
+
+    @NotNull
+    @Override
+    @Operation(description = "Check if a model may be finalized. This can be disabled in the DMS config.")
+    public Boolean finalizeModelingAvailable() {
+        return finalizeModelsEnabled;
     }
 
     @Override

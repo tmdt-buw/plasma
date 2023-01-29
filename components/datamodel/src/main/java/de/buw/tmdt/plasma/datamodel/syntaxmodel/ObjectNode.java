@@ -14,7 +14,7 @@ import java.util.UUID;
  * All outgoing edges are to be considered child nodes are to be considered to represent attributes.
  */
 @JsonTypeName("ObjectNode")
-public class ObjectNode extends SchemaNode {
+public class ObjectNode extends MappableSyntaxNode {
 
     private static final long serialVersionUID = 8596616883718165165L;
 
@@ -31,7 +31,7 @@ public class ObjectNode extends SchemaNode {
             @Nullable Double yCoordinate,
             boolean isValid
     ) {
-        super(UUID.randomUUID().toString(), label, null, xCoordinate, yCoordinate, isValid);
+        this(UUID.randomUUID().toString(), label, null, xCoordinate, yCoordinate, isValid, true, false);
     }
 
     public ObjectNode(
@@ -41,7 +41,7 @@ public class ObjectNode extends SchemaNode {
             @Nullable Double yCoordinate,
             boolean isValid
     ) {
-        super(UUID.randomUUID().toString(), label, path, xCoordinate, yCoordinate, isValid);
+        super(UUID.randomUUID().toString(), label, path, xCoordinate, yCoordinate, isValid, true, false);
     }
 
     @JsonCreator
@@ -51,9 +51,11 @@ public class ObjectNode extends SchemaNode {
             @Nullable @JsonProperty(PATH_PROPERTY) List<String> path,
             @Nullable @JsonProperty(XCOORDINATE_PROPERTY) Double xCoordinate,
             @Nullable @JsonProperty(YCOORDINATE_PROPERTY) Double yCoordinate,
-            @JsonProperty(VALID_PROPERTY) boolean isValid
+            @JsonProperty(VALID_PROPERTY) boolean isValid,
+            @JsonProperty(VISIBLE_PROPERTY) boolean visible,
+            @JsonProperty(DISABLED_PROPERTY) boolean disabled
     ) {
-        super(uuid, label, path, xCoordinate, yCoordinate, isValid);
+        super(uuid, label, path, xCoordinate, yCoordinate, isValid, visible, disabled);
     }
 
     @Override
@@ -63,14 +65,14 @@ public class ObjectNode extends SchemaNode {
                 getPath(),
                 getXCoordinate(),
                 getYCoordinate(),
-                isValid());
+                isValid(),
+                isVisible(),
+                isDisabled());
     }
 
     @Override
     @SuppressWarnings("MagicCharacter")
     public String toString() {
-        return "{\"@class\":\"ObjectNodeDTO\""
-                + ", \"@super\":" + super.toString()
-                + '}';
+        return super.toString() + " | SetNode: " + getPathAsJSONPointer();
     }
 }

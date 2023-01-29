@@ -13,5 +13,5 @@ export class ContextMenuEvent {
 }
 
 export enum ContextMenuEventType {
-  removeRelation, removeEntity, performOperation, updateEntity
+  removeRelation, removeEntity, performOperation, updateEntity, updateRelation
 }

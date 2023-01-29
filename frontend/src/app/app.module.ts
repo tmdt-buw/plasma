@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { APP_ROUTES } from './app.routes';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { DataprocessingModule } from './dataprocessing/dataprocessing.module';
 
 registerLocaleData(en);
 

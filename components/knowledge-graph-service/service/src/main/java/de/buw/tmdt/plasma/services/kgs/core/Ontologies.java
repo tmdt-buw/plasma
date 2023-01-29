@@ -9,6 +9,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.riot.RiotException;
 import org.apache.jena.shared.PrefixMapping;
 import org.apache.jena.shared.impl.PrefixMappingImpl;
 import org.slf4j.Logger;
@@ -37,6 +38,7 @@ public class Ontologies {
     static String SM_URI = "http://plasma.uni-wuppertal.de/sm/";
 
     private Map<Ontology, OntModel> ontologyModels = new HashMap<>();
+    private List<OntologyInfo> ontologyInfoCache = new ArrayList<>();
     public static final PrefixMapping PREFIXES = new PrefixMappingImpl();
     @Value("${plasma.kgs.ontologies.metadata.suffix:.ontology}")
     private final String ontologySuffix = ".ontology";
@@ -47,7 +49,8 @@ public class Ontologies {
     private static final PrefixMapping DEFAULT_PREFIXES = new PrefixMappingImpl()
             .setNsPrefixes(PrefixMapping.Standard)
             .setNsPrefix("plcm", PLCM.getURI())
-            .setNsPrefix("plsm", SM_URI);
+            .setNsPrefix("plsm", SM_URI)
+            .setNsPrefix("plasma", "http://plasma.uni-wuppertal.de/ontology#");
 
     @Autowired
     public Ontologies() {
@@ -81,28 +84,51 @@ public class Ontologies {
                             return;
                         }
                         try {
+
                             Ontology ontology = mapper.readValue(filePath.toFile(), Ontology.class);
                             OntModel loadedOnto = ModelFactory.createOntologyModel();
-                            try (FileInputStream fis = new FileInputStream(ontology.getFilePath())) {
+                            Path ontologyFilePath = Path.of(getOntologyFolder(), ontology.getFilename());
+                            try (FileInputStream fis = new FileInputStream(ontologyFilePath.toFile())) {
                                 loadedOnto.read(fis, "", "TURTLE"); // TODO handle different formats or homogenize
                             } catch (IOException fnfe) {
                                 log.error("Could not read {}:", filePath, fnfe);
+                                return;
+                            } catch (RiotException re) {
+                                log.error("Could not parse {}:", filePath, re);
+                                return;
+                            } catch (Exception e) {
+                                log.error("Could not process {}:", filePath, e);
                                 return;
                             }
                             reloadedModels.put(ontology, loadedOnto);
                         } catch (IOException e) {
                             e.printStackTrace();
+                        } catch (Exception e) {
+                            log.error("Could not process {}:", filePath, e);
                         }
                     });
         } catch (IOException e) {
             e.printStackTrace();
             return;
+        } catch (Exception e) {
+            log.error("Could not process file:", e);
         }
         ontologyModels = reloadedModels;
         PREFIXES.clearNsPrefixMap();
 
         PREFIXES.setNsPrefixes(DEFAULT_PREFIXES);
         ontologyModels.keySet().forEach(o -> PREFIXES.setNsPrefix(o.getPrefix(), o.getUri()));
+        rebuildOntologyInfoCache();
+    }
+
+    private void rebuildOntologyInfoCache() {
+        ontologyInfoCache.clear();
+        ontologyModels.forEach((info, model) -> {
+            OntologyInfo ontologyInfo = new OntologyInfo(info.getLabel(), info.getPrefix(), info.getUri(), info.isLocal(), info.getDescription());
+            ontologyInfo.setPropertiesCount(model.listAllOntProperties().toList().size());
+            ontologyInfo.setClassesCount(model.listClasses().toList().size());
+            ontologyInfoCache.add(ontologyInfo);
+        });
     }
 
     public String getOntologyFolder() {
@@ -142,7 +168,7 @@ public class Ontologies {
             Files.write(Paths.get(getOntologyFolder(), filename), bytes);
             log.info("Written ontology file to " + ontologyFilePath);
 
-            Ontology onto = new Ontology(label, ontologyFilePath.toString(), prefix, namespace);
+            Ontology onto = new Ontology(label, filename, prefix, namespace);
             mapper.writeValue(metadataFilePath.toFile(), onto);
         } catch (IOException e) {
             log.error("Error while writing ontology or metadata file", e);
@@ -175,7 +201,7 @@ public class Ontologies {
                 createdOnto.write(out, "TURTLE");
                 log.info("Written ontology file to " + ontologyFilePath);
             }
-            Ontology onto = new Ontology(label, ontologyFilePath.toString(), prefix, namespace, description, true);
+            Ontology onto = new Ontology(label, filename, prefix, namespace, description, true);
             mapper.writeValue(metadataFilePath.toFile(), onto);
         } catch (IOException e) {
             log.error("Error while writing ontology or metadata file", e);
@@ -189,6 +215,26 @@ public class Ontologies {
         return createdOnto;
     }
 
+    public void deleteOntology(String label) {
+        Ontology ontology = ontologyModels.keySet().stream()
+                .filter(ontModel -> ontModel.getLabel().equals(label))
+                .findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find ontology with label '" + label + "'."));
+        if (ontology.isLocal()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot delete the local ontology from this point");
+        }
+
+        try {
+            Path ttlFilePath = Paths.get(getOntologyFolder(), ontology.getFilename());
+            Files.deleteIfExists(ttlFilePath);
+            Path ontologyFilePath = Paths.get(getOntologyFolder(), label + ontologySuffix);
+            Files.deleteIfExists(ontologyFilePath);
+        } catch (IOException ioe) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not delete ontology '" + label + "'. Please contact support.");
+        }
+        ontologyModels.remove(ontology);
+        rebuildOntologyInfoCache();
+    }
+
     public void updateOntology(String label, Model model) {
         Optional<OntModel> ontologyModelByLabel = getOntologyModelByLabel(label);
         if (ontologyModelByLabel.isEmpty()) {
@@ -196,17 +242,15 @@ public class Ontologies {
         }
         String filepath = ontologyModels.keySet().stream()
                 .filter(ont -> ont.getLabel().equals(label))
-                .map(Ontology::getFilePath)
+                .map(Ontology::getFilename)
                 .findFirst()
                 .orElseThrow();
         try {
-
-            Path ontologyFilePath = Paths.get(filepath);
+            Path ontologyFilePath = Path.of(getOntologyFolder(), filepath);
             try (OutputStream out = new FileOutputStream(ontologyFilePath.toFile())) {
                 model.write(out, "TURTLE");
                 log.info("Written updated model to " + ontologyFilePath);
             }
-
         } catch (IOException e) {
             log.error("Error while writing updated ontology", e);
             throw new ResponseStatusException(
@@ -219,9 +263,8 @@ public class Ontologies {
     }
 
     public List<OntologyInfo> listOntologies() {
-        return ontologyModels.keySet().stream()
-                .map(om -> new OntologyInfo(om.getLabel(), om.getPrefix(), om.getUri(), om.isLocal()))
-                .collect(Collectors.toList());
+        return ontologyInfoCache;
+
     }
 
     public List<OntModel> getAllOntologyModels() {
@@ -241,6 +284,9 @@ public class Ontologies {
     public Optional<OntModel> getOntologyModelByLabel(String label) {
         if (label == null || label.isBlank()) {
             return Optional.empty();
+        }
+        if (ontologyModels.isEmpty()) {
+            reloadOntologies();
         }
         return ontologyModels.entrySet().stream()
                 .filter(entry -> label.equals(entry.getKey().getLabel()))

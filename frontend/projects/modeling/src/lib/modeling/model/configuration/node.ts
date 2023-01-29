@@ -51,7 +51,7 @@ export abstract class Nodes {
           refY: 15,
           fontSize: 14,
           'font-family': 'Roboto',
-          cursor: 'default',
+          cursor: 'pointer',
           pointerEvents: 'none'
         }
       }
@@ -89,7 +89,7 @@ export abstract class Nodes {
           refY: 15,
           fontSize: 14,
           'font-family': 'Roboto',
-          cursor: 'default',
+          cursor: 'pointer',
           pointerEvents: 'none'
         },
         bodyIcon: {
@@ -100,7 +100,7 @@ export abstract class Nodes {
           refY2: 15,
           fontSize: 24,
           'font-family': 'Material Icons',
-          cursor: 'default',
+          cursor: 'pointer',
           pointerEvents: 'none'
         },
         bodyText: {
@@ -111,7 +111,7 @@ export abstract class Nodes {
           refY2: 15,
           fontSize: 14,
           'font-family': 'Roboto',
-          cursor: 'default',
+          cursor: 'pointer',
           pointerEvents: 'none'
         }
       }
@@ -151,7 +151,7 @@ export abstract class Nodes {
           refY: '50%',
           fontSize: 14,
           'font-family': 'Roboto',
-          cursor: 'default',
+          cursor: 'pointer',
           pointerEvents: 'none'
         }
       }
@@ -218,7 +218,8 @@ export abstract class Nodes {
         body: {
           strokeWidth: 2,
           strokeOpacity: 0.2,
-          strokeDasharray: '10,2'
+          strokeDasharray: '10,2',
+          cursor: 'pointer'
         },
         icon: {
           textVerticalAnchor: 'middle',
@@ -227,7 +228,6 @@ export abstract class Nodes {
           refY: '65%',
           fontSize: 24,
           'font-family': 'Material Icons',
-          cursor: 'default',
           pointerEvents: 'none'
         },
         label: {
@@ -237,7 +237,6 @@ export abstract class Nodes {
           refY: '50%',
           fontSize: 14,
           'font-family': 'Roboto',
-          cursor: 'default',
           pointerEvents: 'none'
         }
       }
@@ -432,7 +431,7 @@ export abstract class Nodes {
   /**
    * Calls constructor and returns instance of a new syntax node
    */
-  static createSyntaxNode(id: string, label: string, icon: string, position: { x: number, y: number }, width: number, height: number, subtype: string): dia.Element {
+  static createSyntaxNode(id: string, label: string, icon: string, position: { x: number, y: number }, width: number, height: number, subtype: string, disabled: boolean): dia.Element {
     return new Nodes.syntaxNode({
       id,
       subtype,
@@ -443,12 +442,16 @@ export abstract class Nodes {
         height
       },
       attrs: {
-        body: {},
+        body: {
+          opacity: disabled ? 0.1 : 1
+        },
         icon: {
           text: icon,
+          opacity: disabled ? 0.1 : 1
         },
         label: {
           text: label,
+          opacity: disabled ? 0.1 : 1
         }
       }
     });

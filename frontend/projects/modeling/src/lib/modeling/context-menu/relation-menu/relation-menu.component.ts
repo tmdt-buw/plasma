@@ -11,11 +11,22 @@ import { ContextMenuEvent, ContextMenuEventType } from '../../model/events/conte
 export class PlsRelationConceptMenuComponent {
 
   @Input() relation: Relation;
+  @Input() arrayContextAvailable: boolean = false;
 
   constructor(private contextMenu: ContextMenuService) {
   }
 
   remove(): void {
     this.contextMenu.close(new ContextMenuEvent(ContextMenuEventType.removeRelation, this.relation));
+  }
+
+  removeFromArrayContext(): void {
+    this.relation.arraycontext = false;
+    this.contextMenu.close(new ContextMenuEvent(ContextMenuEventType.updateRelation, this.relation));
+  }
+
+  addToArrayContext(): void {
+    this.relation.arraycontext = true;
+    this.contextMenu.close(new ContextMenuEvent(ContextMenuEventType.updateRelation, this.relation));
   }
 }

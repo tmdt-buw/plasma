@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import de.buw.tmdt.plasma.datamodel.modification.operation.DataType;
-import de.buw.tmdt.plasma.utilities.misc.StringUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 @JsonTypeName("PrimitiveNode")
-public class PrimitiveNode extends SchemaNode {
+public class PrimitiveNode extends MappableSyntaxNode {
 
     private static final long serialVersionUID = -144653268470507986L;
 
@@ -29,7 +28,7 @@ public class PrimitiveNode extends SchemaNode {
             @NotNull String label,
             @NotNull DataType dataType
     ) {
-        this(label,  true, dataType, null, null);
+        this(label, true, dataType, null, null);
     }
 
     public PrimitiveNode(
@@ -37,7 +36,7 @@ public class PrimitiveNode extends SchemaNode {
             boolean isValid,
             @NotNull DataType dataType
     ) {
-        this(label,  isValid, dataType, null, null);
+        this(label, isValid, dataType, null, null);
     }
 
     public PrimitiveNode(
@@ -47,10 +46,25 @@ public class PrimitiveNode extends SchemaNode {
             @Nullable List<String> examples,
             @Nullable String cleansingPattern
     ) {
-        super(label,  isValid);
+        super(label, isValid);
         this.dataType = dataType;
         this.examples = examples != null ? new ArrayList<>(examples) : new ArrayList<>();
         this.cleansingPattern = cleansingPattern;
+    }
+
+    public PrimitiveNode(
+            @NotNull String label,
+            List<String> path,
+            boolean isValid,
+            @NotNull DataType dataType,
+            @Nullable List<String> examples,
+            @Nullable String cleansingPattern
+    ) {
+        super(label, isValid);
+        this.dataType = dataType;
+        this.examples = examples != null ? new ArrayList<>(examples) : new ArrayList<>();
+        this.cleansingPattern = cleansingPattern;
+        this.setPath(path);
     }
 
     @JsonCreator
@@ -63,9 +77,11 @@ public class PrimitiveNode extends SchemaNode {
             @JsonProperty(VALID_PROPERTY) boolean isValid,
             @NotNull @JsonProperty(DATATYPE_PROPERTY) DataType dataType,
             @JsonProperty(EXAMPLES_PROPERTY) List<String> examples,
-            @JsonProperty(CLEANSING_PATTERN_PROPERTY) String cleansingPattern
+            @JsonProperty(CLEANSING_PATTERN_PROPERTY) String cleansingPattern,
+            @JsonProperty(VISIBLE_PROPERTY) boolean visible,
+            @JsonProperty(DISABLED_PROPERTY) boolean disabled
     ) {
-        super(uuid, label, path, xCoordinate, yCoordinate, isValid);
+        super(uuid, label, path, xCoordinate, yCoordinate, isValid, visible, disabled);
         this.dataType = dataType;
         this.examples = examples != null ? new ArrayList<>(examples) : new ArrayList<>();
         this.cleansingPattern = cleansingPattern;
@@ -109,7 +125,9 @@ public class PrimitiveNode extends SchemaNode {
                 isValid(),
                 getDataType(),
                 getExamples(),
-                getCleansingPattern());
+                getCleansingPattern(),
+                isVisible(),
+                isDisabled());
 
         return node;
     }
@@ -118,12 +136,7 @@ public class PrimitiveNode extends SchemaNode {
     @Override
     @SuppressWarnings("MagicCharacter")
     public String toString() {
-        return "{\"@class\":\"PrimitiveNode\""
-                + ", \"@super\":" + super.toString()
-                + ", \"cleansingPattern\":\"" + cleansingPattern + '"'
-                + ", \"examples\":" + StringUtilities.listToJson(examples)
-                + ", \"dataType\":\"" + dataType + '"'
-                + '}';
+        return super.toString() + " | PrimitiveNode: " + getPathAsJSONPointer();
     }
 
     @Override

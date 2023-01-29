@@ -12,7 +12,7 @@ export abstract class Papers {
   /**
    * Call constructor for paper
    * @param graph model
-   * @param activeRelation function
+   * @param activeRelation function that returns a currently selected relation if one is newly drawn. null otherwise
    * @param moveNodes if true, freezes elements in place
    */
   static createPaper(graph: dia.Graph, activeRelation: () => Relation, moveNodes: boolean): dia.Paper {
@@ -20,19 +20,22 @@ export abstract class Papers {
       if (!moveNodes) {
         if (activeRelation()?._class === 'ObjectProperty') {
           return {
-            labelMove: true,
+            labelMove: false,
+            vertexMove: false,
             addLinkFromMagnet: true,
             elementMove: false
           };
         } else if (activeRelation()?._class === 'DataProperty') {
           return {
-            labelMove: true,
+            labelMove: false,
+            vertexMove: false,
             addLinkFromMagnet: true,
             elementMove: false
           };
         } else {
           return {
-            labelMove: true,
+            labelMove: false,
+            vertexMove: false,
             addLinkFromMagnet: false,
             elementMove: true
           };
@@ -40,6 +43,7 @@ export abstract class Papers {
       } else {
         return {
           labelMove: false,
+          vertexMove: false,
           addLinkFromMagnet: false,
           elementMove: false
         };

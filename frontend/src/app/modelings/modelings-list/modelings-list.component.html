@@ -1,34 +1,48 @@
 <nz-page-header class="content-header">
   <nz-page-header-title>Modelings</nz-page-header-title>
   <nz-page-header-extra>
-    <button [disabled]="error" fxFlex="nogrow" nz-button nzType="primary" [routerLink]="['create']"><i nz-icon nzType="plus"></i>Create new
+    <button *ngIf="dpsAvailable" [routerLink]="['arraycontext-info']" fxFlex="nogrow" nz-button nzType="default"><i
+      nz-icon nzType="info"></i>RDF Conversion Info
+    </button>
+    <button [disabled]="error" fxFlex="nogrow" nz-button nzType="primary" [routerLink]="['create']"><i nz-icon
+                                                                                                       nzType="plus"></i>Create
+      new
       modeling
+    </button>
+    <button [disabled]="error" fxFlex="nogrow" nz-button nzType="default" (click)="downloadLocalOntology()"><i nz-icon
+                                                                                                               nzType="download"></i>Download
+      local ontology
     </button>
   </nz-page-header-extra>
 </nz-page-header>
 
 <div fxFill fxLayout="column" class="content">
   <div>
-    <nz-table [nzData]="modelings" [nzLoading]="isLoading" nzNoResult="No active model process found."
+    <nz-table #modelingsTable [nzData]="modelings" [nzLoading]="isLoading" nzNoResult="No active modeling process found."
               [nzFrontPagination]="false" nzTableLayout="fixed">
       <thead>
       <tr>
       <th nzWidth="400px" nzAlign="left" nzEllipsis>Title</th>
-      <th nzWidth="800px" nzAlign="left" nzEllipsis>Description</th>
+      <th nzWidth="600px" nzAlign="left" nzEllipsis>Description</th>
       <th nzWidth="200px" nzAlign="left">Created</th>
       <th nzWidth="180px" nzAlign="left">Actions</th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let model of modelings">
+      <tr *ngFor="let model of modelingsTable.data">
         <td nzEllipsis> {{model.name}}</td>
         <td nzEllipsis> {{model.description}}</td>
         <td> {{model.created | date:'medium' }}</td>
         <td>
           <div fxLayout="row" fxLayoutGap="4px">
-            <button nz-button nzShape="circle" (click)="showDescriptionModal(model.name, model.description)"><i nz-icon nzType="info"></i></button>
-            <button nz-button nzShape="circle" [routerLink]="['..',modelsRoute,model.id]"><i nz-icon nzType="appstore-add"></i></button>
-            <button nz-button nzShape="circle"
+            <button (click)="showUpdateModelingModal(model)" nz-button nz-tooltip="Display detail information"
+                    nzShape="circle"><i nz-icon nzType="info"></i></button>
+            <button nz-button nzShape="circle" [routerLink]="['..',modelsRoute,model.id]" nz-tooltip="Edit the semantic model"><i nz-icon nzType="appstore-add"></i></button>
+            <button nz-button nzShape="circle" (click)="cloneModeling(model.id)" nz-tooltip="Clone this modeling"><i nz-icon nzType="copy"></i></button>
+            <button *ngIf="dpsAvailable" nz-button nzShape="circle" (click)="openConversionModal(model)" [nz-tooltip]="'Convert data using defined model'" [disabled]="!dpsAvailable">
+                            <i nz-icon nzType="file-text"></i>
+            </button>
+            <button nz-button nzShape="circle" nz-tooltip="Delete this modeling"
                     nz-popconfirm
                     nzPopconfirmTitle="Are you sure to delete this model?"
                     (nzOnConfirm)="deleteModeling(model)"
@@ -39,7 +53,6 @@
         </td>
       </tr>
       </tbody>
-
     </nz-table>
   </div>
 </div>

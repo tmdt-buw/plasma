@@ -1,0 +1,37 @@
+<div fxLayout="column" fxLayoutGap="5px">
+
+  <div fxLayout="row" fxLayoutGap="2px">
+    <input (focusout)="propagateURI(uri)" [(ngModel)]="uri" nz-input/>
+    <button (click)="showGenerator()" *ngIf="!generatorVisible"
+            nz-button nzType="primary">Generate
+    </button>
+  </div>
+
+  <div *ngIf="generatorVisible" fxFlexFill fxLayout="row" fxLayoutGap="5px">  <!-- Generator   -->
+    <form [formGroup]="generatorForm" fxFlex nz-form xmlns="http://www.w3.org/1999/html">
+      <nz-form-item class="short-form-item" fxFlex>
+        <nz-form-control nz-tooltip="The authority to use for the URI."
+                         nzExtra="Authority">
+          <input [nzDropdownMenu]="ontologies" formControlName="namespace" nz-dropdown nz-input/>
+          <nz-dropdown-menu #ontologies="nzDropdownMenu">
+            <ul nz-menu>
+              <li (click)="selectNamespace(namespace)" *ngFor="let namespace of namespaces"
+                  nz-menu-item>{{namespace.prefix}}: ({{namespace.uri}})
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="short-form-item" fxFlex>
+        <nz-form-control nz-tooltip="The identifier to use. Must be unique inside the selected authority."
+                         nzExtra="Identifier">
+          <input formControlName="identifier" nz-input/>
+        </nz-form-control>
+      </nz-form-item>
+      <button (click)="acceptURI()"
+              [disabled]="!generatorForm.valid"
+              nz-button nzType="primary">Apply
+      </button>
+    </form>
+  </div>
+</div>

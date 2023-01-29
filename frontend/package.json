@@ -13,8 +13,9 @@
     "e2e": "ng e2e",
     "gen:dms": "npm run gen:base -- -o projects/modeling/src/lib/api/generated/dms -i http://localhost:8888/v3/api-docs/plasma-dms",
     "gen:kgs": "npm run gen:base -- -o projects/modeling/src/lib/api/generated/kgs -i http://localhost:8888/v3/api-docs/plasma-kgs",
+    "gen:dps": "npm run gen:base -- -o src/app/dataprocessing/api/generated -i http://localhost:8888/v3/api-docs/plasma-dps",
     "gen:sas": "npm run gen:base -- -o src/app/schema-analysis/api/generated -i http://localhost:8888/v3/api-docs/plasma-sas",
-    "gen:base": "openapi-generator-cli generate -g typescript-angular --additional-properties=providedInRoot=false,disallowAdditionalPropertiesIfNotPresent=false,typescriptThreePlus=true,supportsES6=true,legacyDiscriminatorBehavior=false --type-mappings=set=Array"
+    "gen:base": "openapi-generator-cli generate -g typescript-angular --additional-properties=providedIn=any,disallowAdditionalPropertiesIfNotPresent=false,typescriptThreePlus=true,supportsES6=true,legacyDiscriminatorBehavior=false --type-mappings=set=Array"
   },
   "private": true,
   "dependencies": {
@@ -28,12 +29,14 @@
     "@angular/platform-browser": "^13.2.5",
     "@angular/platform-browser-dynamic": "^13.2.5",
     "@angular/router": "^13.2.5",
+    "@dash14/svg-pan-zoom": "^3.6.6",
+    "@fontsource/material-icons": "^4.5.4",
+    "@fontsource/roboto": "^4.5.8",
     "dagre": "^0.8.5",
     "graphlib": "^2.1.8",
     "jointjs": "^3.5.3",
     "ng-zorro-antd": "^13.1.1",
     "rxjs": "6.6.3",
-    "@dash14/svg-pan-zoom": "^3.6.6",
     "tslib": "^2.0.3",
     "zone.js": "~0.11.4"
   },
@@ -41,7 +44,7 @@
     "@angular-devkit/build-angular": "^13.2.5",
     "@angular/cli": "^13.2.5",
     "@angular/compiler-cli": "^13.2.5",
-    "@openapitools/openapi-generator-cli": "^2.4.26",
+    "@openapitools/openapi-generator-cli": "^2.5.1",
     "@types/backbone": "^1.4.5",
     "@types/dagre": "^0.7.44",
     "@types/jquery": "^3.5.5",

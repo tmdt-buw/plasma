@@ -1,9 +1,9 @@
 <i [nzTooltipTitle]="'Type of element.'" nz-tooltip nz-typography
-   nzType="secondary">{{data.node._class}}</i>
+   nzType="secondary">{{node.node._class}}</i>
 <p *ngIf="isClass() || isNamedEntity()" [nzTooltipTitle]="'Element description as defined by the knowledge source'"
    nz-tooltip>{{ getDescription() }}</p>
 
-<div *ngIf="isClass() && !getInstance() && !data.finalized">
+<div *ngIf="isClass() && !getInstance() && !node.finalized">
   <button (click)="customize()" nz-button nzType="text">Add customization<i nz-icon nzType="edit"></i>
   </button>
 </div>
@@ -19,7 +19,8 @@
   <form [formGroup]="form" class="semantic-node-input" nz-form>
     <nz-form-item>
       <nz-form-label nzFor="label">Custom label</nz-form-label>
-      <nz-form-control nzErrorTip="Empty labels or labels longer than 20 characters are not allowed!">
+      <nz-form-control
+        nzErrorTip="Empty labels or labels longer than 40 characters may be rejected by the modeling service!">
         <input [nz-tooltip]="'Custom label for this element'" [nzBorderless]="!editing" disabled
                formControlName="label" id="label" nz-input/>
       </nz-form-control>
@@ -62,9 +63,14 @@
     <p [nzTooltipTitle]="'Original label: '" nz-tooltip="Original label of the connected syntax node"
        nz-typography>{{ getAsMappedNode().syntaxLabel }}</p>
   </div>
+  <div fxLayout="row">
+    <p nz-typography nzType="secondary">Syntax Path: </p>
+    <p [nzTooltipTitle]="'Syntax Path: '" nz-tooltip="Syntax path of the connected syntax node"
+       nz-typography>{{ getAsMappedNode().syntaxPath}}</p>
+  </div>
   <nz-collapse *ngIf="hasExampleValues()" [nzBordered]="false" nzGhost>
     <nz-collapse-panel [nzHeader]="'Example Values'">
-      <div *ngFor="let example of data.examples; let i = index" fxLayout="column" fxLayoutGap="10px">
+      <div *ngFor="let example of node.examples; let i = index" fxLayout="column" fxLayoutGap="10px">
         <nz-divider *ngIf="10 > i > 1"></nz-divider>
         <span *ngIf="10 > i > 0">{{ example }}</span>
         <span></span>
@@ -73,14 +79,14 @@
   </nz-collapse>
 </div>
 
-<div *ngIf="isClass() && !data.finalized && hasRecommendations()" fxLayout="column" fxLayoutAlign="space-between start"
+<div *ngIf="isClass() && !node.finalized && hasRecommendations()" fxLayout="column" fxLayoutAlign="space-between start"
      fxLayoutGap="10px">
   <nz-divider></nz-divider>
   <p [nzTooltipTitle]="'Recommended model extensions related to this node'" nz-tooltip>Extensions</p>
   <div (mouseenter)="showRecommendation(recommendation)" (mouseleave)="hideRecommendation()"
-       *ngFor="let recommendation of data.recommendations" class="recommendation-box" fxLayout="row"
+       *ngFor="let recommendation of node.recommendations" class="recommendation-box" fxLayout="row"
        fxLayoutAlign="space-between center" fxLayoutGap="5px">
-    <span nz-typography> {{data.node.label}}
+    <span nz-typography> {{node.node.label}}
       <i nz-icon nz-typography nzType="right"></i>
       {{recommendation.relations[0].label}}
       <i nz-icon nz-typography nzType="right"></i>
@@ -98,7 +104,7 @@
 
 <ng-template #editButtons>
   <div class="editSection" fxLayout="row" fxLayoutAlign="space-between center">
-    <div *ngIf="!data.finalized">
+    <div *ngIf="!node.finalized">
       <button (click)="startEdit()" *ngIf="!editing" nz-button nzShape="circle" nzType="text"><i nz-icon
                                                                                                  nzType="edit"></i>
       </button>

@@ -80,7 +80,7 @@ export class ContextMenuService {
       this.overlayRef = null;
       this.afterClosed.next(data);
     }
-  };
+  }
 
   private getOverlayPosition(origin: any): PositionStrategy {
     return this.overlay

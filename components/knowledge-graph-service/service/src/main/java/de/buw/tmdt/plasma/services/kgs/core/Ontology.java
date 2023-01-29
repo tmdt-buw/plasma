@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Ontology {
 
     public static final String LABEL_PROPERTY = "label";
-    public static final String FILEPATH_PROPERTY = "filePath";
+    public static final String FILENAME_PROPERTY = "filename";
     public static final String PREFIX_PROPERTY = "prefix";
     public static final String URI_PROPERTY = "uri";
     public static final String DESCRIPTION_PROPERTY = "description";
@@ -14,7 +14,7 @@ public class Ontology {
 
     private String label;
 
-    private String filePath;
+    private String filename;
 
     private String prefix;
 
@@ -24,9 +24,9 @@ public class Ontology {
 
     private boolean local = false;
 
-    public Ontology(String label, String filePath, String prefix, String uri) {
+    public Ontology(String label, String filename, String prefix, String uri) {
         this.label = label;
-        this.filePath = filePath;
+        this.filename = filename;
         this.prefix = prefix;
         this.uri = uri;
     }
@@ -34,13 +34,13 @@ public class Ontology {
     @JsonCreator
     public Ontology(
             @JsonProperty(LABEL_PROPERTY) String label,
-            @JsonProperty(FILEPATH_PROPERTY) String filePath,
+            @JsonProperty(FILENAME_PROPERTY) String filename,
             @JsonProperty(PREFIX_PROPERTY) String prefix,
             @JsonProperty(URI_PROPERTY) String uri,
             @JsonProperty(DESCRIPTION_PROPERTY) String description,
             @JsonProperty(LOCAL_PROPERTY) boolean local) {
         this.label = label;
-        this.filePath = filePath;
+        this.filename = filename;
         this.prefix = prefix;
         this.uri = uri;
         this.local = local;
@@ -55,12 +55,12 @@ public class Ontology {
         this.label = label;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getFilename() {
+        return filename;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public String getPrefix() {

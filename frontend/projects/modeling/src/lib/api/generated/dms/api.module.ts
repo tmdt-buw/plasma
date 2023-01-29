@@ -8,8 +8,7 @@ import { ModelingControllerService } from './api/modelingController.service';
   imports:      [],
   declarations: [],
   exports:      [],
-  providers: [
-    ModelingControllerService ]
+  providers: []
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {

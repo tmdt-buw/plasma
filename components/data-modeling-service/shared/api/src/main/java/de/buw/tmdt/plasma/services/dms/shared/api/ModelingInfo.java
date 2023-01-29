@@ -14,12 +14,15 @@ public class ModelingInfo {
 
     private final String dataId;
 
-    public ModelingInfo(String id, String name, String description, ZonedDateTime created, String dataId) {
+    private final boolean finalized;
+
+    public ModelingInfo(String id, String name, String description, ZonedDateTime created, String dataId, boolean finalized) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.created = created;
         this.dataId = dataId;
+        this.finalized = finalized;
     }
 
     public String getId() {
@@ -40,5 +43,9 @@ public class ModelingInfo {
 
     public ZonedDateTime getCreated() {
         return created;
+    }
+
+    public boolean isFinalized() {
+        return finalized;
     }
 }

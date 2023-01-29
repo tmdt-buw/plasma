@@ -21,7 +21,7 @@ public abstract class SemanticModelNode extends PositionedCombinedModelElement i
     public static final String URI_PROPERTY = "uri";
     public static final String PROVISIONAL_PROPERTY = "provisional";
 
-    private final String uri;
+    private String uri;
 
     private boolean provisional = false;
 
@@ -53,6 +53,10 @@ public abstract class SemanticModelNode extends PositionedCombinedModelElement i
     @JsonProperty(URI_PROPERTY)
     public String getURI() {
         return uri;
+    }
+
+    public void setURI(String uri) {
+        this.uri = uri;
     }
 
     @JsonProperty(PROVISIONAL_PROPERTY)

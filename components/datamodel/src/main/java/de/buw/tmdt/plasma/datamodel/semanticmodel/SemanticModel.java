@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class SemanticModel implements Serializable {
 
@@ -140,6 +141,66 @@ public class SemanticModel implements Serializable {
             String errorMessage = String.join("\n", errors);
             throw new CombinedModelIntegrityException(errorMessage);
         }
+    }
+
+    /**
+     * Build the array context this node belongs to.
+     * Built using recursive expansion following links (bi-directionally) that are marked as being part of an AC.
+     *
+     * @param node    The node to start from
+     * @param visited The list of already visited / processed nodes
+     * @return A {@link SemanticModel} submodel that contains all nodes of the array context
+     */
+    public SemanticModel getArrayContext(SemanticModelNode node, List<String> visited) {
+        SemanticModel submodel = new SemanticModel();
+        return getArrayContext(node, visited, submodel);
+    }
+
+    /**
+     * Recursion function to build the array context this node belongs to.
+     * Built using recursive expansion following links (bi-directionally) that are marked as being part of an AC.
+     *
+     * @param node     The node to start from
+     * @param visited  The list of already visited / processed nodes
+     * @param submodel An existing model that may already contain nodes of that specific context.
+     * @return A {@link SemanticModel} submodel that contains all nodes of the array context
+     */
+    private SemanticModel getArrayContext(SemanticModelNode node, List<String> visited, SemanticModel submodel) {
+        visited.add(node.getUuid());
+        if (submodel == null) {
+            submodel = new SemanticModel();
+        }
+        submodel.getNodes().add(node);
+        // calculate all neighbors
+        List<Relation> in = getEdges().stream()
+                .filter(Relation::isArrayContext)
+                .filter(rel ->
+                        rel.getTo().equals(node.getUuid())
+                ).collect(Collectors.toList());
+
+        List<Relation> out = getEdges().stream()
+                .filter(Relation::isArrayContext)
+                .filter(rel -> rel.getFrom().equals(node.getUuid()))
+                .collect(Collectors.toList());
+
+        List<SemanticModelNode> unvisitedNeighbors = in.stream()
+                .filter(rel -> !visited.contains(rel.getFrom()))
+                .peek(submodel.getEdges()::add)
+                .map(rel -> getNode(rel.getFrom()))
+                .collect(Collectors.toList());
+
+        out.stream()
+                .filter(rel -> !visited.contains(rel.getTo()))
+                .peek(submodel.getEdges()::add)
+                .map(rel -> getNode(rel.getTo()))
+                .forEach(unvisitedNeighbors::add);
+
+        // build the iteration context using recursion
+        for (SemanticModelNode neighbor : unvisitedNeighbors) {
+            getArrayContext(neighbor, visited, submodel);
+        }
+
+        return submodel;
     }
 
     /**

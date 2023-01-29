@@ -1,3 +1,4 @@
+/* tslint:disable:object-literal-key-quotes */  /* Strongly suggested by jointjs documentation for 'targetMarker' as native SVG props are passed */
 import { dia, g, shapes } from 'jointjs';
 import { Nodes } from './node';
 import { groupBy } from 'lodash';
@@ -5,7 +6,11 @@ import { groupBy } from 'lodash';
 /**
  * Link type def
  */
-export type Link = 'custom.SyntaxLink' |'custom.ObjectPropertyLink' | 'custom.DataPropertyLink';
+export type Link =
+  'custom.SyntaxLink'
+  | 'custom.ObjectPropertyLink'
+  | 'custom.DataPropertyLink'
+  | 'custom.arrayContextLink';
 
 /**
  * Abstract class that provides configs for links
@@ -13,9 +18,10 @@ export type Link = 'custom.SyntaxLink' |'custom.ObjectPropertyLink' | 'custom.Da
 export abstract class Links {
 
   // internal link type names
-  static readonly syntaxLinkName: Link = 'custom.SyntaxLink';
-  static readonly objectPropertyLinkName: Link = 'custom.ObjectPropertyLink';
-  static readonly dataPropertyLinkName: Link = 'custom.DataPropertyLink';
+  static readonly syntaxLinkName = 'custom.SyntaxLink';
+  static readonly objectPropertyLinkName = 'custom.ObjectPropertyLink';
+  static readonly dataPropertyLinkName = 'custom.DataPropertyLink';
+  static readonly arrayContextLinkName = 'custom.ArrayContextLink';
 
   // object property semantic link config
   private static objectPropertyLink = shapes.standard.Link.define(
@@ -23,11 +29,11 @@ export abstract class Links {
       attrs: {
         line: {
           strokeWidth: 1,
-          stroke: '#333333'
+          cursor: 'default',
+          pointerEvents: 'none',
         }
       }
-    }
-  );
+    });
 
   // data property semantic link config
   private static dataPropertyLink = shapes.standard.Link.define(
@@ -35,11 +41,29 @@ export abstract class Links {
       attrs: {
         line: {
           strokeWidth: 1,
-          stroke: '#333333'
+          cursor: 'default',
+          pointerEvents: 'none',
         }
       }
-    }
-  );
+    });
+
+  private static arrayContextLink = shapes.standard.Link.define(
+    Links.arrayContextLinkName, {
+      attrs: {
+        line: {
+          stroke: '#60ff00',
+          strokeWidth: 2,
+          cursor: 'default',
+          pointerEvents: 'none',
+          targetMarker: {
+            'type': 'path',
+            'd': 'M 10 -5 0 0 10 5 Z',
+            'stroke': '#60ff00',
+            'fill': '#60ff00'
+          }
+        }
+      }
+    });
 
   private static syntaxLink = shapes.standard.Link.define(
     Links.syntaxLinkName, {
@@ -47,7 +71,9 @@ export abstract class Links {
         line: {
           strokeOpacity: 0.2,
           strokeWidth: 1,
-          strokeDasharray: '10,2'
+          strokeDasharray: '10,2',
+          cursor: 'default',
+          pointerEvents: 'none'
         }
       }
     }
@@ -90,7 +116,7 @@ export abstract class Links {
    * @param link to test
    */
   static isSemanticLink(link: dia.CellView | dia.LinkView): boolean {
-    return [this.objectPropertyLinkName, this.dataPropertyLinkName].includes(link.model?.attributes?.type);
+    return [this.objectPropertyLinkName, this.dataPropertyLinkName, this.arrayContextLinkName].includes(link.model?.attributes?.type);
   }
 
   /**
@@ -107,7 +133,6 @@ export abstract class Links {
    */
   static createDefaultLink(label: string): dia.Link {
     const link = new Links.objectPropertyLink({
-      // @ts-ignore not in jointjs model but works this way
       labels: Links.createLabel(label)
     });
     // link style
@@ -122,7 +147,32 @@ export abstract class Links {
   static createObjectPropertyLink(id: string, source: string, target: string, label: string, opacity?: number): dia.Link {
     const link = new Links.objectPropertyLink({
       id,
-      // @ts-ignore not in jointjs model but works this way
+      source: {id: source},
+      target: {id: target},
+      labels: Links.createLabel(label, opacity),
+      attrs: {
+        line: {
+          opacity: opacity ? opacity : 1,
+          targetMarker: {
+            fill: '#ababab'
+          }
+        },
+      }
+    });
+    // link style
+
+    link.router('normal');
+    link.connector('jumpover');
+
+    return link;
+  }
+
+  /**
+   * Calls constructor and return new semantic datatype link
+   */
+  static createDataPropertyLink(id: string, source: string, target: string, label: string, opacity?: number): dia.Link {
+    const link = new Links.dataPropertyLink({
+      id,
       source: {id: source},
       target: {id: target},
       labels: Links.createLabel(label, opacity),
@@ -141,16 +191,15 @@ export abstract class Links {
   /**
    * Calls constructor and return new semantic datatype link
    */
-  static createDataPropertyLink(id: string, source: string, target: string, label: string, opacity?: number): dia.Link {
-    const link = new Links.dataPropertyLink({
+  static createArrayContextLink(id: string, source: string, target: string, label: string, opacity?: number): dia.Link {
+    const link = new Links.arrayContextLink({
       id,
-      // @ts-ignore not in jointjs model but works this way
       source: {id: source},
       target: {id: target},
       labels: Links.createLabel(label, opacity),
       attrs: {
         line: {
-          opacity: opacity ? opacity : 1
+          opacity: opacity ? opacity : 1,
         }
       }
     });
@@ -165,9 +214,8 @@ export abstract class Links {
    * @param source of link
    * @param target of link
    */
-  static createSyntaxLink(source: string, target: string, ): dia.Link {
+  static createSyntaxLink(source: string, target: string): dia.Link {
     const link = new Links.syntaxLink({
-      // @ts-ignore not in jointjs model but works this way
       source: {id: source},
       target: {id: target},
     });
@@ -271,7 +319,7 @@ export abstract class Links {
             const reverse = ((theta < 180) ? 1 : -1);
             // we found the vertex
             const angle = g.toRad(theta + (sign * reverse * 90));
-            const vertex = g.Point.fromPolar(offset, angle, midPoint);
+            const vertex: dia.Link.Vertex = g.Point.fromPolar(offset, angle, midPoint);
             // replace vertices array with `vertex`
             sibling.vertices([vertex]);
             sibling.connector('smooth');

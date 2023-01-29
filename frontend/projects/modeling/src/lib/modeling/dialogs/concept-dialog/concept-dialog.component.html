@@ -16,39 +16,44 @@
         </div>
       </div>
 
-        <div cdkDropList
-             id="entityList" [cdkDropListConnectedTo]="['canvasContainer']"
-             [cdkDropListData]="semanticModelNodes"
-             class="concept-list scroll-list"
-             cdkDropListSortingDisabled>
-          <div *ngFor="let element of semanticModelNodes" [cdkDragData]="element" cdkDrag class="concept-box"
-               fxLayout="column"
-               fxLayoutAlign="start start" nz-tooltip="{{element.description}}" nzTooltipTitle="{{element.label}}">
-            <div fxFill fxLayout="row" fxLayoutAlign="start center">
-              <span nz-typography nzEllipsis>{{ element.label }}</span>
-              <nz-tag class="named-entity-tag" *ngIf="element._class === 'NamedEntity'"
-                      [nz-tooltip]="'A Named Entity represents a fixed, singular entity and cannot be modified.'">NE
-              </nz-tag>
-              <nz-tag *ngIf="element.provisional"
-                      [nz-tooltip]="'This element is a provisional element and not yet part of an ontology.'"
-                      class="provisional-tag">PROV
-              </nz-tag>
-            </div>
-            <div fxFill fxLayout="row" fxLayoutAlign="space-between center">
-              <span nz-typography nzType="secondary" nzEllipsis>{{ element.uri }}</span>
-              <button (click)="deleteProvisionalNode($event, element)" *ngIf="element.provisional" nz-button nzDanger
+      <div [cdkDropListConnectedTo]="['canvasContainer']"
+           [cdkDropListData]="semanticModelNodes" cdkDropList
+           cdkDropListSortingDisabled
+           class="concept-list scroll-list"
+           id="entityList">
+        <div *ngFor="let element of semanticModelNodes" [cdkDragData]="element" cdkDrag class="concept-box"
+             fxLayout="column"
+             fxLayoutAlign="start start" nz-tooltip="{{getDescription(element)}}">
+          <div fxFill fxLayout="row" fxLayoutAlign="start center">
+            <span nz-typography nzEllipsis>{{ element.label }}</span>
+            <nz-tag *ngIf="element._class === 'NamedEntity'"
+                    [nz-tooltip]="'A Named Entity represents a fixed, singular entity and cannot be modified.'"
+                    class="named-entity-tag">NE
+            </nz-tag>
+            <nz-tag *ngIf="element.provisional"
+                    [nz-tooltip]="'This element is a provisional element and not yet part of an ontology.'"
+                    class="provisional-tag">PROV
+            </nz-tag>
+          </div>
+          <div fxFill fxLayout="row" fxLayoutAlign="space-between center">
+            <span nz-typography nzEllipsis nzType="secondary">{{ element.uri }}</span>
+            <div *ngIf="element.provisional" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
+              <button (click)="editProvisionalNode($event, element)" nz-button
+                      nzSize="small" nzType="default">Edit
+              </button>
+              <button (click)="deleteProvisionalNode($event, element)" nz-button nzDanger
                       nzSize="small" nzType="default">Delete
               </button>
             </div>
+          </div>
 
-
-            <div *cdkDragPreview class="concept-preview"
-                 [ngStyle]="{ border: '3px solid', 'border-color': 'black',  color: 'black'}">
-              <div class="concept-preview-header" [ngStyle]="{ background: 'black', color: 'black' }">
-                <span class="concept-preview-header-text">{{ element.label }}</span></div>
-            </div>
+          <div *cdkDragPreview [ngStyle]="{ border: '3px solid', 'border-color': 'black',  color: 'black'}"
+               class="concept-preview">
+            <div [ngStyle]="{ background: 'black', color: 'black' }" class="concept-preview-header">
+              <span class="concept-preview-header-text">{{ element.label }}</span></div>
           </div>
         </div>
+      </div>
 
     </div>
   </nz-tab>
@@ -64,7 +69,7 @@
         </ng-template>
 
         <div>
-          <button nz-button nzType="primary" (click)="newRelationConcept()">
+          <button nz-button nzType="primary" (click)="newRelation()">
             <span>New</span>
           </button>
         </div>
@@ -72,9 +77,10 @@
 
       <div class="concept-list scroll-list">
         <div *ngFor="let relation of relations; let i = index"
-            (click)="toggleRelation(i, relation)"
-            [ngStyle]="{'background': isSelected(relation) ? 'lightgrey' : null, 'color': isSelected(relation) ? 'white' : null}"
-            class="concept-box" fxLayout="column">
+             (click)="toggleRelation(i, relation)"
+             [ngStyle]="{'background': isSelected(relation) ? 'lightgrey' : null, 'color': isSelected(relation) ? 'white' : null}"
+             class="relation-box" fxLayout="column"
+             nz-tooltip="{{getDescription(relation)}}">
 
           <div fxLayout="row" fxLayoutAlign="start center">
             <span nz-typography nzEllipsis>{{ relation.label }}</span>
@@ -86,11 +92,17 @@
                     class="provisional-tag">PROV
             </nz-tag>
           </div>
-          <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-            <span nz-typography nzEllipsis nzType="secondary">{{ relation.uri }}</span>
-            <button (click)="deleteProvisionalRelation($event, relation)" *ngIf="relation.provisional" nz-button
-                    nzDanger nzSize="small" nzType="default">Delete
-            </button>
+          <div fxFill fxLayout="row" fxLayoutAlign="space-between center">
+            <span nz-typography nzType="secondary" nzEllipsis>{{ relation.uri }}</span>
+            <div *ngIf="relation.provisional" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
+              <button (click)="editProvisionalRelation($event, relation)" nz-button
+                      nzSize="small" nzType="default">Edit
+              </button>
+              <button (click)="deleteProvisionalRelation($event, relation)" nz-button nzDanger
+                      nzSize="small" nzType="default">Delete
+              </button>
+
+            </div>
           </div>
 
         </div>

@@ -12,9 +12,11 @@ import java.util.List;
  * Represents a set. All outgoing {@link Edge}s' target nodes represent members of that set.
  */
 @JsonTypeName("SetNode")
-public class SetNode extends SchemaNode {
+public class SetNode extends MappableSyntaxNode {
 
     private static final long serialVersionUID = -5424468053886038114L;
+
+    public static final String ARRAY_INDICATOR = "0";
 
     public SetNode(
             boolean isValid
@@ -29,9 +31,11 @@ public class SetNode extends SchemaNode {
             @Nullable @JsonProperty(PATH_PROPERTY) List<String> path,
             @Nullable @JsonProperty(XCOORDINATE_PROPERTY) Double xCoordinate,
             @Nullable @JsonProperty(YCOORDINATE_PROPERTY) Double yCoordinate,
-            @JsonProperty(VALID_PROPERTY) boolean isValid
+            @JsonProperty(VALID_PROPERTY) boolean isValid,
+            @JsonProperty(VISIBLE_PROPERTY) boolean visible,
+            @JsonProperty(DISABLED_PROPERTY) boolean disabled
     ) {
-        super(uuid, label, path, xCoordinate, yCoordinate, isValid);
+        super(uuid, label, path, xCoordinate, yCoordinate, isValid, visible, disabled);
     }
 
     @Override
@@ -42,15 +46,15 @@ public class SetNode extends SchemaNode {
                 getPath(),
                 getXCoordinate(),
                 getYCoordinate(),
-                isValid()
+                isValid(),
+                isVisible(),
+                isDisabled()
         );
     }
 
     @Override
     @SuppressWarnings("MagicCharacter")
     public String toString() {
-        return "{\"@class\":\"" + this.getClass().getSimpleName() + "\""
-                + ", \"@super\":" + super.toString()
-                + '}';
+        return super.toString() + " | SetNode: " + getPathAsJSONPointer();
     }
 }

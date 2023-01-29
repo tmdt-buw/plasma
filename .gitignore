@@ -6,6 +6,7 @@ target/
 .idea/*
 !.idea/.name
 !.idea/copyright/
+.fleet/*
 
 #Share all dictionaries
 !.idea/dictionaries/
@@ -15,9 +16,10 @@ target/
 *.iml
 
 ontologies/
+storage/
 
 ### Logging ###
 logs/*
 **.log
-**.log.zip!/
+**.log.zip
 

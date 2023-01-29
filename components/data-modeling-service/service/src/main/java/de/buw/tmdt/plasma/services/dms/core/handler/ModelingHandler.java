@@ -1,9 +1,6 @@
 package de.buw.tmdt.plasma.services.dms.core.handler;
 
-import de.buw.tmdt.plasma.datamodel.CombinedModel;
-import de.buw.tmdt.plasma.datamodel.CombinedModelElement;
-import de.buw.tmdt.plasma.datamodel.CombinedModelIntegrityException;
-import de.buw.tmdt.plasma.datamodel.PositionedCombinedModelElement;
+import de.buw.tmdt.plasma.datamodel.*;
 import de.buw.tmdt.plasma.datamodel.modification.DeltaModification;
 import de.buw.tmdt.plasma.datamodel.modification.operation.SyntacticOperationDTO;
 import de.buw.tmdt.plasma.datamodel.semanticmodel.Class;
@@ -37,6 +34,7 @@ import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ModelingHandler {
@@ -51,6 +49,9 @@ public class ModelingHandler {
     private final OperationLookUp operationLookUp;
     private HashMap<SchemaNode, Set<Operation.Handle>> parameterDefinitionLookup;
     private final ConfigServiceClient configServiceClient;
+
+    @Value("${plasma.dms.feature.finalizemodels.enabled:true}")
+    private Boolean finalizeModelsEnabled;
 
     @Value("${plasma.dms.feature.syntacticoperations.enabled:false}")
     private Boolean syntacticOperationsEnabled;
@@ -90,8 +91,19 @@ public class ModelingHandler {
         // save initial version of submitted model
         modeling.pushCombinedModel(combinedModel);
         modeling = persistModeling(modeling);
+        return modeling;
+    }
 
-
+    public Modeling updateModeling(@NotNull String modelId, @Nullable String name, @Nullable String description, @Nullable String dataId) {
+        Modeling modeling = findModelingOrThrow(modelId);
+        if (name != null && !name.isBlank()) {
+            modeling.setName(name);
+        }
+        if (description != null && !description.isBlank()) {
+            modeling.setDescription(description);
+        }
+        // dataId update is prohibited for now
+        modeling = modelingRepository.save(modeling);
         return modeling;
     }
 
@@ -147,13 +159,15 @@ public class ModelingHandler {
      * @param sourceModelId The source model id
      * @return The updated model
      */
-    // TODO handle proper positioning of new nodes
     public CombinedModel copySemanticModelFromOtherModel(@NotNull String modelId, @NotNull String sourceModelId) {
         Modeling modeling = findModelingOrThrow(modelId);
         CombinedModel model = getCombinedModel(modelId, true);
         CombinedModel sourceCM = getCombinedModel(sourceModelId);
 
         SemanticModel sourceSM = sourceCM.getSemanticModel();
+        if (!sourceCM.isFinalized()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Model " + modelId + " is not finalized.");
+        }
         DeltaModification delta = new DeltaModification("clone-" + sourceModelId);
         // sanitize and clone all elements
         Map<String, String> uuidMapping = new HashMap<>(); // keep track of exchanged uuids to adjust relations later on
@@ -221,9 +235,27 @@ public class ModelingHandler {
         return currentModel;
     }
 
-    public @NotNull CombinedModel getCombinedModel(@NotNull String modelId) {
-
+    public @NotNull
+    CombinedModel getCombinedModel(@NotNull String modelId) {
         return getCombinedModel(modelId, false);
+    }
+
+    @NotNull
+    public List<Set<String>> getArrayContexts(@NotNull String modelId) {
+        CombinedModel combinedModel = getCombinedModel(modelId);
+        List<Set<String>> sets = combinedModel.getArrayContexts().stream()
+                .map(sm -> Stream.concat(sm.getEdges().stream().map(CombinedModelElement::getUuid),
+                                sm.getNodes().stream().map(CombinedModelElement::getUuid))
+                        .collect(Collectors.toSet()))
+                .collect(Collectors.toList());
+        return sets;
+    }
+
+    @NotNull
+    public List<ModelMapping> getModelMappings(@NotNull String modelId) {
+        CombinedModel combinedModel = getCombinedModel(modelId);
+        List<ModelMapping> modelMappings = combinedModel.generateModelMappings();
+        return modelMappings;
     }
 
     /**
@@ -349,7 +381,8 @@ public class ModelingHandler {
      * @deprecated Legacy function, use {@link #applyModification(String, DeltaModification)} instead
      */
     @Deprecated
-    public @NotNull CombinedModel modifySyntaxModel(@NotNull String modelId, @NotNull SyntacticOperationDTO syntacticOperationDTO) {
+    public @NotNull
+    CombinedModel modifySyntaxModel(@NotNull String modelId, @NotNull SyntacticOperationDTO syntacticOperationDTO) {
         //load referenced modeling
         Modeling modeling = findModelingOrThrow(modelId);
 
@@ -463,30 +496,73 @@ public class ModelingHandler {
 
         element.validate();
 
-        //load model - DON'T COPY since caching of transient concepts is not "undoable"
+        // validate the URI
+        ontologyApiClient.validateURI(element.getURI());
+
+        //load model - DON'T COPY since caching of provisional nodes is not "undoable"
         Modeling modeling = findModelingOrThrow(modelId);
         CombinedModel combinedModel = getCombinedModel(modeling, true);
 
         if (element instanceof Class || element instanceof NamedEntity) {
             final SemanticModelNode usedElement = getAndUpdateCache(
                     element,
-                    SemanticModelNode::getURI,
+                    n -> Objects.equals(n.getURI(), element.getURI()),
                     combinedModel.getProvisionalElements());
 
             persistModeling(modeling);
             return usedElement;
         } else {
-            log.info("Received uncachable type " + element);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This type cannot be cached");
+            log.info("Received unknown type " + element);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot create a provisional node of this type");
         }
     }
 
-    public void uncacheElement(@NotNull String modelId, String uri) {
+    @NotNull
+    public SemanticModelNode updateCachedNode(@NotNull String modelId, @NotNull SemanticModelNode node, @Nullable String oldURI) {
+
+        node.validate();
+
+        // validate the new URI
+        ontologyApiClient.validateURI(node.getURI());
+
+        //load model - DON'T COPY since caching of provisional nodes is not "undoable"
         Modeling modeling = findModelingOrThrow(modelId);
         CombinedModel combinedModel = getCombinedModel(modeling, true);
-        boolean inUse = combinedModel.getSemanticModel().getNodes().stream().anyMatch(node -> node.getURI().equals(uri));
+        if (oldURI == null || oldURI.isBlank()) {
+            oldURI = node.getURI();
+        }
+        String refURI = oldURI;
+        if (node instanceof Class || node instanceof NamedEntity) {
+            final SemanticModelNode usedElement = getAndUpdateCache(
+                    node,
+                    n -> Objects.equals(n.getURI(), refURI),
+                    combinedModel.getProvisionalElements());
+
+            combinedModel.getSemanticModel().getNodes().forEach(sm_node -> {
+                if (Objects.equals(sm_node.getURI(), refURI)) {
+                    sm_node.setURI(node.getURI());
+                    sm_node.setLabel(node.getLabel());
+                    if (node instanceof Class) {
+                        ((Class) sm_node).setDescription(((Class) node).getDescription());
+                    }
+                }
+            });
+
+            persistModeling(modeling);
+            return usedElement;
+        } else {
+            log.info("Received unknown type " + node);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot create a provisional node of this type");
+        }
+
+    }
+
+    public void uncacheNode(@NotNull String modelId, String uri) {
+        Modeling modeling = findModelingOrThrow(modelId);
+        CombinedModel combinedModel = getCombinedModel(modeling, true);
+        boolean inUse = combinedModel.getSemanticModel().getNodes().stream().anyMatch(node -> Objects.equals(node.getURI(), uri));
         if (inUse) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Element with URI " + uri + " is in use in this model. Please remove all instances before deleting.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Node with URI " + uri + " is in use in this model. Please remove all instances before deleting.");
         }
 
         boolean change = combinedModel.getProvisionalElements().removeIf(o -> o.getURI().equals(uri));
@@ -498,18 +574,56 @@ public class ModelingHandler {
     @NotNull
     public Relation cacheRelation(@NotNull String modelId, @NotNull Relation relation) {
 
+        // validate the URI
+        ontologyApiClient.validateURI(relation.getURI());
+
         relation.convertToTemplate();
         relation.validate();
 
         //load schema - DON'T COPY since caching of transient concepts is not "undoable"
         Modeling modeling = findModelingOrThrow(modelId);
         CombinedModel combinedModel = getCombinedModel(modeling, true);
-        //compute entity concept
         final Relation usedRelation = getAndUpdateCache(
                 relation,
-                Relation::getUuid,
+                rel -> Objects.equals(rel.getURI(), relation.getURI()),
                 combinedModel.getProvisionalRelations()
         );
+        persistModeling(modeling);
+
+        return usedRelation;
+
+    }
+
+    @NotNull
+    public Relation updateCachedRelation(@NotNull String modelId, @NotNull Relation relation, @Nullable String oldURI) {
+
+        // validate the URI
+        ontologyApiClient.validateURI(relation.getURI());
+
+        relation.convertToTemplate();
+        relation.validate();
+
+        //load schema - DON'T COPY since caching of transient concepts is not "undoable"
+        Modeling modeling = findModelingOrThrow(modelId);
+        CombinedModel combinedModel = getCombinedModel(modeling, true);
+        if (oldURI == null || oldURI.isBlank()) {
+            oldURI = relation.getURI();
+        }
+        String refURI = oldURI;
+        final Relation usedRelation = getAndUpdateCache(
+                relation,
+                element -> Objects.equals(element.getURI(), refURI),
+                combinedModel.getProvisionalRelations()
+        );
+
+        combinedModel.getSemanticModel().getEdges().forEach(sm_edge -> {
+            if (Objects.equals(sm_edge.getURI(), refURI)) {
+                sm_edge.setUri(relation.getURI());
+                sm_edge.setLabel(relation.getLabel());
+                sm_edge.setDescription(relation.getDescription());
+            }
+        });
+
         persistModeling(modeling);
 
         return usedRelation;
@@ -520,9 +634,9 @@ public class ModelingHandler {
         Modeling modeling = findModelingOrThrow(modelId);
         CombinedModel combinedModel = getCombinedModel(modeling, true);
 
-        boolean inUse = combinedModel.getSemanticModel().getEdges().stream().anyMatch(rel -> rel.getURI().equals(uri));
+        boolean inUse = combinedModel.getSemanticModel().getEdges().stream().anyMatch(rel -> Objects.equals(rel.getURI(), uri));
         if (inUse) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Element with URI " + uri + " is in use in this model. Please remove all instances before deleting.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Relation with URI " + uri + " is in use in this model. Please remove all usages before deleting.");
         }
 
         boolean change = combinedModel.getProvisionalRelations().removeIf(o -> o.getURI().equals(uri));
@@ -537,39 +651,35 @@ public class ModelingHandler {
      * passed element and adds it to the cache. <i>Equivalence</i> of two elements {@code x} and {@code y} here means:
      * {@code identityFunction.apply(x).equals(identityFunction.apply(y)}
      *
-     * @param element          the entry which is looked for
-     * @param identityFunction the function which maps an element to it's {@link UUID} (usually just a method reference to T::getUuid)
-     * @param elementCache     the cache of known entries
+     * @param element            the entry which is looked for
+     * @param identifierFunction the function which identifies the element to update
+     * @param elementCache       the cache of known entries
      * @return an entity concept which is equivalent to {@code entityConcept}
      */
     @NotNull
     private <T extends CombinedModelElement> T getAndUpdateCache(
             @NotNull T element,
-            @NotNull Function<T, String> identityFunction,
+            @NotNull Function<T, Boolean> identifierFunction,
             @NotNull List<T> elementCache
     ) {
-        final T result;
-        String uuid = identityFunction.apply(element);
-        //if uuid exists see if one exists in the cache all-ready
-        if (uuid != null) {
-            Optional<T> cachedEntityConcept = elementCache.stream()
-                    .filter(ec -> identityFunction.apply(ec) != null && uuid.equals(identityFunction.apply(ec)))
-                    .findAny();
-            result = cachedEntityConcept.orElse(element);
-            if (cachedEntityConcept.isEmpty()) {
-                elementCache.add(result);
-            }
-        } else {
-            result = element;
-            elementCache.add(result);
-        }
 
-        return result;
+        Optional<T> provisionalElement = elementCache.stream()
+                .filter(identifierFunction::apply)
+                .findAny();
+        if (provisionalElement.isPresent()) {
+            // delete the old element
+            T t = provisionalElement.get();
+            elementCache.remove(t);
+            element.setUuid(t.getUuid()); // keep the UUID in any case!
+        }
+        elementCache.add(element);
+        return element;
     }
 
     /* UNDO / REDO Functions */
 
-    public @NotNull CombinedModel undoModelModification(@NotNull String modelId) {
+    public @NotNull
+    CombinedModel undoModelModification(@NotNull String modelId) {
         //Get the modeling from the repository
         Modeling modeling = findModelingOrThrow(modelId);
         try {
@@ -584,7 +694,8 @@ public class ModelingHandler {
         return modeling.getCurrentModel();
     }
 
-    public @NotNull CombinedModel redoModelModification(@NotNull String modelId) {
+    public @NotNull
+    CombinedModel redoModelModification(@NotNull String modelId) {
         //Get the modeling from the repository
         Modeling modeling = findModelingOrThrow(modelId);
         try {
@@ -615,11 +726,15 @@ public class ModelingHandler {
     @NotNull
     @Transactional
     public CombinedModel finalizeModeling(@NotNull String modelId) {
+        if (!finalizeModelsEnabled) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Model finalization is not allowed" +
+                    " in the current configuration.");
+        }
         //Load the modeling from the repository.
         Modeling modeling = modelingRepository.findById(modelId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "Data Source does not exists"
+                        "Modeling does not exist"
                 ));
 
         CombinedModel combinedModel = getCombinedModel(modeling, false);
@@ -647,6 +762,51 @@ public class ModelingHandler {
     }
 
     /**
+     * Clones an existing modeling at its current state.
+     * New modeling will have the old name with "(Clone)" appended.
+     * All history is deleted for that model and all IDs reset.
+     * If the model was finalized, the clone can be edited again.
+     *
+     * @param modelId The id of the modeling to clone
+     * @return A cloned instance of the given modeling with all ids reset and finalized set to false.
+     */
+    @Transactional
+    public Modeling cloneModeling(@NotNull String modelId) {
+        //Load the modeling from the repository.
+        Modeling modeling = modelingRepository.findById(modelId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Modeling does not exist"
+                ));
+
+        CombinedModel combinedModel = getCombinedModel(modeling, false);
+
+        Modeling newModeling = new Modeling(UUID.randomUUID().toString(),
+                modeling.getName() + " (Clone)",
+                modeling.getDescription(),
+                ZonedDateTime.now(),
+                UUID.randomUUID().toString());
+
+
+        CombinedModel copy = combinedModel.copy(); // create a deep copy to decouple from Java objects
+        /* Now replace all ids to not cause any unintentional side effects
+        (although this should only happen when we mix elements from two models (who would do this?....)
+        Current clone version only resets CM and SM ids, may be subject to change!
+        */
+
+        CombinedModel clone = new CombinedModel(UUID.randomUUID().toString(),
+                copy.getSyntaxModel(),
+                copy.getSemanticModel()); // generate a new CM id
+        clone.getSemanticModel().setId(null); // for now, we only reset the semantic model id
+
+
+        newModeling.pushCombinedModel(clone);
+
+        newModeling = modelingRepository.save(newModeling);
+        return newModeling;
+    }
+
+    /**
      * Sends the {@link SemanticModel} of the given {@link CombinedModel} to the KGS to persist it.
      * ID mappings (the KGS does not use our UUIDs) is done in this function, including the reverse mapping once
      * new KGS ids are generated. Those are then stored in the entityId field.
@@ -663,21 +823,6 @@ public class ModelingHandler {
 
         combinedModel = combinedModel.copy();
         SemanticModel semanticModel = combinedModel.getSemanticModel();
-
-        //Ensure that all instances have a unique name
-        // TODO remove once not necessary any more (currently is for export in platform)
-        Map<String, SemanticModelNode> duplicateCheck = new HashMap<>();
-        for (SemanticModelNode node : semanticModel.getNodes()) {
-            if (node instanceof Class) {
-                Instance instance = ((Class) node).getInstance();
-                if (instance != null) {
-                    if (duplicateCheck.containsKey(instance.getLabel())) {
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Instance labels must be unique");
-                    }
-                    duplicateCheck.put(node.getLabel(), node);
-                }
-            }
-        }
 
         //send request
         final SemanticModel response;
@@ -756,5 +901,6 @@ public class ModelingHandler {
         modeling.getSelectedOntologies().addAll(selectedOntologies);
         persistModeling(modeling);
     }
+
 
 }

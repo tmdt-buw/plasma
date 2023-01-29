@@ -1,0 +1,30 @@
+{
+  "root_number0": "5000",
+  "root_string0": "foo",
+  "root_string1": "bar",
+  "root_null": null,
+  "root_object0": {
+    "root_object0_string0": "foo",
+    "root_object0_string1": "bar"
+  },
+  "root_array0": [
+    "foo",
+    "bar"
+  ],
+  "root_array1": [
+    {
+      "root_array1_Object_string0": "foo"
+    },
+    {
+      "root_array1_Object_string0": "foo"
+    }
+  ],
+  "root_array2": [
+    [
+      "foo"
+    ],
+    [
+      "foo"
+    ]
+  ]
+}
