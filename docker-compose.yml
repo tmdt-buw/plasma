@@ -53,25 +53,6 @@ services:
     ports:
       - 3308:3306
 
-  mariadb-ars-m-sm:
-    image: mariadb:latest
-    hostname: mariadb-ars-m-sm
-    restart: unless-stopped
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    environment:
-      - MYSQL_DATABASE=plasma-ars-m-sm
-      - MYSQL_ROOT_PASSWORD=plasma
-    volumes:
-      - mariadb_ars_m_sm:/var/lib/mysql
-    healthcheck:
-      test: bash -c "mariadb -h 127.0.0.1 -p$$MYSQL_ROOT_PASSWORD  -e \"show databases;\""
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 5s
-    ports:
-      - 3310:3306
-
   ########################### Service Infrastructure ######################################
   discovery:
     image: "plasma/discovery:${PLASMA_VERSION}"
@@ -174,61 +155,11 @@ services:
     ports:
       - 80:80
 
-########################### Auxiliary Services ######################################
-
-  ars-l-lm:
-    image: "plasma/ars-l-lm:${PLASMA_VERSION}"
-    hostname: plasma-ars-l-lm
-    restart: unless-stopped
-    depends_on:
-      - discovery
-      - kgs
-    volumes:
-      - configs:/var/plasma/configs
-    ports:
-      - 8201:8201
-
-  ars-m-sm:
-    image: "plasma/ars-m-sm:${PLASMA_VERSION}"
-    hostname: plasma-ars-m-sm
-    restart: unless-stopped
-    depends_on:
-      - discovery
-      - kgs
-      - mariadb-ars-m-sm
-    volumes:
-      - configs:/var/plasma/configs
-    ports:
-      - 8202:8202
-
-  ars-r-sr:
-    image: "plasma/ars-r-sr:${PLASMA_VERSION}"
-    hostname: plasma-ars-r-sr
-    restart: unless-stopped
-    depends_on:
-      - discovery
-      - semantic-recommender
-      - kgs
-    volumes:
-      - configs:/var/plasma/configs
-    ports:
-      - 8205:8205
-
-  ########################### External Services ######################################
-
-#  semantic-recommender:
-#    image: plasma/recommender:${RECOMMENDER_VERSION}
-#    hostname: semantic-recommender
-#    restart: unless-stopped
-#    ports:
-#      - 8000:8000
-
 
 volumes:
   fuseki_data:
   mariadb_sas:   
   mariadb_dms:
-  mariadb_ars_m_sm:
   configs:
   kgs_ontologies:
   dps_storage:
