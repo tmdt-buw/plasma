@@ -1,7 +1,6 @@
 import { dia, shapes } from 'jointjs';
 import {
   CollisionSchema,
-  CompositeNode,
   ObjectNode,
   PrimitiveNode,
   SchemaNode,
@@ -18,8 +17,12 @@ export type NodeType =
   | 'custom.SemanticClassNode'
   | 'custom.NamedEntityNode'
   | 'custom.LiteralNode'
-  | 'custom.ExtendedSemanticClassNode';
-export type SyntaxNode = SchemaNode | CollisionSchema | CompositeNode | ObjectNode | PrimitiveNode | SetNode;
+  | 'custom.ExtendedSemanticClassNode'
+  | 'custom.HighlightedSemanticClassNode'
+  | 'custom.HighlightedExtendedSemanticClassNode'
+  | 'custom.HighlightedLiteralNode'
+  | 'custom.HighlightedNamedEntityNode';
+export type SyntaxNode = SchemaNode | CollisionSchema  | ObjectNode | PrimitiveNode | SetNode;
 export type SemanticNode = SemanticModelNode;
 
 /**
@@ -29,14 +32,18 @@ export abstract class Nodes {
 
   // internal node type names
   static readonly syntaxNodeName: NodeType = 'custom.SyntaxNode';
-  static readonly semanticClassName: NodeType = 'custom.SemanticClassNode';
-  static readonly extendedSemanticClassName: NodeType = 'custom.ExtendedSemanticClassNode';
+  static readonly classNodeName: NodeType = 'custom.SemanticClassNode';
+  static readonly classNodeHighlightedName: NodeType = 'custom.HighlightedSemanticClassNode';
+  static readonly extendedClassNodeName: NodeType = 'custom.ExtendedSemanticClassNode';
+  static readonly extendedClassNodeHighlightedName: NodeType = 'custom.HighlightedExtendedSemanticClassNode';
   static readonly namedEntityName: NodeType = 'custom.NamedEntityNode';
+  static readonly namedEntityHighlightedName: NodeType = 'custom.HighlightedNamedEntityNode';
   static readonly literalName: NodeType = 'custom.LiteralNode';
+  static readonly literalHighlightedName: NodeType = 'custom.HighlightedLiteralNode';
 
   // extended semantic class node config
-  private static basicClassNode: dia.Cell.Constructor<dia.Element> = shapes.standard.Rectangle.define(
-    Nodes.semanticClassName, {
+  private static classNode: dia.Cell.Constructor<dia.Element> = shapes.standard.Rectangle.define(
+    Nodes.classNodeName, {
       attrs: {
         body: {
           rx: 5,
@@ -66,10 +73,9 @@ export abstract class Nodes {
     }
   );
 
-
 // extended semantic class node config
   private static extendedClassNode: dia.Cell.Constructor<dia.Element> = shapes.standard.HeaderedRectangle.define(
-    Nodes.extendedSemanticClassName, {
+    Nodes.extendedClassNodeName, {
       attrs: {
         body: {
           rx: 5,
@@ -286,7 +292,7 @@ export abstract class Nodes {
    */
   static isClass(node: dia.CellView | dia.ElementView | dia.Element): boolean {
     const model = node instanceof dia.Element ? node : node.model;
-    return [Nodes.semanticClassName, Nodes.extendedSemanticClassName].includes(model?.attributes?.type);
+    return [Nodes.classNodeName, Nodes.extendedClassNodeName].includes(model?.attributes?.type);
   }
 
   /**
@@ -295,7 +301,7 @@ export abstract class Nodes {
    */
   static isNamedEntity(node: dia.CellView | dia.ElementView | dia.Element): boolean {
     const model = node instanceof dia.Element ? node : node.model;
-    return Nodes.namedEntityName ===  model?.attributes?.type;
+    return Nodes.namedEntityName === model?.attributes?.type;
   }
 
   /**
@@ -304,16 +310,15 @@ export abstract class Nodes {
    */
   static isLiteral(node: dia.CellView | dia.ElementView | dia.Element): boolean {
     const model = node instanceof dia.Element ? node : node.model;
-    return Nodes.literalName ===  model?.attributes?.type;
+    return Nodes.literalName === model?.attributes?.type;
   }
 
   /**
    * Calls constructor and returns instance of a new semantic class node
    */
-  static createSemanticClassNode(id: string, header: string, position: { x: number, y: number }, width: number, height: number, opacity?: number): dia.Element {
-    return new Nodes.basicClassNode({
+  static createSemanticClassNode(id: string, header: string, position: { x: number, y: number }, width: number, height: number, opacity?: number, highlighted?: boolean): dia.Element {
+    const node = new Nodes.classNode({
       id,
-      // @ts-ignore not in jointjs model but works this way
       position,
       size: {
         width,
@@ -332,15 +337,18 @@ export abstract class Nodes {
         }
       }
     });
+    if (highlighted) {
+      node.attributes.type = Nodes.classNodeHighlightedName;
+    }
+    return node;
   }
 
   /**
    * Calls constructor and returns instance of a new semantic class node
    */
-  static createInstancedSemanticClassNode(id: string, header: string, instancelabel: string, icon: string, position: { x: number, y: number }, width: number, height: number,  opacity?: number): dia.Element {
-    return new Nodes.extendedClassNode({
+  static createInstancedSemanticClassNode(id: string, header: string, instancelabel: string, icon: string, position: { x: number, y: number }, width: number, height: number, opacity?: number, highlighted?: boolean): dia.Element {
+    const node = new Nodes.extendedClassNode({
       id,
-      // @ts-ignore not in jointjs model but works this way
       position,
       size: {
         width,
@@ -370,15 +378,18 @@ export abstract class Nodes {
         }
       }
     });
+    if (highlighted) {
+      node.attributes.type = Nodes.extendedClassNodeHighlightedName;
+    }
+    return node;
   }
 
   /**
    * Calls constructor and returns instance of a new named entity node
    */
-  static createNamedEntityNode(id: string, label: string, position: { x: number, y: number }, width: number, height: number, opacity?: number): dia.Element {
-    return new Nodes.namedEntityNode({
+  static createNamedEntityNode(id: string, label: string, position: { x: number, y: number }, width: number, height: number, opacity?: number, highlighted?: boolean): dia.Element {
+    const node = new Nodes.namedEntityNode({
       id,
-      // @ts-ignore not in jointjs model but works this way
       position,
       size: {
         width,
@@ -396,15 +407,18 @@ export abstract class Nodes {
         }
       }
     });
+    return node;
+    if (highlighted) {
+      node.attributes.type = Nodes.namedEntityHighlightedName;
+    }
   }
 
   /**
    * Calls constructor and returns instance of a new literal node
    */
-  static createLiteralNode(id: string, label: string, icon: string, position: { x: number, y: number }, width: number, height: number, opacity?: number): dia.Element {
-    return new Nodes.literalNode({
+  static createLiteralNode(id: string, label: string, icon: string, position: { x: number, y: number }, width: number, height: number, opacity?: number, highlighted?: boolean): dia.Element {
+    const node = new Nodes.literalNode({
       id,
-      // @ts-ignore not in jointjs model but works this way
       position,
       size: {
         width,
@@ -426,6 +440,10 @@ export abstract class Nodes {
         }
       }
     });
+    if (highlighted) {
+      node.attributes.type = Nodes.literalHighlightedName;
+    }
+    return node;
   }
 
   /**
@@ -435,7 +453,6 @@ export abstract class Nodes {
     return new Nodes.syntaxNode({
       id,
       subtype,
-      // @ts-ignore not in jointjs model but works this way
       position,
       size: {
         width,

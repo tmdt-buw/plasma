@@ -1,0 +1,29 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:a7d84-jahr a local:Jahr .
+
+plsm:a7d84-messwert a local:Stickstoffdioxid_Konzentration ;
+    local:gemessen_in [ a local:_g_m_ ] .
+
+plsm:a7d84-monat a local:Monat .
+
+plsm:a7d84-zeit_bis a local:Datum ;
+    local:zeitstempelformat "YYYYMMDD" .
+
+plsm:a7d84-zeit_von a local:Datum ;
+    local:zeitstempelformat "YYYYMMDD" .
+
+<http://plasma.uni-wuppertal.de/sm/a7d84-﻿messpunkt> a local:Stationsidentifikationsnummer .
+
+[] a local:NO2_Messung ;
+    local:bezieht_sich_auf [ a local:Bezugsmonat ;
+            local:besteht_aus plsm:a7d84-jahr,
+                plsm:a7d84-monat ;
+            local:durchschnitt plsm:a7d84-messwert ;
+            local:hat [ a local:Expositionszeitraum ;
+                    local:anfang plsm:a7d84-zeit_von ;
+                    local:ende plsm:a7d84-zeit_bis ] ] ;
+    local:durchgef_hrt_von [ a local:Messstation ;
+            local:identifiziert_durch <http://plasma.uni-wuppertal.de/sm/a7d84-﻿messpunkt> ] .
+

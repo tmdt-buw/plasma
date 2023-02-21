@@ -76,13 +76,13 @@ public class CombinedModelConverter {
 		nodePath.add(pathToken);
 
 		de.buw.tmdt.plasma.datamodel.syntaxmodel.SetNode root =
-				new de.buw.tmdt.plasma.datamodel.syntaxmodel.SetNode(
-						UUID.randomUUID().toString(),
-						label,
-						nodePath,
-						xCoordinate,
-						yCoordinate,
-						setNode.isValid(), true, false);
+                new de.buw.tmdt.plasma.datamodel.syntaxmodel.SetNode(
+                        UUID.randomUUID().toString(),
+                        label,
+                        nodePath,
+                        xCoordinate,
+                        yCoordinate,
+                        true, false);
 
 		nodePath = new ArrayList<>(nodePath); // copy list again to ensure child does get a new instance
 
@@ -126,9 +126,9 @@ public class CombinedModelConverter {
 		List<String> nodePath = new ArrayList<>(parentPath);
 		nodePath.add(pathToken);
 
-		de.buw.tmdt.plasma.datamodel.syntaxmodel.ObjectNode object =
-				new de.buw.tmdt.plasma.datamodel.syntaxmodel.ObjectNode(
-						label, nodePath, xCoordinate, yCoordinate, objectNode.isValid());
+        de.buw.tmdt.plasma.datamodel.syntaxmodel.ObjectNode object =
+                new de.buw.tmdt.plasma.datamodel.syntaxmodel.ObjectNode(
+                        label, nodePath, xCoordinate, yCoordinate);
 
 		serializationContext.nodeLookUp.put(object.getUuid(), object);
 		nodePath = new ArrayList<>(nodePath); // copy list again to ensure child does gut a new instance
@@ -191,7 +191,6 @@ public class CombinedModelConverter {
 			   nodePath,
 			   xCoordinate,
 			   yCoordinate,
-			   primitiveNode.isValid(),
 			   DataType.valueOf(primitiveNode.getDataType().identifier),
 			   primitiveNode.getExamples(),
 			   primitiveNode.getCleansingPattern(),true, false

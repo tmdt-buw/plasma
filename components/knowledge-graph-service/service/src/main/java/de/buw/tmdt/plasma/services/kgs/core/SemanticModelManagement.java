@@ -19,14 +19,14 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.buw.tmdt.plasma.services.kgs.core.Ontologies.PREFIXES;
+import static de.buw.tmdt.plasma.services.kgs.core.OntologyManagement.PREFIXES;
 
 @Service
 public class SemanticModelManagement {
 
     private RDFConnectionRemoteBuilder builder;
 
-    public SemanticModelManagement(@Value("${plasma.kgs.semanticmodels.server.url}") String semanticModelServerAddress) {
+    public SemanticModelManagement(@Value("${plasma.kgs.semanticmodels.store.url}") String semanticModelServerAddress) {
         builder = RDFConnectionFuseki.create()
                 .destination(semanticModelServerAddress);
     }

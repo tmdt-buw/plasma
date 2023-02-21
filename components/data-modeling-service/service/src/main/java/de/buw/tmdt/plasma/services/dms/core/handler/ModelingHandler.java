@@ -2,16 +2,11 @@ package de.buw.tmdt.plasma.services.dms.core.handler;
 
 import de.buw.tmdt.plasma.datamodel.*;
 import de.buw.tmdt.plasma.datamodel.modification.DeltaModification;
-import de.buw.tmdt.plasma.datamodel.modification.operation.SyntacticOperationDTO;
 import de.buw.tmdt.plasma.datamodel.semanticmodel.Class;
 import de.buw.tmdt.plasma.datamodel.semanticmodel.*;
 import de.buw.tmdt.plasma.datamodel.syntaxmodel.SchemaNode;
 import de.buw.tmdt.plasma.services.config.ConfigServiceClient;
-import de.buw.tmdt.plasma.services.dms.core.converter.SchemaOperationDTOConverter;
 import de.buw.tmdt.plasma.services.dms.core.model.Modeling;
-import de.buw.tmdt.plasma.services.dms.core.operations.Operation;
-import de.buw.tmdt.plasma.services.dms.core.operations.OperationLookUp;
-import de.buw.tmdt.plasma.services.dms.core.operations.exceptions.ParameterParsingException;
 import de.buw.tmdt.plasma.services.dms.core.repository.ModelingRepository;
 import de.buw.tmdt.plasma.services.kgs.shared.feignclient.OntologyApiClient;
 import de.buw.tmdt.plasma.services.kgs.shared.feignclient.SemanticModelApiClient;
@@ -45,16 +40,10 @@ public class ModelingHandler {
     private final OntologyApiClient ontologyApiClient;
     private final ModelingRepository modelingRepository;
     private final SemanticRecommendationApiClient semanticRecommendationApiClient;
-    private final SchemaOperationDTOConverter schemaOperationDTOConverter;
-    private final OperationLookUp operationLookUp;
-    private HashMap<SchemaNode, Set<Operation.Handle>> parameterDefinitionLookup;
     private final ConfigServiceClient configServiceClient;
 
     @Value("${plasma.dms.feature.finalizemodels.enabled:true}")
     private Boolean finalizeModelsEnabled;
-
-    @Value("${plasma.dms.feature.syntacticoperations.enabled:false}")
-    private Boolean syntacticOperationsEnabled;
 
     @Value("${plasma.dms.feature.recommendations.enabled:false}")
     private Boolean recommendationsEnabled;
@@ -68,14 +57,11 @@ public class ModelingHandler {
             @NotNull ModelingRepository modelingRepository,
             @SuppressWarnings({"SpringJavaInjectionPointsAutowiringInspection"})
             @NotNull SemanticRecommendationApiClient semanticRecommendationApiClient,
-            @NotNull SchemaOperationDTOConverter schemaOperationDTOConverter,
-            @NotNull OperationLookUp operationLookUp, ConfigServiceClient configServiceClient) {
+            ConfigServiceClient configServiceClient) {
         this.semanticModelApiClient = semanticModelApiClient;
         this.ontologyApiClient = ontologyApiClient;
         this.modelingRepository = modelingRepository;
         this.semanticRecommendationApiClient = semanticRecommendationApiClient;
-        this.schemaOperationDTOConverter = schemaOperationDTOConverter;
-        this.operationLookUp = operationLookUp;
         this.configServiceClient = configServiceClient;
     }
 
@@ -214,15 +200,11 @@ public class ModelingHandler {
     @SuppressWarnings("SameParameterValue") // this might change
     @NotNull
     private CombinedModel getCombinedModel(@NotNull String modelId, boolean modelWillBeModified) {
-        Optional<Modeling> modeling = modelingRepository.findById(modelId);
-        if (modeling.isPresent()) {
-            try {
-                return getCombinedModel(modeling.get(), modelWillBeModified);
-            } catch (Exception e) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving combined model for modeling");
-            }
+        try {
+            return getCombinedModel(findModelingOrThrow(modelId), modelWillBeModified);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving combined model for modeling");
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Modeling was not found");
     }
 
     @NotNull
@@ -372,58 +354,8 @@ public class ModelingHandler {
         updatePositions(modelId, Collections.singletonList(schemaNode));
     }
 
-    /**
-     * Apply a syntactic operation to the model.
-     *
-     * @param modelId               The modeling to modify
-     * @param syntacticOperationDTO The operation to invoke
-     * @return The updated model
-     * @deprecated Legacy function, use {@link #applyModification(String, DeltaModification)} instead
-     */
-    @Deprecated
-    public @NotNull
-    CombinedModel modifySyntaxModel(@NotNull String modelId, @NotNull SyntacticOperationDTO syntacticOperationDTO) {
-        //load referenced modeling
-        Modeling modeling = findModelingOrThrow(modelId);
-
-        CombinedModel combinedModel = getCombinedModel(modeling, true);
-
-        //deserialize syntactic operation
-        Operation.Handle handle = schemaOperationDTOConverter.fromDTO(syntacticOperationDTO);
-
-        final CombinedModel modifiedModel;
-        try {
-            modifiedModel = handle.invoke(combinedModel);
-        } catch (ParameterParsingException e) {
-            log.warn("Failed to execute operation: {}", syntacticOperationDTO, e);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parametrization for operation " + syntacticOperationDTO.getName() + " was invalid.");
-        }
-
-        persistCombinedModel(modeling, modifiedModel);
-        return modifiedModel;
-    }
 
     public void prepareForFrontend(CombinedModel combinedModel) {
-        if (syntacticOperationsEnabled) {
-            // add syntactic operations
-            parameterDefinitionLookup = operationLookUp.getOperationHandles(combinedModel);
-            combinedModel.getSyntaxModel().getNodes().forEach(schemaNode -> {
-                schemaNode.getOperations().clear();
-                schemaNode.getOperations().addAll(getOperationDTOs(schemaNode, parameterDefinitionLookup));
-            });
-        }
-    }
-
-    @SuppressFBWarnings("NP_NONNULL_RETURN_VIOLATION") // .toList() never returns null, SB cant validate
-    @NotNull
-    private List<SyntacticOperationDTO> getOperationDTOs(@NotNull SchemaNode node, @NotNull HashMap<SchemaNode, Set<Operation.Handle>> parameterDefinitionLookup) {
-        return parameterDefinitionLookup.getOrDefault(node, new HashSet<>()).stream()
-                .map(handle -> new SyntacticOperationDTO(
-                        handle.getOperation().getName(),
-                        handle.getOperation().getLabel(),
-                        handle.getOperation().getDescription(),
-                        schemaOperationDTOConverter.toDTO(handle.getParameterDefinition())
-                )).collect(Collectors.toList());
     }
 
     /**
@@ -751,14 +683,14 @@ public class ModelingHandler {
         combinedModel.getRecommendations().clear();
         combinedModel.getProvisionalRelations().clear();
         combinedModel.getProvisionalElements().clear();
-        combinedModel.getSyntaxModel().getNodes().forEach(schemaNode -> schemaNode.getOperations().clear());
 
         // prevent any further modifications
         combinedModel.finalizeModel();
 
         modeling.pushCombinedModel(combinedModel);
-        Modeling finalDataSource = modelingRepository.save(modeling);
-        return finalDataSource.getCurrentModel();
+        modeling.finalizeModeling(); // indicate the modeling as finalized (replicates the state of the CM)
+        Modeling finalModeling = modelingRepository.save(modeling);
+        return finalModeling.getCurrentModel();
     }
 
     /**

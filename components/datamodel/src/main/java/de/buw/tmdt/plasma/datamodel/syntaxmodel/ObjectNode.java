@@ -18,30 +18,25 @@ public class ObjectNode extends MappableSyntaxNode {
 
     private static final long serialVersionUID = 8596616883718165165L;
 
-    public ObjectNode(
-            @NotNull String label,
-            boolean isValid
-    ) {
-        super(label, isValid);
+    public ObjectNode(@NotNull String label) {
+        super(label);
     }
 
     public ObjectNode(
             @NotNull String label,
             @Nullable Double xCoordinate,
-            @Nullable Double yCoordinate,
-            boolean isValid
+            @Nullable Double yCoordinate
     ) {
-        this(UUID.randomUUID().toString(), label, null, xCoordinate, yCoordinate, isValid, true, false);
+        this(UUID.randomUUID().toString(), label, null, xCoordinate, yCoordinate, true, false);
     }
 
     public ObjectNode(
             @NotNull String label,
             List<String> path,
             @Nullable Double xCoordinate,
-            @Nullable Double yCoordinate,
-            boolean isValid
+            @Nullable Double yCoordinate
     ) {
-        super(UUID.randomUUID().toString(), label, path, xCoordinate, yCoordinate, isValid, true, false);
+        super(UUID.randomUUID().toString(), label, path, xCoordinate, yCoordinate, true, false);
     }
 
     @JsonCreator
@@ -51,11 +46,10 @@ public class ObjectNode extends MappableSyntaxNode {
             @Nullable @JsonProperty(PATH_PROPERTY) List<String> path,
             @Nullable @JsonProperty(XCOORDINATE_PROPERTY) Double xCoordinate,
             @Nullable @JsonProperty(YCOORDINATE_PROPERTY) Double yCoordinate,
-            @JsonProperty(VALID_PROPERTY) boolean isValid,
             @JsonProperty(VISIBLE_PROPERTY) boolean visible,
             @JsonProperty(DISABLED_PROPERTY) boolean disabled
     ) {
-        super(uuid, label, path, xCoordinate, yCoordinate, isValid, visible, disabled);
+        super(uuid, label, path, xCoordinate, yCoordinate, visible, disabled);
     }
 
     @Override
@@ -65,7 +59,6 @@ public class ObjectNode extends MappableSyntaxNode {
                 getPath(),
                 getXCoordinate(),
                 getYCoordinate(),
-                isValid(),
                 isVisible(),
                 isDisabled());
     }
@@ -73,6 +66,6 @@ public class ObjectNode extends MappableSyntaxNode {
     @Override
     @SuppressWarnings("MagicCharacter")
     public String toString() {
-        return super.toString() + " | SetNode: " + getPathAsJSONPointer();
+        return super.toString() + " | ObjectNode: " + getPathAsJSONPointer();
     }
 }

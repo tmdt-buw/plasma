@@ -1,0 +1,33 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:8a998-averagevalue a local:Messwert .
+
+plsm:8a998-datatype a local:Messgr__e .
+
+plsm:8a998-geohash7 a local:Geohash_7 .
+
+plsm:8a998-maximumvalue a local:Messwert .
+
+plsm:8a998-minimumvalue a local:Messwert .
+
+plsm:8a998-numberofvalues a local:Messwert ;
+    local:durchschnitt plsm:8a998-averagevalue ;
+    local:maximum plsm:8a998-maximumvalue ;
+    local:minimum plsm:8a998-minimumvalue .
+
+plsm:8a998-numberofvehicles a local:Fahrzeug .
+
+plsm:8a998-period a local:Zeitstempel ;
+    local:dauer plsm:8a998-timestep ;
+    local:zeitstempelformat "YYYY-MM-DD hh:mm:ss Z" .
+
+plsm:8a998-timestep a local:Minute ;
+    local:anzahl plsm:8a998-numberofvalues,
+        plsm:8a998-numberofvehicles .
+
+[] a local:Luftqualit_tsmessung ;
+    local:befindet_sich_an plsm:8a998-geohash7 ;
+    local:bezieht_sich_auf plsm:8a998-datatype ;
+    local:gemessen_am plsm:8a998-period .
+

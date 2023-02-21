@@ -12,16 +12,16 @@
 
 
 export interface Relation {
-  uuid?: string;
-  from?: string;
-  to?: string;
-  uri?: string;
-  label?: string;
-  description?: string;
-  properties?: Array<string>;
-  arraycontext?: boolean;
-  provisional?: boolean;
-  template?: boolean;
+    uuid?: string;
+    from?: string;
+    to?: string;
+    uri?: string;
+    label?: string;
+    description?: string;
+    properties?: Array<string>;
+    arraycontext?: boolean;
+    provisional?: boolean;
+    template?: boolean;
     _class: string;
 }
 

@@ -5,7 +5,6 @@ import de.buw.tmdt.plasma.datamodel.CombinedModelElement;
 import de.buw.tmdt.plasma.datamodel.ModelMapping;
 import de.buw.tmdt.plasma.datamodel.PositionedCombinedModelElement;
 import de.buw.tmdt.plasma.datamodel.modification.DeltaModification;
-import de.buw.tmdt.plasma.datamodel.modification.operation.SyntacticOperationDTO;
 import de.buw.tmdt.plasma.datamodel.semanticmodel.Relation;
 import de.buw.tmdt.plasma.datamodel.semanticmodel.SemanticModelNode;
 import de.buw.tmdt.plasma.services.dms.core.handler.ModelingHandler;
@@ -87,7 +86,7 @@ public class ModelingController implements ModelingAPI {
                         modeling.getDescription(),
                         modeling.getCreated(),
                         modeling.getDataId(),
-                        modeling.getCurrentModel().isFinalized()))
+                        modeling.isFinalized()))
                 .sorted(Comparator.comparing(ModelingInfo::getCreated).reversed())
                 .collect(Collectors.toList());
     }
@@ -123,11 +122,12 @@ public class ModelingController implements ModelingAPI {
 
     @NotNull
     @Override
-    @Operation(description = "Returns the current schema of the specified model.")
+    @Operation(description = "Returns the current combined model of the specified modeling.")
     public CombinedModel getCombinedModel(@NotNull String modelId) {
         CombinedModel combinedModel = modelingHandler.getCombinedModel(modelId);
-        // TODO re-enable once recompiled
-        //combinedModel = modelingHandler.requestRecommendations(modelId, combinedModel);
+        if (!combinedModel.isFinalized()) {
+            combinedModel = modelingHandler.requestRecommendations(modelId, combinedModel);
+        }
         modelingHandler.prepareForFrontend(combinedModel);
         return combinedModel;
     }
@@ -164,15 +164,6 @@ public class ModelingController implements ModelingAPI {
     @Operation(description = "Returns all relations either persistent in the knowledge base or cached for the referenced model sorted alphabetically.")
     public List<Relation> getRelations(@NotNull String modelId, @Nullable String prefix, @Nullable String infix) {
         return modelingHandler.getRelations(modelId, prefix, infix);
-    }
-
-    @NotNull
-    @Override
-    @Operation(description = "Modify the syntactic schema of model by invoking an operation.")
-    public CombinedModel modifySyntacticSchema(@NotNull String modelId, @NotNull SyntacticOperationDTO syntacticOperationDTO) {
-        CombinedModel combinedModel = modelingHandler.modifySyntaxModel(modelId, syntacticOperationDTO);
-        modelingHandler.prepareForFrontend(combinedModel);
-        return combinedModel;
     }
 
     @NotNull
@@ -223,8 +214,6 @@ public class ModelingController implements ModelingAPI {
     public CombinedModel acceptRecommendation(@NotNull String modelId, @NotNull DeltaModification recommendation) {
         @NotNull CombinedModel model = modelingHandler.applyModification(modelId, recommendation);
 
-        // request new recommendations
-        model = modelingHandler.requestRecommendations(modelId, model);
         modelingHandler.prepareForFrontend(model);
         return model;
     }
@@ -234,9 +223,6 @@ public class ModelingController implements ModelingAPI {
     public CombinedModel modifyModel(@NotNull String modelId, @NotNull DeltaModification recommendation) {
         @NotNull CombinedModel model = modelingHandler.applyModification(modelId, recommendation);
 
-        // request new recommendations
-        // TODO re-enable once recompiled
-        // model = modelingHandler.requestRecommendations(modelId, model);
         modelingHandler.prepareForFrontend(model);
         return model;
     }

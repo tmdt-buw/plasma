@@ -1,0 +1,31 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:b3b37-latitude_1 a local:UTM_northing .
+
+plsm:b3b37-longitude_1 a local:UTM_false_easting .
+
+plsm:b3b37-lsa_nr__1 a local:Lichtsignalanlagen_Nummer .
+
+plsm:b3b37-standort_1 a local:Standortbezeichnung .
+
+plsm:b3b37-x_1 a local:Geographische_L_nge .
+
+plsm:b3b37-y_1 a local:Geographische_Breite .
+
+plsm:b3b37-geometry_1 a local:Geographischer_Punkt ;
+    local:besteht_aus plsm:b3b37-latitude_1,
+        plsm:b3b37-longitude_1 ;
+    local:repr_sentiert_dasselbe_wie _:n90b20fd797c84edf88ad5dfe10ee9686b1 .
+
+[] a local:Lichtsignalanlage ;
+    local:befindet_sich_an _:n90b20fd797c84edf88ad5dfe10ee9686b1,
+        plsm:b3b37-geometry_1 ;
+    local:hat plsm:b3b37-standort_1 ;
+    local:identifiziert_durch plsm:b3b37-lsa_nr__1 .
+
+_:n90b20fd797c84edf88ad5dfe10ee9686b1 a local:Geographischer_Punkt ;
+    local:besteht_aus plsm:b3b37-x_1,
+        plsm:b3b37-y_1 ;
+    local:repr_sentiert_dasselbe_wie plsm:b3b37-geometry_1 .
+

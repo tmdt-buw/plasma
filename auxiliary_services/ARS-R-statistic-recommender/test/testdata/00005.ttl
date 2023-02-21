@@ -1,0 +1,51 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:8ebc8-adresse_1 a local:Standortbezeichnung ;
+    local:besteht_aus [ a local:Stra_e ],
+        [ a local:Hausnummer ] .
+
+plsm:8ebc8-anz_ladepl_1 a local:Ladepunkt ;
+    local:bietet_an plsm:8ebc8-strom_1 .
+
+plsm:8ebc8-bemerkung_1 a local:Bemerkung .
+
+plsm:8ebc8-betreiber_1 a local:Betreiber .
+
+plsm:8ebc8-geometry_1 a local:Geographischer_Punkt ;
+    local:besteht_aus plsm:8ebc8-latitude_1,
+        plsm:8ebc8-longitude_1 ;
+    local:koordinatenreferenzsystem "name" .
+
+plsm:8ebc8-latitude_1 a local:UTM_northing .
+
+plsm:8ebc8-longitude_1 a local:UTM_false_easting .
+
+plsm:8ebc8-parkgeb_1 a local:Kosteninformation .
+
+plsm:8ebc8-standort_1 a local:Standortbezeichnung ;
+    local:pr_zisiert_durch plsm:8ebc8-bemerkung_1 .
+
+plsm:8ebc8-status_1 a local:Statusinformation .
+
+plsm:8ebc8-strom_1 a local:Elektrischer_Strom .
+
+plsm:8ebc8-url_1 a local:Foto ;
+    local:ist_vom_Typ [ a local:Uniform_Resource_Locator__URL_ ] .
+
+plsm:8ebc8-zeiten_1 a local:Zeitabschnitt .
+
+plsm:8ebc8-zusatzinfo_1 a local:Zusatzinformation .
+
+[] a local:Ladestation ;
+    local:anzahl plsm:8ebc8-anz_ladepl_1 ;
+    local:befindet_sich_an plsm:8ebc8-geometry_1 ;
+    local:betrieben_durch plsm:8ebc8-betreiber_1 ;
+    local:dargestellt_auf plsm:8ebc8-url_1 ;
+    local:hat plsm:8ebc8-adresse_1,
+        plsm:8ebc8-parkgeb_1,
+        plsm:8ebc8-standort_1,
+        plsm:8ebc8-status_1,
+        plsm:8ebc8-zusatzinfo_1 ;
+    local:ist_ge_ffnet_am plsm:8ebc8-zeiten_1 .
+

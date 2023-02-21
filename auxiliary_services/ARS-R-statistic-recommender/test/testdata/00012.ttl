@@ -1,0 +1,95 @@
+@prefix local: <https://local.ontology#> .
+@prefix plcm: <http://plasma.uni-wuppertal.de/cm#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:ffeb2-bezirk_1_innenstadt_1 a local:Stellplatz ;
+    local:bezieht_sich_auf plsm:ffeb2-kategorie_1 .
+
+plsm:ffeb2-bezirk_2_rodenkirchen_1 a local:Stellplatz ;
+    local:bezieht_sich_auf plsm:ffeb2-kategorie_1 .
+
+plsm:ffeb2-bezirk_3_lindenthal_1 a local:Stellplatz ;
+    local:bezieht_sich_auf plsm:ffeb2-kategorie_1 .
+
+plsm:ffeb2-bezirk_4_ehrenfeld_1 a local:Stellplatz ;
+    local:bezieht_sich_auf plsm:ffeb2-kategorie_1 .
+
+plsm:ffeb2-bezirk_5_nippes_1 a local:Stellplatz ;
+    local:bezieht_sich_auf plsm:ffeb2-kategorie_1 .
+
+plsm:ffeb2-bezirk_6_chorweiler_1 a local:Stellplatz ;
+    local:bezieht_sich_auf plsm:ffeb2-kategorie_1 .
+
+plsm:ffeb2-bezirk_7_porz_1 a local:Stellplatz ;
+    local:bezieht_sich_auf plsm:ffeb2-kategorie_1 .
+
+plsm:ffeb2-bezirk_8_kalk_1 a local:Stellplatz ;
+    local:bezieht_sich_auf plsm:ffeb2-kategorie_1 .
+
+plsm:ffeb2-bezirk_9_m_uuml_lheim_1 a local:Stellplatz ;
+    local:bezieht_sich_auf plsm:ffeb2-kategorie_1 .
+
+plsm:ffeb2-gesamt_1 a local:Stellplatz ;
+    local:bezieht_sich_auf plsm:ffeb2-kategorie_1 .
+
+local:K_ln a plcm:NamedEntity .
+
+local:K_ln_Chorweiler a plcm:NamedEntity .
+
+local:K_ln_Ehrenfeld a plcm:NamedEntity .
+
+local:K_ln_Innenstadt a plcm:NamedEntity .
+
+local:K_ln_Kalk a plcm:NamedEntity .
+
+local:K_ln_Lindenthal a plcm:NamedEntity .
+
+local:K_ln_M_lheim a plcm:NamedEntity .
+
+local:K_ln_Nippes a plcm:NamedEntity .
+
+local:K_ln_Porz a plcm:NamedEntity .
+
+local:K_ln_Rodenkirchen a plcm:NamedEntity .
+
+plsm:ffeb2-kategorie_1 a local:Kategorie .
+
+[] a local:K_ln_Nippes ;
+    local:anzahl plsm:ffeb2-bezirk_5_nippes_1 ;
+    local:ist_Teil_von _:n720a083c904c4b8d99b2fd0fa20b529fb2 .
+
+[] a local:K_ln_M_lheim ;
+    local:anzahl plsm:ffeb2-bezirk_9_m_uuml_lheim_1 ;
+    local:ist_Teil_von _:n720a083c904c4b8d99b2fd0fa20b529fb2 .
+
+[] a local:K_ln_Rodenkirchen ;
+    local:anzahl plsm:ffeb2-bezirk_2_rodenkirchen_1 ;
+    local:ist_Teil_von _:n720a083c904c4b8d99b2fd0fa20b529fb2 .
+
+[] a local:K_ln_Lindenthal ;
+    local:anzahl plsm:ffeb2-bezirk_3_lindenthal_1 ;
+    local:ist_Teil_von _:n720a083c904c4b8d99b2fd0fa20b529fb2 .
+
+[] a local:K_ln_Chorweiler ;
+    local:anzahl plsm:ffeb2-bezirk_6_chorweiler_1 ;
+    local:ist_Teil_von _:n720a083c904c4b8d99b2fd0fa20b529fb2 .
+
+[] a local:K_ln_Porz ;
+    local:anzahl plsm:ffeb2-bezirk_7_porz_1 ;
+    local:ist_Teil_von _:n720a083c904c4b8d99b2fd0fa20b529fb2 .
+
+[] a local:K_ln_Kalk ;
+    local:anzahl plsm:ffeb2-bezirk_8_kalk_1 ;
+    local:ist_Teil_von _:n720a083c904c4b8d99b2fd0fa20b529fb2 .
+
+[] a local:K_ln_Innenstadt ;
+    local:anzahl plsm:ffeb2-bezirk_1_innenstadt_1 ;
+    local:ist_Teil_von _:n720a083c904c4b8d99b2fd0fa20b529fb2 .
+
+[] a local:K_ln_Ehrenfeld ;
+    local:anzahl plsm:ffeb2-bezirk_4_ehrenfeld_1 ;
+    local:ist_Teil_von _:n720a083c904c4b8d99b2fd0fa20b529fb2 .
+
+_:n720a083c904c4b8d99b2fd0fa20b529fb2 a local:K_ln ;
+    local:anzahl plsm:ffeb2-gesamt_1 .
+

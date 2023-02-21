@@ -11,6 +11,7 @@ import {
 } from '../../../api/generated/dms';
 import { EditState } from './model/edit-state';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Icons } from '../../model/configuration/icons';
 
 export interface PlsSemanticNodeDetailsData {
   modelId: string;
@@ -31,6 +32,7 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
 
   $edit: BehaviorSubject<EditState> = new BehaviorSubject<EditState>(EditState.confirm);
   label: string;
+  type: string;
   description: string;
 
   form;
@@ -43,6 +45,15 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
   public recommendationReject: EventEmitter<DeltaModification> = new EventEmitter();
   @Output()
   public nodeEdited: EventEmitter<SemanticModelNode> = new EventEmitter<SemanticModelNode>();
+  public literalTypes: Array<{ uri: string, label: string }> = [
+    {uri: 'http://www.w3.org/2001/XMLSchema#string', label: 'string'},
+    {uri: 'http://www.w3.org/2001/XMLSchema#date', label: 'date'},
+    {uri: 'http://www.w3.org/2001/XMLSchema#time', label: 'time'},
+    {uri: 'http://www.w3.org/2001/XMLSchema#integer', label: 'integer'},
+    {uri: 'http://www.w3.org/2001/XMLSchema#float', label: 'float'},
+    {uri: 'http://www.w3.org/2001/XMLSchema#decimal', label: 'decimal'},
+    {uri: 'http://www.w3.org/2001/XMLSchema#boolean', label: 'boolean'}
+  ];
 
 
   constructor(private modelingService: ModelingControllerService, private fb: FormBuilder) {
@@ -61,11 +72,18 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
         }, [Validators.required, Validators.maxLength(200)]]
       });
     } else if (this.isLiteral()) {
+      const literal = this.node.node as Literal;
       this.form = this.fb.group({
         value: [{
-          value: (this.node.node as Literal).label,
+          value: literal.label,
           disabled: !this.editing
-        }, Validators.required]
+        }, Validators.required],
+        type: [
+          {
+            value: literal.uri,
+            disabled: false
+          }
+        ]
       });
     }
 
@@ -97,6 +115,7 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
       case 'Literal':
         this.$edit.next(EditState.start);
         this.label = this.node.node.label;
+        this.type = this.node.node.uri;
         break;
     }
   }
@@ -110,6 +129,7 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
     } else if (this.isLiteral()) {
       const literal = this.node.node as Literal;
       literal.label = this.form.controls.value.value;
+      literal.uri = this.form.controls.type.value;
     }
 
     const delta: DeltaModification = {
@@ -127,6 +147,7 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
         case 'Literal':
           const literal: Literal = this.node.node as Literal;
           literal.label = this.label;
+          literal.uri = this.type;
       }
     });
   }
@@ -140,7 +161,7 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
   }
 
   showRecommendation(recommendation: DeltaModification): void {
-    console.log('emitting select for recommendation', recommendation);
+    // console.log('emitting select for recommendation', recommendation);
     this.recommendationSelect.emit(recommendation);
   }
 
@@ -150,6 +171,10 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
 
   acceptRecommendation(recommendation: DeltaModification): void {
     this.recommendationAccept.emit(recommendation);
+    const index = this.node.recommendations.indexOf(recommendation, 0);
+    if (index > -1) {
+      this.node.recommendations.splice(index, 1);
+    }
   }
 
   rejectRecommendation(recommendation: DeltaModification): void {
@@ -239,5 +264,9 @@ export class PlsSemanticNodeDetailsComponent implements OnInit {
 
   hasRecommendations(): boolean {
     return this.isClass() && this.node.recommendations && this.node.recommendations.length > 0;
+  }
+
+  getIcon(uri: string): string {
+    return Icons.getLiteralIcon(uri);
   }
 }

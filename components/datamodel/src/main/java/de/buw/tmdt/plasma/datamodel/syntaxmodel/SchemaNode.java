@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import de.buw.tmdt.plasma.datamodel.PositionedCombinedModelElement;
-import de.buw.tmdt.plasma.datamodel.modification.operation.SyntacticOperationDTO;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,8 +18,7 @@ import java.util.stream.Collectors;
         @JsonSubTypes.Type(value = PrimitiveNode.class, name = "PrimitiveNode"),
         @JsonSubTypes.Type(value = ObjectNode.class, name = "ObjectNode"),
         @JsonSubTypes.Type(value = SetNode.class, name = "SetNode"),
-        @JsonSubTypes.Type(value = CollisionSchema.class, name = "CollisionSchema"),
-        @JsonSubTypes.Type(value = CompositeNode.class, name = "CompositeNode")
+        @JsonSubTypes.Type(value = CollisionSchema.class, name = "CollisionSchema")
 })
 public abstract class SchemaNode extends PositionedCombinedModelElement {
 
@@ -33,30 +31,20 @@ public abstract class SchemaNode extends PositionedCombinedModelElement {
     public static final String VALUE_LABEL = "##value";
     public static final List<String> PREDEFINED_LABELS = List.of(ARRAY_LABEL, OBJECT_LABEL, VALUE_LABEL);
 
-    public static final String OPERATIONS_PROPERTY = "operations";
     public static final String VALID_PROPERTY = "valid";
     public static final String PATH_PROPERTY = "path";
     public static final String VISIBLE_PROPERTY = "visible";
     public static final String DISABLED_PROPERTY = "disabled";
 
-    private final boolean isValid;
     private boolean visible = true;
     private boolean disabled = false;
 
     private List<String> path;
 
-    /**
-     * Holds a set of possible specific operations that are possible on this element.
-     */
-    private final ArrayList<SyntacticOperationDTO> operations;
-
     public SchemaNode(
-            @NotNull String label,
-            boolean isValid
+            @NotNull String label
     ) {
         super(label);
-        this.isValid = isValid;
-        this.operations = new ArrayList<>();
         this.path = new ArrayList<>();
     }
 
@@ -65,12 +53,9 @@ public abstract class SchemaNode extends PositionedCombinedModelElement {
             @NotNull String label,
             @Nullable List<String> path,
             @Nullable Double xCoordinate,
-            @Nullable Double yCoordinate,
-            boolean isValid
+            @Nullable Double yCoordinate
     ) {
         super(uuid, label, xCoordinate, yCoordinate);
-        this.isValid = isValid;
-        this.operations = new ArrayList<>();
         this.path = path == null ? new ArrayList<>() : path;
         this.visible = true;
         this.disabled = false;
@@ -83,21 +68,13 @@ public abstract class SchemaNode extends PositionedCombinedModelElement {
             @Nullable @JsonProperty(PATH_PROPERTY) List<String> path,
             @Nullable @JsonProperty(XCOORDINATE_PROPERTY) Double xCoordinate,
             @Nullable @JsonProperty(YCOORDINATE_PROPERTY) Double yCoordinate,
-            @Nullable @JsonProperty(VALID_PROPERTY) Boolean isValid,
             @Nullable @JsonProperty(VISIBLE_PROPERTY) Boolean visible,
             @Nullable @JsonProperty(DISABLED_PROPERTY) Boolean disabled
     ) {
         super(uuid, label, xCoordinate, yCoordinate);
-        this.isValid = isValid == null || isValid;
-        this.operations = new ArrayList<>();
         this.path = path == null ? new ArrayList<>() : path;
         this.visible = visible == null || visible;
         this.disabled = disabled != null && disabled;
-    }
-
-    @JsonProperty(VALID_PROPERTY)
-    public boolean isValid() {
-        return isValid;
     }
 
     @JsonProperty(VISIBLE_PROPERTY)
@@ -108,11 +85,6 @@ public abstract class SchemaNode extends PositionedCombinedModelElement {
     @JsonProperty(DISABLED_PROPERTY)
     public boolean isDisabled() {
         return disabled;
-    }
-
-    @JsonProperty(value = OPERATIONS_PROPERTY, access = JsonProperty.Access.READ_ONLY)
-    public List<SyntacticOperationDTO> getOperations() {
-        return operations;
     }
 
     @JsonProperty(PATH_PROPERTY)
@@ -157,7 +129,7 @@ public abstract class SchemaNode extends PositionedCombinedModelElement {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUuid(), isValid, operations);
+        return Objects.hash(getUuid());
     }
 
     @Override

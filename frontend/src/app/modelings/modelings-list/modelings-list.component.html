@@ -37,10 +37,13 @@
           <div fxLayout="row" fxLayoutGap="4px">
             <button (click)="showUpdateModelingModal(model)" nz-button nz-tooltip="Display detail information"
                     nzShape="circle"><i nz-icon nzType="info"></i></button>
-            <button nz-button nzShape="circle" [routerLink]="['..',modelsRoute,model.id]" nz-tooltip="Edit the semantic model"><i nz-icon nzType="appstore-add"></i></button>
-            <button nz-button nzShape="circle" (click)="cloneModeling(model.id)" nz-tooltip="Clone this modeling"><i nz-icon nzType="copy"></i></button>
-            <button *ngIf="dpsAvailable" nz-button nzShape="circle" (click)="openConversionModal(model)" [nz-tooltip]="'Convert data using defined model'" [disabled]="!dpsAvailable">
-                            <i nz-icon nzType="file-text"></i>
+            <button [nz-tooltip]="getEditTooltip(model)" [routerLink]="['..',modelsRoute,model.id]" nz-button
+                    nzShape="circle"><i nz-icon nzType="appstore-add"></i></button>
+            <button nz-button nzShape="circle" (click)="cloneModeling(model.id)" nz-tooltip="Clone this modeling"><i
+              nz-icon nzType="copy"></i></button>
+            <button *ngIf="dpsAvailable" nz-button nzShape="circle" (click)="openConversionModal(model)"
+                    [nz-tooltip]="'Convert data using defined model'" [disabled]="!dpsAvailable">
+              <i nz-icon nzType="file-text"></i>
             </button>
             <button nz-button nzShape="circle" nz-tooltip="Delete this modeling"
                     nz-popconfirm

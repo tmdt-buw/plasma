@@ -18,10 +18,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static de.buw.tmdt.plasma.services.kgs.core.Ontologies.PREFIXES;
+import static de.buw.tmdt.plasma.services.kgs.core.OntologyManagement.PREFIXES;
 
 /**
  * Handles the connection to the ontology build by manually adding objects and relations.
@@ -29,7 +30,7 @@ import static de.buw.tmdt.plasma.services.kgs.core.Ontologies.PREFIXES;
 @Service
 public class LocalOntologyManagement {
 
-    private final Ontologies ontologies;
+    private final OntologyManagement ontologyManagement;
 
     @Value("${plasma.kgs.localontology.prefix:local}")
     private String localOntologyPrefix;
@@ -41,8 +42,8 @@ public class LocalOntologyManagement {
     private String localOntologyDescription;
 
 
-    public LocalOntologyManagement(Ontologies ontologies) {
-        this.ontologies = ontologies;
+    public LocalOntologyManagement(OntologyManagement ontologyManagement) {
+        this.ontologyManagement = ontologyManagement;
     }
 
     @PostConstruct
@@ -50,16 +51,16 @@ public class LocalOntologyManagement {
         getInternalOntology();
     }
 
-    public void addResourcesToOntology(List<SemanticModelNode> resources) {
+    public void addResourcesToOntology(List<SemanticModelNode> resources, List<Relation> relations) {
         Model m = ModelFactory.createDefaultModel();
         m.setNsPrefixes(PREFIXES);
+        if (resources == null) {
+            resources = new ArrayList<>();
+        }
+        if (relations == null) {
+            relations = new ArrayList<>();
+        }
         for (SemanticModelNode resource : resources) {
-            /* Enable this to only store plasma resources
-            if(!clazz.getSourceURI().startsWith("plasma") && !clazz.getSourceURI().startsWith(PREFIXES.getNsPrefixURI("plasma"))){
-                // this is not a prefix that belongs here
-                continue;
-            }
-             */
             Resource r = m.createResource(m.expandPrefix(resource.getURI()));
             if (resource instanceof NamedEntity) {
                 NamedEntity ne = (NamedEntity) resource;
@@ -81,19 +82,7 @@ public class LocalOntologyManagement {
                 }
             }
         }
-        putModel(m);
-    }
-
-    public void addRelationsToOntology(List<Relation> relations) {
-        Model m = ModelFactory.createDefaultModel();
-        m.setNsPrefixes(PREFIXES);
         for (Relation relation : relations) {
-            /* Enable this to only store plasma relations
-            if(!relation.getSourceURI().startsWith("plasma") && !relation.getSourceURI().startsWith(PREFIXES.getNsPrefixURI("plasma"))){
-                // this is not a prefix that belongs here
-                continue;
-            }
-             */
             Resource r = m.createResource(m.expandPrefix(relation.getURI()));
 
             m.add(new StatementImpl(r, RDF.type, relation instanceof ObjectProperty ? OWL.ObjectProperty : OWL.DatatypeProperty));
@@ -109,10 +98,14 @@ public class LocalOntologyManagement {
     }
 
     public OntModel getInternalOntology() {
-        Optional<OntModel> localModel = ontologies.getOntologyModelByLabel(localOntologyLabel);
+        Optional<OntModel> localModel = ontologyManagement.getOntologyModelByLabel(localOntologyLabel);
         if (localModel.isEmpty()) {
             // create a new local ontology
-            return ontologies.createLocalOntology(localOntologyLabel, localOntologyPrefix, localOntologyUri, localOntologyDescription);
+            ontologyManagement.createLocalOntology(localOntologyLabel, localOntologyPrefix, localOntologyUri, localOntologyDescription);
+        }
+        localModel = ontologyManagement.getOntologyModelByLabel(localOntologyLabel);
+        if (localModel.isEmpty()) {
+            throw new IllegalStateException("Could not find or create local ontology!");
         }
 
         return localModel.get();
@@ -244,6 +237,6 @@ public class LocalOntologyManagement {
     private void putModel(Model model) {
         OntModel internalOntology = getInternalOntology();
         internalOntology.add(model);
-        ontologies.updateOntology(localOntologyLabel, internalOntology);
+        ontologyManagement.updateOntology(localOntologyLabel, internalOntology);
     }
 }

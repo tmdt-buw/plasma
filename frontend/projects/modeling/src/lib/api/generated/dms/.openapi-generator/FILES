@@ -14,8 +14,6 @@ model/collisionSchema.ts
 model/collisionSchemaAllOf.ts
 model/combinedModel.ts
 model/combinedModelElement.ts
-model/compositeNode.ts
-model/compositeNodeAllOf.ts
 model/dataProperty.ts
 model/deltaModification.ts
 model/edge.ts
@@ -38,9 +36,6 @@ model/schemaNode.ts
 model/semanticModel.ts
 model/semanticModelNode.ts
 model/setNode.ts
-model/splitting.ts
-model/syntacticOperationDTO.ts
 model/syntaxModel.ts
-model/typeDefinitionDTOObject.ts
 model/updatePositionsRequestInner.ts
 variables.ts

@@ -21,6 +21,24 @@
     rect {
       fill-opacity: 0;
     }
+
+    text {
+      fill: @modeling-primary-color;
+    }
+  }
+}
+
+.joint-type-custom-highlightedobjectpropertylink {
+  path[joint-selector="line"] {
+    stroke: @modeling-highlight-color;
+    stroke-width: 4;
+  }
+
+  .label {
+    rect {
+      fill-opacity: 0;
+    }
+
     text {
       fill: @modeling-primary-color;
     }
@@ -31,10 +49,29 @@
   path[joint-selector="line"] {
     stroke: @modeling-datatype-property-color;
   }
+
   .label {
     rect {
       fill-opacity: 0;
     }
+
+    text {
+      fill: @modeling-primary-color;
+    }
+  }
+}
+
+.joint-type-custom-highlighteddatapropertylink {
+  path[joint-selector="line"] {
+    stroke: @modeling-highlight-color;
+    stroke-width: 4;
+  }
+
+  .label {
+    rect {
+      fill-opacity: 0;
+    }
+
     text {
       fill: @modeling-primary-color;
     }
@@ -82,9 +119,48 @@
   }
 }
 
+.joint-type-custom-highlightedsemanticclassnode {
+  rect {
+    stroke: @modeling-highlight-color;
+    stroke-width: 4;
+  }
+
+  rect[joint-selector="body"] {
+    fill: @modeling-class-color;
+  }
+
+  text[joint-selector="bodyText"] {
+    fill: @modeling-text-color;
+  }
+}
+
+
 .joint-type-custom-extendedsemanticclassnode {
   rect {
     stroke: @modeling-class-color;
+  }
+
+  rect[joint-selector="body"] {
+    fill: @modeling-background-color;
+  }
+
+  rect[joint-selector="header"] {
+    fill: @modeling-class-color;
+  }
+
+  text[joint-selector="headerText"] {
+    fill: @modeling-text-color;
+  }
+
+  text[joint-selector="bodyIcon"], text[joint-selector="bodyText"] {
+    fill: @modeling-class-color;
+  }
+}
+
+.joint-type-custom-highlightedextendedsemanticclassnode {
+  rect {
+    stroke: @modeling-highlight-color;
+    stroke-width: 4;
   }
 
   rect[joint-selector="body"] {
@@ -113,7 +189,22 @@
     fill: @modeling-named-entity-color;
   }
 
-  text[joint-selector="label"]{
+  text[joint-selector="label"] {
+    fill: @modeling-named-entity-text-color;
+  }
+}
+
+.joint-type-custom-highlightednamedentitynode {
+  rect {
+    stroke: @modeling-highlight-color;
+    stroke-width: 4;
+  }
+
+  rect[joint-selector="body"] {
+    fill: @modeling-named-entity-color;
+  }
+
+  text[joint-selector="label"] {
     fill: @modeling-named-entity-text-color;
   }
 }
@@ -127,7 +218,26 @@
     fill: @modeling-literal-color;
   }
 
-  text[joint-selector="label"]{
+  text[joint-selector="label"] {
+    fill: @modeling-literal-text-color;
+  }
+
+  text[joint-selector="icon"] {
+    fill: @modeling-literal-text-color;
+  }
+}
+
+.joint-type-custom-highlightedliteralnode {
+  rect {
+    stroke: @modeling-highlight-color;
+    stroke-width: 4;
+  }
+
+  rect[joint-selector="body"] {
+    fill: @modeling-literal-color;
+  }
+
+  text[joint-selector="label"] {
     fill: @modeling-literal-text-color;
   }
 

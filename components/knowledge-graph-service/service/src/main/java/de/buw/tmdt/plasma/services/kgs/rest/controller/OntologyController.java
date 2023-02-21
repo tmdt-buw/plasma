@@ -3,8 +3,8 @@ package de.buw.tmdt.plasma.services.kgs.rest.controller;
 import de.buw.tmdt.plasma.datamodel.semanticmodel.NodeTemplate;
 import de.buw.tmdt.plasma.datamodel.semanticmodel.Relation;
 import de.buw.tmdt.plasma.datamodel.semanticmodel.SemanticModelNode;
-import de.buw.tmdt.plasma.services.kgs.core.Ontologies;
 import de.buw.tmdt.plasma.services.kgs.core.OntologyHandler;
+import de.buw.tmdt.plasma.services.kgs.core.OntologyManagement;
 import de.buw.tmdt.plasma.services.kgs.shared.api.OntologyApi;
 import de.buw.tmdt.plasma.services.kgs.shared.model.ExportFormat;
 import de.buw.tmdt.plasma.services.kgs.shared.model.OntologyInfo;
@@ -30,16 +30,16 @@ public class OntologyController implements OntologyApi {
 
     private static final Logger log = LoggerFactory.getLogger(OntologyController.class);
     private final OntologyHandler ontologyHandler;
-    private final Ontologies ontologies;
+    private final OntologyManagement ontologyManagement;
 
     @Value("${plasma.kgs.localontology.label:LOCAL}")
     private String localOntologyLabel;
 
     @Autowired
     public OntologyController(@NotNull OntologyHandler ontologyHandler,
-                              @NotNull Ontologies ontologies) {
+                              @NotNull OntologyManagement ontologyManagement) {
         this.ontologyHandler = ontologyHandler;
-        this.ontologies = ontologies;
+        this.ontologyManagement = ontologyManagement;
     }
 
     @Override
@@ -63,17 +63,17 @@ public class OntologyController implements OntologyApi {
 
     @Override
     public void addOntology(String label, String prefix, String uri, MultipartFile ontologyFile) {
-        ontologies.addOntology(label, prefix, uri, ontologyFile);
+        ontologyManagement.addOntology(label, prefix, uri, ontologyFile);
     }
 
     @Override
     public void deleteOntology(String label) {
-        ontologies.deleteOntology(label);
+        ontologyManagement.deleteOntology(label);
     }
 
     @Override
     public List<OntologyInfo> listOntologies() {
-        return ontologies.listOntologies();
+        return ontologyManagement.listOntologies();
     }
 
     @Override
@@ -92,7 +92,7 @@ public class OntologyController implements OntologyApi {
 
     @Override
     public Map<String, String> getNamespaces() {
-        return Ontologies.PREFIXES.getNsPrefixMap();
+        return OntologyManagement.PREFIXES.getNsPrefixMap();
     }
 
     @Override

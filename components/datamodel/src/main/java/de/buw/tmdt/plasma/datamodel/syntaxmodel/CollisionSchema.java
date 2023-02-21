@@ -3,7 +3,6 @@ package de.buw.tmdt.plasma.datamodel.syntaxmodel;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import de.buw.tmdt.plasma.datamodel.modification.operation.SyntacticOperationDTO;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,11 +14,9 @@ public class CollisionSchema extends SchemaNode {
     private static final long serialVersionUID = 5329441916665293203L;
 
     public CollisionSchema(
-            @NotNull String label,
-            @Nullable List<SyntacticOperationDTO> operations,
-            boolean isValid
+            @NotNull String label
     ) {
-        super(label, isValid);
+        super(label);
     }
 
 	@JsonCreator
@@ -29,10 +26,9 @@ public class CollisionSchema extends SchemaNode {
             @JsonProperty(LABEL_PROPERTY) @NotNull String label,
             @Nullable @JsonProperty(PATH_PROPERTY) List<String> path,
             @Nullable @JsonProperty(XCOORDINATE_PROPERTY) Double xCoordinate,
-            @Nullable @JsonProperty(YCOORDINATE_PROPERTY) Double yCoordinate,
-            @JsonProperty(VALID_PROPERTY) boolean isValid
+            @Nullable @JsonProperty(YCOORDINATE_PROPERTY) Double yCoordinate
     ) {
-        super(uuid, label, path, xCoordinate, yCoordinate, isValid);
+        super(uuid, label, path, xCoordinate, yCoordinate);
     }
 
     @Override
@@ -41,8 +37,7 @@ public class CollisionSchema extends SchemaNode {
                 getLabel(),
                 getPath(),
                 getXCoordinate(),
-                getYCoordinate(),
-                isValid());
+                getYCoordinate());
     }
 
     @Override

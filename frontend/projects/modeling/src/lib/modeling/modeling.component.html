@@ -135,6 +135,7 @@
                             (recommendationAccepted)="onRecommendationAccepted($event)">
       </pls-modeling-diagram>
       <button *ngIf="!isFinalized() && !hideFinalizeButton" class="action-button" nz-button nzType="primary"
+              [disabled]="finalizing"
               (click)="finalizeModel()"><i nz-icon nzType="play-circle"></i>Finalize
       </button>
     </div>

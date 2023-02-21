@@ -1,0 +1,58 @@
+@prefix local: <https://local.ontology#> .
+@prefix plcm: <http://plasma.uni-wuppertal.de/cm#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:3dd21-access_1 a local:Zugangsinformation .
+
+plsm:3dd21-address_1 a local:Adresse ;
+    local:besteht_aus plsm:3dd21-addresscountry_1,
+        plsm:3dd21-addresslocation_1,
+        plsm:3dd21-postalcode_1,
+        plsm:3dd21-streetaddress_1,
+        plsm:3dd21-streetnumber_1 .
+
+plsm:3dd21-addresscountry_1 a local:Land .
+
+plsm:3dd21-addresslocation_1 a local:Stadt .
+
+plsm:3dd21-description_1 a local:Zusatzinformation .
+
+plsm:3dd21-displayname_1 a local:Kategorie ;
+    local:identifiziert_durch plsm:3dd21-id_1 .
+
+plsm:3dd21-geoposition_1 a local:Geographischer_Punkt ;
+    local:besteht_aus plsm:3dd21-latitude_1,
+        plsm:3dd21-longitude_1 .
+
+plsm:3dd21-id_1 a local:Identifikator .
+
+plsm:3dd21-id_2 a local:Identifikator .
+
+plsm:3dd21-latitude_1 a local:Geographische_Breite .
+
+plsm:3dd21-location_1 a local:Standortbezeichnung .
+
+plsm:3dd21-longitude_1 a local:Geographische_L_nge .
+
+plsm:3dd21-name_1 a local:Bezeichnung .
+
+plsm:3dd21-postalcode_1 a local:Postleitzahl .
+
+plsm:3dd21-streetaddress_1 a local:Stra_e .
+
+plsm:3dd21-streetnumber_1 a local:Hausnummer .
+
+local:Cambio a plcm:NamedEntity .
+
+[] a local:CarSharing_Station ;
+    local:befindet_sich_an plsm:3dd21-geoposition_1 ;
+    local:betrieben_durch [ a local:Cambio ] ;
+    local:bietet_an [ a local:Fahrzeug ;
+            local:geh_rt_zu plsm:3dd21-displayname_1 ] ;
+    local:hat plsm:3dd21-access_1,
+        plsm:3dd21-address_1,
+        plsm:3dd21-description_1,
+        plsm:3dd21-location_1,
+        plsm:3dd21-name_1 ;
+    local:identifiziert_durch plsm:3dd21-id_2 .
+

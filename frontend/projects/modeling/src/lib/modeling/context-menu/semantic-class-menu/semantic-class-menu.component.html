@@ -12,12 +12,5 @@
         </li>
       </ul>
     </li>
-    <li nz-menu-divider></li>
-    <li *ngIf="syntaxNode?.operations?.length > 0" nz-menu-group nzTitle="Syntactic Operations">
-      <ul>
-        <li nz-menu-item *ngFor="let operation of syntaxNode?.operations" (click)="onSelectOperation(operation)">
-          <i class="context-icon" nz-icon nzType="setting"></i>{{ operation.label }}</li>
-      </ul>
-    </li>
   </ul>
 </nz-card>

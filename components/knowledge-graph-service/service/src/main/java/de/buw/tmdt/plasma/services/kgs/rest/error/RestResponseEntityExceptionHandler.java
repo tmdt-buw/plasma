@@ -1,7 +1,6 @@
 package de.buw.tmdt.plasma.services.kgs.rest.error;
 
 import de.buw.tmdt.plasma.datamodel.error.ModelError;
-import de.buw.tmdt.plasma.services.kgs.database.api.exception.NoElementForIDException;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,13 +37,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	public ResponseEntity<Object> handleResponseStatusException(@NotNull ResponseStatusException ex) {
 		logger.warn("A response Status Exception occurred", ex);
         ModelError errorDTO = new ModelError(ex.getStatus().value(), ex.getReason(), ex.getMessage());
-		return new ResponseEntity<>(errorDTO, HttpStatus.valueOf(errorDTO.getStatus()));
-	}
-
-	@ExceptionHandler(value = {NoElementForIDException.class})
-	public ResponseEntity<Object> handleNoElementForIDException(@NotNull NoElementForIDException ex) {
-		logger.warn("A response Status Exception occurred", ex);
-        ModelError errorDTO = new ModelError(HttpStatus.NOT_FOUND.value(), ex.getMessage(), "");
 		return new ResponseEntity<>(errorDTO, HttpStatus.valueOf(errorDTO.getStatus()));
 	}
 

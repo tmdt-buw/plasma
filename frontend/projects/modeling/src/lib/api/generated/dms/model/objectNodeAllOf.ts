@@ -9,15 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SyntacticOperationDTO } from './syntacticOperationDTO';
 
 
 export interface ObjectNodeAllOf { 
     path?: Array<string>;
-    valid?: boolean;
     visible?: boolean;
     disabled?: boolean;
     pathAsJSONPointer?: string;
-    readonly operations?: Array<SyntacticOperationDTO>;
 }
 

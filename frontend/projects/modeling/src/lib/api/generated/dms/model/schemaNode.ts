@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SyntacticOperationDTO } from './syntacticOperationDTO';
 
 
 export interface SchemaNode { 
@@ -18,11 +17,9 @@ export interface SchemaNode {
     path?: Array<string>;
     x?: number;
     y?: number;
-    valid?: boolean;
     visible?: boolean;
     disabled?: boolean;
     pathAsJSONPointer?: string;
-    readonly operations?: Array<SyntacticOperationDTO>;
     _class: string;
 }
 

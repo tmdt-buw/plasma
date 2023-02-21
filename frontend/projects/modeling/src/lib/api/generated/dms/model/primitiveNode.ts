@@ -10,19 +10,16 @@
  * Do not edit the class manually.
  */
 import { PositionedCombinedModelElement } from './positionedCombinedModelElement';
-import { SyntacticOperationDTO } from './syntacticOperationDTO';
 
 
 export interface PrimitiveNode extends PositionedCombinedModelElement {
-  path?: Array<string>;
-  valid?: boolean;
-  datatype?: PrimitiveNode.DatatypeEnum;
-  examples?: Array<string>;
-  pattern?: string;
-  visible?: boolean;
-  disabled?: boolean;
-  pathAsJSONPointer?: string;
-  readonly operations?: Array<SyntacticOperationDTO>;
+    path?: Array<string>;
+    datatype?: PrimitiveNode.DatatypeEnum;
+    examples?: Array<string>;
+    pattern?: string;
+    visible?: boolean;
+    disabled?: boolean;
+    pathAsJSONPointer?: string;
 }
 export namespace PrimitiveNode {
     export type DatatypeEnum = 'Unknown' | 'String' | 'Boolean' | 'Number' | 'Binary';

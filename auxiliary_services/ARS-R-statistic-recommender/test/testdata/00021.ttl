@@ -1,0 +1,30 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:d685f-geometry a local:Geographischer_Punkt ;
+    local:besteht_aus plsm:d685f-x,
+        plsm:d685f-y .
+
+plsm:d685f-identifier a local:Identifikator .
+
+plsm:d685f-kapazitaet a local:Kapazit_t ;
+    local:gemessen_am plsm:d685f-timestamp ;
+    local:hat plsm:d685f-tendenz .
+
+plsm:d685f-parkhaus a local:Bezeichnung .
+
+plsm:d685f-tendenz a local:Prognose .
+
+plsm:d685f-timestamp a local:Zeitstempel ;
+    local:zeitstempelformat "YYYY-MM-DD hh:mm:ss" .
+
+plsm:d685f-x a local:Geographische_L_nge .
+
+plsm:d685f-y a local:Geographische_Breite .
+
+[] a local:Parkhaus ;
+    local:befindet_sich_an plsm:d685f-geometry ;
+    local:hat plsm:d685f-kapazitaet,
+        plsm:d685f-parkhaus ;
+    local:identifiziert_durch plsm:d685f-identifier .
+

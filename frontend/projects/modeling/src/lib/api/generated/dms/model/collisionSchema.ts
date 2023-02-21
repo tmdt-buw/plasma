@@ -10,15 +10,12 @@
  * Do not edit the class manually.
  */
 import { PositionedCombinedModelElement } from './positionedCombinedModelElement';
-import { SyntacticOperationDTO } from './syntacticOperationDTO';
 
 
 export interface CollisionSchema extends PositionedCombinedModelElement {
-  path?: Array<string>;
-  valid?: boolean;
-  pathAsJSONPointer?: string;
-  visible?: boolean;
-  disabled?: boolean;
-  readonly operations?: Array<SyntacticOperationDTO>;
+    path?: Array<string>;
+    pathAsJSONPointer?: string;
+    visible?: boolean;
+    disabled?: boolean;
 }
 

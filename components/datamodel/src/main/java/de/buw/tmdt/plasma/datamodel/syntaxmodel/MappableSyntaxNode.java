@@ -14,11 +14,11 @@ import java.util.List;
         @JsonSubTypes.Type(value = ObjectNode.class, name = "ObjectNode"),
 })
 public abstract class MappableSyntaxNode extends SchemaNode {
-    public MappableSyntaxNode(@NotNull String label, boolean isValid) {
-        super(label, isValid);
+    public MappableSyntaxNode(@NotNull String label) {
+        super(label);
     }
 
-    public MappableSyntaxNode(@NotNull String uuid, @NotNull String label, @Nullable List<String> path, @Nullable Double xCoordinate, @Nullable Double yCoordinate, boolean isValid, boolean visible, boolean disabled) {
-        super(uuid, label, path, xCoordinate, yCoordinate, isValid, visible, disabled);
+    public MappableSyntaxNode(@NotNull String uuid, @NotNull String label, @Nullable List<String> path, @Nullable Double xCoordinate, @Nullable Double yCoordinate, boolean visible, boolean disabled) {
+        super(uuid, label, path, xCoordinate, yCoordinate, visible, disabled);
     }
 }

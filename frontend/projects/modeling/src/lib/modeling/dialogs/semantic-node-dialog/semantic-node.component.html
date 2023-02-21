@@ -12,7 +12,7 @@
   <nz-divider></nz-divider>
   <div fxLayout="row" fxLayoutAlign="space-between center">
     <p
-      [nzTooltipTitle]="'An instance defines a customized class. The changes covered by an instance are only visible and valid in this model.'"
+      [nzTooltipTitle]="'The values shown in this customization are only valid in this model and can be defined by the modeler.'"
       nz-tooltip>Customization</p>
     <ng-container *ngTemplateOutlet="editButtons"></ng-container>
   </div>
@@ -49,6 +49,21 @@
                formControlName="value" id="value" nz-input/>
       </nz-form-control>
     </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nz-tooltip]="'Content type of this literal'" [nzNoColon]="true" nzFor="type">Type:</nz-form-label>
+      <nz-form-control>
+        <nz-select [nz-tooltip]="'By default, the XSD namespace (http://www.w3.org/2001/XMLSchema#) is used.'" formControlName="type" id="type" nzAllowClear
+                   nzPlaceHolder="Undefined">
+          <nz-option *ngFor="let type of literalTypes" [nzLabel]="type.label" [nzValue]="type.uri" nzCustomContent>
+            <!--            <span nz-icon [nzType]="getIcon(type.uri)"></span>    ### NO ICONS FOR NOW DUE TO NGZ LIB BEING USED HERE INSTEAD OF MATERIAL-->
+            {{type.label}}
+          </nz-option>
+          <nz-option [nzValue]="null" nzCustomContent nzLabel="Undefined">
+            Undefined
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
   </form>
 </div>
 
@@ -56,8 +71,8 @@
 <div *ngIf="isMappedNode()" fxLayout="column">
   <nz-divider></nz-divider>
   <p
-    [nzTooltipTitle]="'Mapping'"
-    nz-tooltip="An mapping defines a link between a semantic model node and a schema node.">Mapping</p>
+    [nzTooltipTitle]="'A mapping defines a link between a semantic model node and a schema node.'"
+    nz-tooltip>Mapping</p>
   <div fxLayout="row">
     <p nz-typography nzType="secondary">Original label: </p>
     <p [nzTooltipTitle]="'Original label: '" nz-tooltip="Original label of the connected syntax node"
@@ -83,8 +98,8 @@
      fxLayoutGap="10px">
   <nz-divider></nz-divider>
   <p [nzTooltipTitle]="'Recommended model extensions related to this node'" nz-tooltip>Extensions</p>
-  <div (mouseenter)="showRecommendation(recommendation)" (mouseleave)="hideRecommendation()"
-       *ngFor="let recommendation of node.recommendations" class="recommendation-box" fxLayout="row"
+  <div (mouseenter)="showRecommendation(recommendation)" (mouseleave)="hideRecommendation()" *ngFor="let recommendation of node.recommendations"
+       class="recommendation-box" fxLayout="row"
        fxLayoutAlign="space-between center" fxLayoutGap="5px">
     <span nz-typography> {{node.node.label}}
       <i nz-icon nz-typography nzType="right"></i>

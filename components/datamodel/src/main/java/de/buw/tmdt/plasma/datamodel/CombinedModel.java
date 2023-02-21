@@ -4,18 +4,19 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.buw.tmdt.plasma.datamodel.modification.DeltaModification;
-import de.buw.tmdt.plasma.datamodel.modification.operation.DataType;
 import de.buw.tmdt.plasma.datamodel.semanticmodel.Class;
 import de.buw.tmdt.plasma.datamodel.semanticmodel.*;
 import de.buw.tmdt.plasma.datamodel.syntaxmodel.*;
 import de.buw.tmdt.plasma.utilities.collections.CollectionUtilities;
-import de.buw.tmdt.plasma.utilities.misc.Pair;
 import de.buw.tmdt.plasma.utilities.misc.StringUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -195,7 +196,7 @@ public class CombinedModel implements Serializable {
 
         // apply syntactic modifications
         // update nodes
-        List<SchemaNode> nodesToBeReplaced = new ArrayList<>();
+        List<SchemaNode> nodesToBeReplaced;
         if (CollectionUtilities.hasElements(delta.getNodes())) {
             if (delta.isDeletion()) {
                 throw new UnsupportedOperationException("Cannot remove syntax nodes");
@@ -223,125 +224,6 @@ public class CombinedModel implements Serializable {
             syntaxModel.getEdges().addAll(delta.getEdges());
         }
 
-        // check if any additional syntactic modifications have to be done, e.g. after splitting operation
-        if (!delta.isDeletion()) { // cannot delete from syntax model
-            // check if he have a split going on
-            List<CompositeNode> compositeNodes = delta.getNodes().stream().filter(schemaNode -> schemaNode instanceof CompositeNode).map(schemaNode -> (CompositeNode) schemaNode).collect(Collectors.toList());
-            for (CompositeNode compositeNode : compositeNodes) {
-                // get the replaced node
-                SchemaNode replacedNode = nodesToBeReplaced.stream().filter(schemaNode -> schemaNode.equals(compositeNode)).findFirst().orElse(null);
-                if (replacedNode == null) {
-                    // nothing to be done here, something has gone wrong
-                    continue;
-                }
-                if (replacedNode instanceof CompositeNode) {
-                    // this was split before. we change the splitting patterns
-                    CompositeNode replacedCompositeNode = (CompositeNode) replacedNode;
-                    ArrayList<Pair<Edge, PrimitiveNode>> newComponents = new ArrayList<>(compositeNode.getSplitter().size() + 1);
-                    // modify child nodes of the composite node
-                    // find outgoing edges and construct map of edge -> target node
-                    List<Pair<Edge, PrimitiveNode>> children = getSyntaxModel().getEdges().stream()
-                            .filter(edge -> edge.getFromId().equals(replacedCompositeNode.getUuid()))
-                            .map(edge -> Pair.of(edge, getSyntaxModel().getNodes().stream()
-                                    .filter(node -> edge.getToId().equals(node.getUuid()))
-                                    .map(node -> (PrimitiveNode) node)
-                                    .findFirst().orElseThrow()))
-                            .collect(Collectors.toList());
-
-                    // recycle old components or create new ones if not enough existing
-                    for (int i = 0; i < compositeNode.getSplitter().size() + 1; i++) {
-                        if (i < children.size()) {
-                            Pair<Edge, PrimitiveNode> pair = children.get(i);
-                            pair.getRight().getExamples().clear(); // will be filled again later
-                            newComponents.add(pair);
-                        } else {
-                            PrimitiveNode primitiveNode = new PrimitiveNode(
-                                    "split" + "-" + i,
-                                    true,
-                                    DataType.Unknown,
-                                    new ArrayList<>(),
-                                    null);
-                            newComponents.add(Pair.of(new Edge(compositeNode.getUuid(), primitiveNode.getUuid()), primitiveNode));
-                        }
-                    }
-
-                    // split and distribute the example values again
-                    for (String example : replacedCompositeNode.getExamples()) {
-                        String leftOver = example;
-                        for (int i = 0; i < compositeNode.getSplitter().size(); i++) {
-                            Splitting splitter = compositeNode.getSplitter().get(i);
-                            Pair<String, String> split = splitter.apply(leftOver);
-                            // annotate the edge with the splitting pattern
-                            newComponents.get(i).getLeft().setAnnotation(splitter.getPattern());
-                            newComponents.get(i).getRight().getExamples().add(split.getLeft());
-                            leftOver = split.getRight();
-                        }
-                        newComponents.get(newComponents.size() - 1).getRight().getExamples().add(leftOver);
-                    }
-
-                    List<PrimitiveNode> newNodes = newComponents.stream().map(Pair::getRight).collect(Collectors.toList());
-                    // remove all old nodes
-                    children.stream().map(Pair::getRight).forEach(syntaxModel.getNodes()::remove);
-                    // now add newNodes (restoring some or all of the old components to the model)
-                    syntaxModel.getNodes().addAll(newNodes);
-
-                    // similarly, update the edges
-                    List<Edge> newEdges = newComponents.stream().map(Pair::getLeft).collect(Collectors.toList());
-                    children.stream().map(Pair::getLeft).forEach(syntaxModel.getEdges()::remove);
-                    syntaxModel.getEdges().addAll(newEdges);
-
-                } else if (replacedNode instanceof PrimitiveNode) {
-                    // we split a previous primitive node
-                    PrimitiveNode replaced = (PrimitiveNode) replacedNode;
-                    // copy existing example values, cleansing pattern and coordinates to composite node
-                    compositeNode.setExamples(replaced.getExamples());
-                    compositeNode.setXCoordinate(replaced.getXCoordinate());
-                    compositeNode.setYCoordinate(replaced.getYCoordinate());
-                    compositeNode.setCleansingPattern(replaced.getCleansingPattern());
-
-                    List<Splitting> splitter = compositeNode.getSplitter();
-
-                    // generate new nodes
-                    List<Pair<Edge, PrimitiveNode>> newComponents = new ArrayList<>(splitter.size() + 1);
-                    for (int i = 0; i < splitter.size() + 1; i++) {
-                        PrimitiveNode newNode = new PrimitiveNode(
-                                replaced.getLabel() + "-" + i,
-                                true,
-                                ((PrimitiveNode) replacedNode).getDataType(),
-                                new ArrayList<>(),
-                                null);
-                        Edge newEdge = new Edge(compositeNode.getUuid(), newNode.getUuid());
-                        newComponents.add(Pair.of(newEdge, newNode));
-                    }
-
-                    // split example values
-                    for (String example : replaced.getExamples()) {
-
-                        String leftOver = example;
-                        for (int i = 0; i < splitter.size(); i++) {
-                            Splitting splitting = splitter.get(i);
-
-                            Pair<String, String> split = splitter.get(i).apply(leftOver);
-                            newComponents.get(i).getRight().getExamples().add(split.getLeft());
-                            newComponents.get(i).getLeft().setAnnotation(splitting.getPattern());
-                            leftOver = split.getRight();
-                        }
-                        newComponents.get(newComponents.size() - 1).getRight().getExamples().add(leftOver);
-                    }
-
-                    List<PrimitiveNode> newNodes = newComponents.stream()
-                            .map(Pair::getRight)
-                            .collect(Collectors.toList());
-                    // add newNodes (restoring some or all of the old components to the model)
-                    syntaxModel.getNodes().addAll(newNodes);
-
-                    // similarly, add the edges
-                    List<Edge> newEdges = newComponents.stream().map(Pair::getLeft).collect(Collectors.toList());
-                    syntaxModel.getEdges().addAll(newEdges);
-                }
-            }
-        }
-
         // update entities
         if (CollectionUtilities.hasElements(delta.getEntities())) {
             // if we just want to remove stuff, finish this first
@@ -365,24 +247,6 @@ public class CombinedModel implements Serializable {
                 }
                 semanticModel.getNodes().addAll(modifiedEntities);
             }
-        }
-
-        // check that possible changes to the syntax model (e.g. splits) are properly reflected in the entities
-        if (!delta.isDeletion() && CollectionUtilities.hasElements(delta.getNodes())
-                && delta.getNodes().stream().anyMatch(schemaNode -> schemaNode instanceof CompositeNode)) {
-
-            semanticModel.getNodes().stream()
-                    .filter(node -> node instanceof MappableSemanticModelNode)
-                    .map(node -> (MappableSemanticModelNode) node)
-                    .filter(node -> node.getMappedSyntaxNodeUuid() != null)
-                    .forEach(node -> {
-                        // search for the corresponding syntax node and check if it is still a primary node
-                        Optional<SchemaNode> match = delta.getNodes().stream().filter(schemaNode -> schemaNode.getUuid().equals(node.getMappedSyntaxNodeUuid())).findFirst();
-                        if (match.isPresent() && !(match.get() instanceof PrimitiveNode)) {
-                            // not a primitive node any more, remove the link
-                            node.unmap();
-                        }
-                    });
         }
 
         // update relations

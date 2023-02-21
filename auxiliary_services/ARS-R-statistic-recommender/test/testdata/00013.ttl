@@ -1,0 +1,89 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:e736a-bez a local:Bezirk ;
+    local:liegt_in plsm:e736a-land .
+
+plsm:e736a-istfuss a local:Boolescher_Ausdruck .
+
+plsm:e736a-istgkfz a local:Boolescher_Ausdruck .
+
+plsm:e736a-istkrad a local:Boolescher_Ausdruck .
+
+plsm:e736a-istpkw a local:Boolescher_Ausdruck .
+
+plsm:e736a-istrad a local:Boolescher_Ausdruck .
+
+plsm:e736a-istsonstige a local:Boolescher_Ausdruck .
+
+plsm:e736a-land a local:Bundesland .
+
+plsm:e736a-linrefx a local:UTM_false_easting .
+
+plsm:e736a-linrefy a local:UTM_northing .
+
+plsm:e736a-lor_ab_2021 a local:LOR_Schl_ssel .
+
+plsm:e736a-objectid a local:Identifikator .
+
+plsm:e736a-uart a local:Unfallart .
+
+plsm:e736a-ujahr a local:Jahr .
+
+plsm:e736a-ukategorie a local:Unfallkategorie .
+
+plsm:e736a-ulichtverh a local:Lichtverh_ltnis .
+
+plsm:e736a-umonat a local:Monat .
+
+plsm:e736a-ustrzustand a local:Stra_enzustand .
+
+plsm:e736a-ustunde a local:Stunde .
+
+plsm:e736a-utyp1 a local:Unfalltyp .
+
+plsm:e736a-uwochentag a local:Wochentag .
+
+plsm:e736a-xgcswgs84 a local:Geographische_L_nge .
+
+plsm:e736a-ygcswgs84 a local:Geographische_Breite .
+
+[] a local:Stra_enverkehrsunfall ;
+    local:befindet_sich_an _:na07563503e834697bc3183f62f80d0fab1,
+        _:na07563503e834697bc3183f62f80d0fab2,
+        [ a local:Stra_e ;
+            local:hat plsm:e736a-ustrzustand ] ;
+    local:befindet_sich_in [ a local:Gebiet ;
+            local:ist_ein_e_ [ a local:Lebensweltlich_orientierter_Raum__LOR_ ;
+                    local:identifiziert_durch plsm:e736a-lor_ab_2021 ] ;
+            local:liegt_in plsm:e736a-bez ] ;
+    local:hat [ a local:Eigenschaften ;
+            local:ist_Fahrrad_beteiligt plsm:e736a-istrad ;
+            local:ist_Fu_g_nger_beteiligt plsm:e736a-istfuss ;
+            local:ist_G_terkraftfahrzeug_beteiligt plsm:e736a-istgkfz ;
+            local:ist_Kraftrad_beteiligt plsm:e736a-istkrad ;
+            local:ist_Personenkraftwagen_beteiligt plsm:e736a-istpkw ;
+            local:ist_anderes_Verkehrsmittel_beteiligt plsm:e736a-istsonstige ],
+        [ a local:Zeitstempel ;
+            local:besteht_aus plsm:e736a-ujahr,
+                plsm:e736a-umonat,
+                plsm:e736a-ustunde,
+                plsm:e736a-uwochentag ;
+            local:hat plsm:e736a-ulichtverh ],
+        plsm:e736a-uart,
+        plsm:e736a-ukategorie,
+        plsm:e736a-utyp1 ;
+    local:identifiziert_durch plsm:e736a-objectid .
+
+_:na07563503e834697bc3183f62f80d0fab1 a local:Geographischer_Punkt ;
+    local:besteht_aus plsm:e736a-xgcswgs84,
+        plsm:e736a-ygcswgs84 ;
+    local:koordinatenreferenzsystem "EPSG:4326" ;
+    local:repr_sentiert_dasselbe_wie _:na07563503e834697bc3183f62f80d0fab2 .
+
+_:na07563503e834697bc3183f62f80d0fab2 a local:Geographischer_Punkt ;
+    local:besteht_aus plsm:e736a-linrefx,
+        plsm:e736a-linrefy ;
+    local:koordinatenreferenzsystem "UTM Zone 32N" ;
+    local:repr_sentiert_dasselbe_wie _:na07563503e834697bc3183f62f80d0fab1 .
+

@@ -1,0 +1,18 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:c3353-standort_id_1 a local:Identifikator .
+
+plsm:c3353-summe_1 a local:Radfahrer .
+
+plsm:c3353-zeitpunkt_1 a local:Zeitstempel ;
+    local:zeitstempelformat "YYYY-MM-DDThh:mm:ss+hh:mm" .
+
+[] a local:Messung ;
+    local:anzahl plsm:c3353-summe_1 ;
+    local:durchgef_hrt_von [ a local:Radmonitor ;
+            local:identifiziert_durch plsm:c3353-standort_id_1 ] ;
+    local:gemessen_in [ a local:Zeitabschnitt ;
+            local:anfang plsm:c3353-zeitpunkt_1 ;
+            local:zeitraum "15 Minuten" ] .
+

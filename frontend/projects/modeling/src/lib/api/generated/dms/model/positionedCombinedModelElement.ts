@@ -12,10 +12,10 @@
 
 
 export interface PositionedCombinedModelElement {
-  uuid?: string;
-  label?: string;
-  x?: number;
-  y?: number;
-  _class: string;
+    uuid?: string;
+    label?: string;
+    x?: number;
+    y?: number;
+    _class: string;
 }
 

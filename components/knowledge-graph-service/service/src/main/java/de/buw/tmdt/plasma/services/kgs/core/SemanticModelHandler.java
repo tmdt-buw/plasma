@@ -44,17 +44,18 @@ public class SemanticModelHandler {
     public SemanticModel createSemanticModel(@NotNull SemanticModel semanticModel) {
         log.info("Creating Semantic Model");
         Model cmModel = CMToRDFMapper.convertToRDFModel(semanticModel);
-        log.info(asTurtle(cmModel));
+        log.debug(asTurtle(cmModel));
 
         ops.persistModel(cmModel);
 
         List<SemanticModelNode> resources = semanticModel.getNodes().stream()
                 .filter(smn -> smn instanceof NamedEntity || smn instanceof Class)
+                .filter(SemanticModelNode::isProvisional)
                 .collect(Collectors.toList());
-        onto.addResourcesToOntology(resources);
-
-        List<Relation> relations = semanticModel.getEdges();
-        onto.addRelationsToOntology(relations);
+        List<Relation> relations = semanticModel.getEdges().stream()
+                .filter(Relation::isProvisional)
+                .collect(Collectors.toList());
+        onto.addResourcesToOntology(resources, relations);
 
         SemanticModel sm = getSemanticModel(semanticModel.getId());
 
@@ -64,7 +65,7 @@ public class SemanticModelHandler {
     @NotNull
     public SemanticModel getSemanticModel(@NotNull String id) {
         Model retrievedModel = ops.queryModel(id);
-        log.info("retrieved model\n {}", asTurtle(retrievedModel));
+        log.debug("retrieved model\n {}", asTurtle(retrievedModel));
 
         if (retrievedModel.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No model available for id " + id);

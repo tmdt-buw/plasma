@@ -56,23 +56,59 @@ For an explanation of most parameters, check the individual README files of thos
 
 * PLASMA can be stopped by halting all Docker containers, e.g. `docker-compose down`
 
-
 ## Development Setup
-If components are run locally, e.g. for debugging purposes, entries for each service have to be added to the /etc/hosts file.
-Setting those lookups enables a local component to communicate with other components that may still run in Docker.
-This is required due to a limitation of docker. Example:
+
+If components are run locally, e.g. for debugging purposes, entries for each service have to be added to the /etc/hosts
+file in the form of ``127.0.0.1 <container-hostname-in-docker-compose>``. Setting those lookups enables a local
+component to communicate with other components that may still run in Docker. This is required as the Docker hostnames
+are not available to services outside the Docker network.
+
+Example:
+
 ```
-127.0.0.1 plasma-discovery-service
-127.0.0.1 plasma-admin-service
-127.0.0.1 plasma-gateway-service
+127.0.0.1 fuseki
 127.0.0.1 plasma-kgs
-127.0.0.1 plasma-sas
-127.0.0.1 plasma-dms
-127.0.0.1 plasma-srs
-127.0.0.1 plasma-dps
 ```
 
-**Note**: This is only required when developing or running one or more component(s) outside of Docker.
+**Note**: This is only required when running the specific component(s) outside of Docker containers
+(e.g. for debugging). Alternatively, the service environment may be edited and the reference URL of the resource changed
+to ``localhost``.
+
+### Default port mappings
+
+These port mappings are only relevant when accessing the services via localhost. Inside the Docker network, all services
+have their own host. Adjust the Docker port mappings if a deviation is needed (e.g. for testing). This list should give
+an overview of the services and ports occupied and is for information purposes only.
+
+```
+Infrastructure
+------------------
+Discovery     8761
+Spring Admin  8080
+Gateway       8888
+
+Databases
+------------------
+SAS           3307
+DMS           3308
+
+Components
+------------------
+DMS           8186
+KGS           8181
+SRS           8190
+SAS           8189
+DPS           8193
+Frontend      80
+           
+Auxiliary Services
+------------------
+ARS-L-LM      8201
+ARS-R-SR      8221
+```
+
+
+
 
 
 

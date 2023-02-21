@@ -18,7 +18,7 @@ import java.util.UUID;
 @DynamicUpdate
 @Entity
 @Table(name = "modelings")
-public class  Modeling {
+public class Modeling {
 
     @Id
     @Column(nullable = false, unique = true, updatable = false)
@@ -33,6 +33,8 @@ public class  Modeling {
     private ZonedDateTime created;
 
     private String dataId;
+
+    private boolean finalized;
 
     @Column()
     @ElementCollection
@@ -58,6 +60,7 @@ public class  Modeling {
         this.id = UUID.randomUUID().toString();
         this.selectedOntologies = new ArrayList<>();
         this.created = ZonedDateTime.now();
+        this.finalized = false;
     }
 
     public Modeling(@NotNull String id) {
@@ -139,10 +142,11 @@ public class  Modeling {
     @Override
     @SuppressWarnings("MagicCharacter")
     public String toString() {
-        return "{\"@class\":\"DataSourceModel\""
+        return "{\"@class\":\"Modeling\""
                 + ", \"@super\":" + super.toString()
                 + ", \"currentVersion\":" + versionPointer
                 + ", \"maxVersion\":" + combinedModelVersions.size()
+                + ", \"finalized\":" + isFinalized()
                 + '}';
     }
 
@@ -173,5 +177,13 @@ public class  Modeling {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isFinalized() {
+        return this.finalized;
+    }
+
+    public void finalizeModeling() {
+        this.finalized = true;
     }
 }

@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static de.buw.tmdt.plasma.services.kgs.core.Ontologies.PREFIXES;
+import static de.buw.tmdt.plasma.services.kgs.core.OntologyManagement.PREFIXES;
 
 /**
  * Converts a {@link SemanticModel} from a {@link de.buw.tmdt.plasma.datamodel.CombinedModel} to
@@ -195,7 +195,7 @@ public class CMToRDFMapper {
             if (o.isResource()) {
                 // this is an ObjectProperty
                 Relation ontologyInstance = relationRetrieverByURI.apply(stmt.getPredicate().getURI());
-                Relation r = new ObjectProperty(convertedSubject.getUuid(), convertedObject.getUuid(), PREFIXES.shortForm(stmt.getPredicate().getURI()));
+                Relation r = new ObjectProperty(convertedSubject.getUuid(), convertedObject.getUuid(), stmt.getPredicate().getURI());
                 if (ontologyInstance != null) {
                     r.setLabel(ontologyInstance.getLabel());
                 }
@@ -203,7 +203,7 @@ public class CMToRDFMapper {
             } else if (o.isLiteral()) {
                 // this is a DataProperty
                 Relation ontologyInstance = relationRetrieverByURI.apply(stmt.getPredicate().getURI());
-                Relation r = new DataProperty(convertedSubject.getUuid(), convertedObject.getUuid(), PREFIXES.shortForm(stmt.getPredicate().getURI()));
+                Relation r = new DataProperty(convertedSubject.getUuid(), convertedObject.getUuid(), stmt.getPredicate().getURI());
                 if (ontologyInstance != null) {
                     r.setLabel(ontologyInstance.getLabel());
                 }
@@ -245,7 +245,7 @@ public class CMToRDFMapper {
         String syntaxNodeId = getPropertyOrNull(res, PLCM.syntaxNodeId);
         String originalLabel = getPropertyOrNull(res, PLCM.originalLabel);
         String syntaxNodePath = getPropertyOrNull(res, PLCM.syntaxNodePath);
-        Class sClass = new Class(uuid, PREFIXES.shortForm(superclass.getURI()), superclass.getLabel(),
+        Class sClass = new Class(uuid, superclass.getURI(), superclass.getLabel(),
                 superclass.getDescription(), xCoordinate, yCoordinate, syntaxNodeId, originalLabel, syntaxNodePath, null, false);
 
         if (!res.isAnon()) {
@@ -253,7 +253,7 @@ public class CMToRDFMapper {
             String instanceURI = res.getURI();
             String label = res.getRequiredProperty(PLCM.label).getString();
             String description = getPropertyOrNull(res, PLCM.description);
-            Instance i = new Instance(uuid, PREFIXES.shortForm(instanceURI), label, description);
+            Instance i = new Instance(uuid, instanceURI, label, description);
             sClass.setInstance(i);
         }
         return sClass;
@@ -262,7 +262,7 @@ public class CMToRDFMapper {
     private static NamedEntity createNamedEntity(Resource res, NamedEntity namedEntity) {
         Double xCoordinate = getPropertyAsDoubleOrNull(res, PLCM.xCoordinate);
         Double yCoordinate = getPropertyAsDoubleOrNull(res, PLCM.yCoordinate);
-        NamedEntity ne = new NamedEntity(PREFIXES.shortForm(namedEntity.getURI()), namedEntity.getLabel(),
+        NamedEntity ne = new NamedEntity(namedEntity.getURI(), namedEntity.getLabel(),
                 namedEntity.getDescription(), xCoordinate, yCoordinate);
         return ne;
     }
@@ -288,12 +288,12 @@ public class CMToRDFMapper {
             String description = getPropertyOrNull(resource, RDFS.comment);
             if (resource.hasProperty(RDF.type, OWL.Class)) {
                 return new Class(
-                        PREFIXES.shortForm(resource.getURI()),
+                        resource.getURI(),
                         label,
                         description);
             } else if (resource.hasProperty(RDF.type, PLCM.NamedEntity)) {
                 return new NamedEntity(
-                        PREFIXES.shortForm(resource.getURI()),
+                        resource.getURI(),
                         label,
                         description);
             }
@@ -342,14 +342,14 @@ public class CMToRDFMapper {
                             return new DataProperty(
                                     null,
                                     null,
-                                    PREFIXES.shortForm(resource.getURI()),
+                                    resource.getURI(),
                                     label,
                                     description);
                         } else if (resource.hasProperty(RDF.type, PLCM.NamedEntity)) {
                             return new ObjectProperty(
                                     null,
                                     null,
-                                    PREFIXES.shortForm(resource.getURI()),
+                                    resource.getURI(),
                                     label,
                                     description);
                         }
@@ -368,15 +368,15 @@ public class CMToRDFMapper {
             return null;
         }
         if (property.isDatatypeProperty()) {
-            return new DataProperty("", "", PREFIXES.shortForm(property.getURI()), PREFIXES.shortForm(property.getLabel(null) == null ? property.getURI() : property.getLabel(null)), property.getComment(null));
+            return new DataProperty("", "", property.getURI(), property.getLabel(null) == null ? property.getURI() : property.getLabel(null), property.getComment(null));
         } else if (property.isObjectProperty()) {
-            return new ObjectProperty("", "", PREFIXES.shortForm(property.getURI()), PREFIXES.shortForm(property.getLabel(null) == null ? property.getURI() : property.getLabel(null)), property.getComment(null));
+            return new ObjectProperty("", "", property.getURI(), property.getLabel(null) == null ? property.getURI() : property.getLabel(null), property.getComment(null));
         }
         return null;
     }
 
     public static Class convertOntologyClassToClass(OntClass ontClass) {
-        return new Class(PREFIXES.shortForm(ontClass.getURI()), PREFIXES.shortForm(ontClass.getLabel(null) == null ? ontClass.getURI() : ontClass.getLabel(null)), ontClass.getComment(null));
+        return new Class(ontClass.getURI(), ontClass.getLabel(null) == null ? ontClass.getURI() : ontClass.getLabel(null), ontClass.getComment(null));
     }
 
 }

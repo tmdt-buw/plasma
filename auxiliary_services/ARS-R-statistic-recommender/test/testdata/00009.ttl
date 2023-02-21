@@ -1,0 +1,41 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:1c807-bestehend_1 a local:Identifikator .
+
+plsm:1c807-bestehend_bezeichnung_1 a local:Statusinformation ;
+    local:identifiziert_durch plsm:1c807-bestehend_1 .
+
+plsm:1c807-geometry_1 a local:Geographischer_Punkt ;
+    local:besteht_aus plsm:1c807-latitude_1,
+        plsm:1c807-longitude_1 .
+
+plsm:1c807-lagebezeichnung_1 a local:Standortbezeichnung .
+
+plsm:1c807-latitude_1 a local:Geographische_Breite .
+
+plsm:1c807-longitude_1 a local:Geographische_L_nge .
+
+plsm:1c807-ortsteil_1 a local:Identifikator .
+
+plsm:1c807-ortsteil_bezeichnung_1 a local:Ortsteil ;
+    local:identifiziert_durch plsm:1c807-ortsteil_1 .
+
+plsm:1c807-stellplaetze_box_1 a local:Stellplatz__Fahrradbox_ .
+
+plsm:1c807-stellplaetze_gesamt_1 a local:Stellplatz ;
+    local:anzahl plsm:1c807-stellplaetze_box_1,
+        plsm:1c807-stellplaetze_ueberdacht_1 .
+
+plsm:1c807-stellplaetze_ueberdacht_1 a local:Stellplatz___bderdacht_ .
+
+plsm:1c807-stellplatz_nr_1 a local:Stellplatz_Nummer .
+
+[] a local:Fahrradstellplatz ;
+    local:anzahl plsm:1c807-stellplaetze_gesamt_1 ;
+    local:befindet_sich_an plsm:1c807-geometry_1 ;
+    local:hat plsm:1c807-bestehend_bezeichnung_1,
+        plsm:1c807-lagebezeichnung_1 ;
+    local:identifiziert_durch plsm:1c807-stellplatz_nr_1 ;
+    local:liegt_in plsm:1c807-ortsteil_bezeichnung_1 .
+

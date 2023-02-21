@@ -9,15 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SyntacticOperationDTO } from './syntacticOperationDTO';
 
 
 export interface CollisionSchemaAllOf { 
     path?: Array<string>;
-    valid?: boolean;
     pathAsJSONPointer?: string;
     visible?: boolean;
     disabled?: boolean;
-    readonly operations?: Array<SyntacticOperationDTO>;
 }
 

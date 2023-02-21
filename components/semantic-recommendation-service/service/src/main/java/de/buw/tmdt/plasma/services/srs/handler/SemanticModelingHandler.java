@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,17 +14,21 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 @Service
+@ConfigurationProperties(prefix = "plasma.ars.modeling")
 public class SemanticModelingHandler {
 
     private static final Logger log = LoggerFactory.getLogger(SemanticModelingHandler.class);
 
-    @Value("${plasma.ars.modeling.url:}")
-    private List<String> modelingServiceURLs;
+    @Value("${plasma.ars.modeling.prefix:ARS-M-}")
+    private String prefix;
+
+    private List<String> urls = new ArrayList<>();
 
     public SemanticModelingHandler() {
     }
@@ -39,15 +44,15 @@ public class SemanticModelingHandler {
      */
     @NotNull
     public CombinedModel performModeling(@NotNull String uuid, String configId, String configToken, @NotNull CombinedModel combinedModel) {
-        modelingServiceURLs = modelingServiceURLs.stream()
+        urls = urls.stream()
                 .filter(string -> !string.isBlank())
                 .collect(Collectors.toList());
-        if (modelingServiceURLs.isEmpty()) {
+        if (urls.isEmpty()) {
             log.debug("No modeling services defined");
             throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "No modeling services are defined to process your request.");
         }
         // we only get the first for now
-        String url = modelingServiceURLs.get(0);
+        String url = urls.get(0);
         try {
             // call ARS-M services here
             WebClient webClient = WebClient.builder()
@@ -80,5 +85,9 @@ public class SemanticModelingHandler {
         return combinedModel;
     }
 
+
+    public List<String> getUrls() {
+        return urls;
+    }
 
 }

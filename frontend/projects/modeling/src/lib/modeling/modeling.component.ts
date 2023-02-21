@@ -2,7 +2,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ModalOptions, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { BehaviorSubject, forkJoin, Subject } from 'rxjs';
+import { BehaviorSubject, forkJoin, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import {
   CombinedModel,
@@ -15,11 +15,8 @@ import {
 } from '../api/generated/dms';
 import { OntologyControllerService, OntologyInfo, SemanticModelControllerService } from '../api/generated/kgs';
 import { ContextMenuService } from './context-menu/context-menu.service';
-import { ModalBaseConfig, ModalMouseEnabledConfig } from './dialogs/common/modal.base-config';
+import { ModalMouseEnabledConfig } from './dialogs/common/modal.base-config';
 import { PlsConceptDialogComponent } from './dialogs/concept-dialog/concept-dialog.component';
-import {
-  PlsOperationsDialogComponent
-} from './dialogs/operations-dialog/operations-dialog/operations-dialog.component';
 import { Filter } from './model/common/filter';
 import { Nodes } from './model/configuration/node';
 import { ContextMenuEvent, ContextMenuEventType } from './model/events/context-menu-event';
@@ -88,6 +85,8 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
   modelMappings: ModelMapping[];
   loading: boolean = true;
 
+  finalizing: boolean = false;
+
   // dialogs
   private addConceptDialogRef: NzModalRef<any, any>;
   contextMenuSubscription;
@@ -151,21 +150,6 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
             deletion: true
           };
           this.modelingService.modifyModel(this.modelId, delta).subscribe((res: CombinedModel) => this.getCombinedModel());
-        } else if (event.type === ContextMenuEventType.performOperation) {
-          const operation = event.operation;
-          const config: ModalOptions = {
-            nzTitle: operation.label,
-            nzContent: PlsOperationsDialogComponent,
-            nzComponentParams: {
-              operation
-            }
-          };
-          const dialogRef = this.modal.create(Object.assign(config, ModalBaseConfig));
-          dialogRef.afterClose.subscribe(context => {
-            if (context) {
-              this.modelingService.modifySyntacticSchema(this.modelId, context).subscribe((res: CombinedModel) => this.getCombinedModel());
-            }
-          });
         }
       }
     });
@@ -178,8 +162,8 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
     this.manageOntolggiesDialogRef?.close();
   }
 
-  getCombinedModel(): void {
-    forkJoin({
+  getCombinedModel(): Subscription {
+    return forkJoin({
       cm: this.modelingService.getCombinedModel(this.modelId),
       ac: this.modelingService.getArrayContexts(this.modelId),
       mm: this.modelingService.getModelMappings(this.modelId)
@@ -293,8 +277,8 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
         };
         this.modelingService.modifyModel(this.modelId, delta).subscribe();
         break;
-      case Nodes.semanticClassName:
-      case Nodes.extendedSemanticClassName:
+      case Nodes.classNodeName:
+      case Nodes.extendedClassNodeName:
         const delta2: DeltaModification = {
           entities: [event.node]
         };
@@ -321,23 +305,36 @@ export class PlsModelingComponent implements OnInit, OnDestroy {
   }
 
   onRecommendationAccepted(event: DeltaModification): void {
-    console.log('accepting recommendation', event);
     this.modelingService.acceptRecommendation(this.modelId, event).subscribe(cm =>
-      this.combinedModel = cm
+      this.getCombinedModel()
     );
   }
 
   finalizeModel(): void {
+    if (this.finalizing) {
+      return;
+    }
     // close all dialogs
     this.modal.closeAll();
-    this.viewerMode = true;
-    this.modelingService.finalizeModeling(this.modelId).subscribe(() => {
-      this.notification.success('Model finalized', 'The model has been finalized and provisional classes and relations added to the ontology.');
-      this.finalized.emit();
-      this.hideFinalizeButton = true;
-    }, () => {
-      this.viewerMode = false;
-      this.notification.error('Could not finalize model', 'An error occurred during model finalization. Please contact an admin for more information.');
+    this.finalizing = true;
+    this.modal.confirm({
+      nzTitle: 'Do you want to finalize the modeling process?',
+      nzContent: 'This will fix the current state of the model and prevent further edits. Provisional elements are added to the local ontology.',
+      nzOnOk: () => {
+        this.viewerMode = true;
+        this.modelingService.finalizeModeling(this.modelId).subscribe(() => {
+          this.notification.success('Model finalized', 'The model has been finalized and provisional classes and relations added to the ontology.');
+          this.finalized.emit();
+          this.hideFinalizeButton = true;
+        }, () => {
+          this.finalizing = false;
+          this.viewerMode = false;
+          this.notification.error('Could not finalize model', 'An error occurred during model finalization. Please contact an admin for more information.');
+        });
+      },
+      nzOnCancel: () => {
+        this.finalizing = false;
+      }
     });
   }
 

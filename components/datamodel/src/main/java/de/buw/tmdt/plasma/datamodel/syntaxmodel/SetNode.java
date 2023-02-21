@@ -18,24 +18,21 @@ public class SetNode extends MappableSyntaxNode {
 
     public static final String ARRAY_INDICATOR = "0";
 
-    public SetNode(
-            boolean isValid
-    ) {
-        super("",  isValid);
+    public SetNode() {
+        super("");
     }
 
-	@JsonCreator
-	public SetNode(
+    @JsonCreator
+    public SetNode(
             @JsonProperty(UUID_PROPERTY) @NotNull String uuid,
             @JsonProperty(LABEL_PROPERTY) @NotNull String label,
             @Nullable @JsonProperty(PATH_PROPERTY) List<String> path,
             @Nullable @JsonProperty(XCOORDINATE_PROPERTY) Double xCoordinate,
             @Nullable @JsonProperty(YCOORDINATE_PROPERTY) Double yCoordinate,
-            @JsonProperty(VALID_PROPERTY) boolean isValid,
             @JsonProperty(VISIBLE_PROPERTY) boolean visible,
             @JsonProperty(DISABLED_PROPERTY) boolean disabled
     ) {
-        super(uuid, label, path, xCoordinate, yCoordinate, isValid, visible, disabled);
+        super(uuid, label, path, xCoordinate, yCoordinate, visible, disabled);
     }
 
     @Override
@@ -46,7 +43,6 @@ public class SetNode extends MappableSyntaxNode {
                 getPath(),
                 getXCoordinate(),
                 getYCoordinate(),
-                isValid(),
                 isVisible(),
                 isDisabled()
         );

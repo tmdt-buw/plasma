@@ -1,4 +1,4 @@
-import { CompositeNode, ObjectNode, PrimitiveNode, SetNode } from '../../../api/generated/dms';
+import { ObjectNode, PrimitiveNode, SetNode } from '../../../api/generated/dms';
 import { SyntaxNode } from './node';
 
 /**
@@ -36,6 +36,23 @@ export abstract class Icons {
         return 'format_list_numbered';
       default:
         return '';
+    }
+  }
+
+  static getLiteralIcon(type: string): string {
+    switch (type) {
+      case 'http://www.w3.org/2001/XMLSchema#string':
+      case 'http://www.w3.org/2001/XMLSchema#date':
+      case 'http://www.w3.org/2001/XMLSchema#time':
+        return 'text_fields';
+      case 'http://www.w3.org/2001/XMLSchema#integer':
+      case 'http://www.w3.org/2001/XMLSchema#float':
+      case 'http://www.w3.org/2001/XMLSchema#decimal':
+        return 'looks_one';
+      case 'http://www.w3.org/2001/XMLSchema#boolean':
+        return 'check_box';
+      default:
+        return 'text_fields';
     }
   }
 

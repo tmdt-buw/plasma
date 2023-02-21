@@ -1,0 +1,4790 @@
+@prefix local: <https://tim.ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix plcm: <http://plasma.uni-wuppertal.de/cm#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+local:absolute_Bezugsrichtung a owl:ObjectProperty ;
+    rdfs:label "absolute Bezugsrichtung" ;
+    rdfs:comment "Gibt der Winkelmessung eine Orientierung." ;
+    rdfs:domain local:Gradma_ ;
+    rdfs:range local:Geographischer_Norden .
+
+local:anfang a owl:ObjectProperty ;
+    rdfs:label "anfang" ;
+    rdfs:comment "zeitlicher oder räumlicher Beginn oder Ausgangspunkt eines Vorgangs oder einer Sache" ;
+    rdfs:domain local:Bauma_nahme,
+        local:Bezirk,
+        local:Expositionszeitraum,
+        local:Fahrradstra_e,
+        local:Fahrradweg,
+        local:Fahrt,
+        local:Fahrtrichtung,
+        local:Hausnummernbereich,
+        local:Reinigungsbereich,
+        local:Schule,
+        local:Stra_e,
+        local:Strecke,
+        local:Zeitabschnitt,
+        local:Zone ;
+    rdfs:range local:Datum,
+        local:Geographisches_Polygon,
+        local:Haltestelle,
+        local:Hausnummer,
+        local:Jahr,
+        local:Knotenpunkt,
+        local:Standortbezeichnung,
+        local:Stra_e,
+        local:Unixzeit,
+        local:Unixzeit__Millisekunden_,
+        local:Zeitstempel .
+
+local:angefahren_von a owl:ObjectProperty ;
+    rdfs:label "angefahren von" ;
+    rdfs:comment "etwas fährt zu dem Objekt" ;
+    rdfs:domain local:Haltestelle,
+        local:Schwebebahnstation,
+        local:Stra_enbahnstrecke,
+        local:Strecke,
+        local:Zustiegsplattform ;
+    rdfs:range local:Bus,
+        local:Fernverkehr,
+        local:Stra_enbahn,
+        local:Verkehrslinie,
+        local:Verkehrsliniengruppe,
+        local:Wuppertaler_Schwebebahn .
+
+local:anteil a owl:ObjectProperty ;
+    rdfs:label "anteil" ;
+    rdfs:comment "bestimmter Teil einer Menge" ;
+    rdfs:domain local:Verkehrsmittel,
+        local:Verkehrsmittelwahl ;
+    rdfs:range local:Binnenverkehr,
+        local:Fahrrad,
+        local:Gesamtverkehr,
+        local:Motorisierter_Individualverkehr__Fahrer_,
+        local:Motorisierter_Individualverkehr__Mitfahrer_,
+        local:Quell_Zielverkehr,
+        local:Zu_Fu_,
+        local:_ffentlicher_Personennahverkehr___PNV_ .
+
+local:anzahl a owl:ObjectProperty ;
+    rdfs:label "anzahl" ;
+    rdfs:comment "Die Anzahl ist eine physikalische Größe oder ein Rechenwert, als Maß dafür, aus wie vielen Objekten eine Menge besteht." ;
+    rdfs:domain local:Behindertenparkplatz,
+        local:CarSharing_Station,
+        local:Fahrrad,
+        local:Fahrradabstellanlage,
+        local:Fahrradstellplatz,
+        local:Fahrzeugbestand,
+        local:K_ln,
+        local:K_ln_Chorweiler,
+        local:K_ln_Ehrenfeld,
+        local:K_ln_Innenstadt,
+        local:K_ln_Kalk,
+        local:K_ln_Lindenthal,
+        local:K_ln_M_lheim,
+        local:K_ln_Nippes,
+        local:K_ln_Porz,
+        local:K_ln_Rodenkirchen,
+        local:Kreis_Kleve,
+        local:Ladestation,
+        local:Messung,
+        local:Minute,
+        local:Park_and_Ride_Anlage,
+        local:Parkm_glichkeit,
+        local:Stellplatz,
+        local:Stra_e,
+        local:Taxistand,
+        local:Verkehrsbeeintr_chtigung,
+        local:Z_hlung ;
+    rdfs:range local:Fahrradhalter,
+        local:Fahrstreifen,
+        local:Fahrzeug,
+        local:Ladepunkt,
+        local:Ladepunkte,
+        local:Mensch,
+        local:Messwert,
+        local:Mietwagenunternehmen,
+        local:Radfahrer,
+        local:Reinigung,
+        local:Stellplatz,
+        local:Stellplatz__Bus_,
+        local:Stellplatz__Fahrradbox_,
+        local:Stellplatz__PKW_,
+        local:Stellplatz__Wohnmobil_,
+        local:Stellplatz___bderdacht_,
+        local:Taxi,
+        local:Taxiunternehmen .
+
+local:au_en a owl:ObjectProperty ;
+    rdfs:label "außen" ;
+    rdfs:comment "auf der Außenseite" ;
+    rdfs:domain local:Geographisches_Multipolygon ;
+    rdfs:range local:Geographisches_Polygon .
+
+local:au_erbetriebnahme a owl:ObjectProperty ;
+    rdfs:label "außerbetriebnahme" ;
+    rdfs:comment "(vorübergehende) Stilllegung einer technischen Anlage, Maschine" ;
+    rdfs:domain local:Messstation ;
+    rdfs:range local:Datum .
+
+local:aufgestellt_an a owl:ObjectProperty ;
+    rdfs:label "aufgestellt an" ;
+    rdfs:comment "wo etwas aufgestellt ist" ;
+    rdfs:domain local:Verkehrszeichen ;
+    rdfs:range local:Verkehrszeichenstandort .
+
+local:ausrichtung a owl:ObjectProperty ;
+    rdfs:label "ausrichtung" ;
+    rdfs:comment "in eine bestimmte einheitliche Richtung bringen" ;
+    rdfs:domain local:Blitzer,
+        local:Fahrtrichtungspfeil,
+        local:Gradma_,
+        local:Richtung,
+        local:Stra_enseite ;
+    rdfs:range local:Fahrtrichtung,
+        local:Geographischer_Norden,
+        local:Gradma_,
+        local:Links,
+        local:Rechts .
+
+local:auswahl a owl:ObjectProperty ;
+    rdfs:label "auswahl" ;
+    rdfs:comment "sich für eine von mehreren Möglichkeiten entscheiden" ;
+    rdfs:domain local:Mensch ;
+    rdfs:range local:Verkehrsmittel .
+
+local:basiert_auf a owl:ObjectProperty ;
+    rdfs:label "basiert auf" ;
+    rdfs:comment "auf einer Sache aufbauen, etwas zur Grundlage haben" ;
+    rdfs:domain local:Hexadezimale_Farbdefinition ;
+    rdfs:range local:RGB_Farbmodell .
+
+local:befindet_sich_an a owl:ObjectProperty ;
+    rdfs:label "befindet sich an" ;
+    rdfs:comment "Bestimmung des Standortes/Position" ;
+    rdfs:domain local:Abfall,
+        local:Adresse,
+        local:Baustelle,
+        local:Behindertenparkplatz,
+        local:Beschr_nkung,
+        local:Bike_and_Ride_Anlage,
+        local:Blitzer,
+        local:Bus,
+        local:CarSharing_Station,
+        local:Dauerz_hlstelle,
+        local:Fahrradabstellanlage,
+        local:Fahrradluftstation,
+        local:Fahrradstation,
+        local:Fahrradstellplatz,
+        local:Fahrradstrecke,
+        local:Fahrradverleih,
+        local:Fahrradweg,
+        local:Fahrtrichtungspfeil,
+        local:Gebiet,
+        local:Haltestelle,
+        local:Historisches_Bauwerk,
+        local:Knotenpunkt,
+        local:Laden,
+        local:Ladestation,
+        local:Lichtsignalanlage,
+        local:Luftqualit_tsmessung,
+        local:Mast,
+        local:Messstation,
+        local:Messung,
+        local:Nullpunkt,
+        local:Park_and_Ride_Anlage,
+        local:Parkhaus,
+        local:Parkleitsystem_Schild,
+        local:Parkm_glichkeit,
+        local:Parkscheinautomat,
+        local:Potentielle_Gefahrenstelle,
+        local:Radmonitor,
+        local:Schaden,
+        local:Schule,
+        local:Schwebebahnstation,
+        local:Sektor,
+        local:Steile_Radstrecke,
+        local:Stellplatz,
+        local:Stra_e,
+        local:Stra_enbahnstrecke,
+        local:Stra_enbeleuchtung,
+        local:Stra_enverkehrsunfall,
+        local:Strecke,
+        local:Tankstelle,
+        local:Taxistand,
+        local:Thalasso_Kurweg,
+        local:Umweltzone,
+        local:Verkehrsbeeintr_chtigung,
+        local:Verkehrszeichen,
+        local:Verwaltungseinheit,
+        local:Website,
+        local:Wetterstation,
+        local:Zollstelle,
+        local:Zone,
+        local:Zusatzinformation,
+        local:Zustiegsplattform ;
+    rdfs:range local:Adresse,
+        local:Geographische_Linie,
+        local:Geographische_Multilinie,
+        local:Geographischer_Punkt,
+        local:Geographisches_Multipolygon,
+        local:Geographisches_Polygon,
+        local:Geohash_7,
+        local:Haltestelle,
+        local:Heinrich_Heine_Universit_t_D_sseldorf,
+        local:Knotenpunkt,
+        local:Rathaus_Konstanz,
+        local:Standortbezeichnung,
+        local:Stra_e,
+        local:Uniform_Resource_Locator__URL_ .
+
+local:befindet_sich_in a owl:ObjectProperty ;
+    rdfs:label "befindet sich in" ;
+    rdfs:comment "befindet sich in" ;
+    rdfs:domain local:Blitzer,
+        local:Laden,
+        local:Messstation,
+        local:Parkscheinautomat,
+        local:Stra_enverkehrsunfall,
+        local:Tag,
+        local:Verkehrsbeeintr_chtigung ;
+    rdfs:range local:Gebiet,
+        local:Gemeinde,
+        local:Jahr,
+        local:Lage,
+        local:Stra_e,
+        local:Tarifzone .
+
+local:beidseitiger_KFZ_Verkehr_zugelassen a owl:ObjectProperty ;
+    rdfs:label "beidseitiger KFZ-Verkehr zugelassen" ;
+    rdfs:comment "Gibt an ob KFZ-Verkehr in beide Richtungen zugelassen ist" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:benutzt_von a owl:ObjectProperty ;
+    rdfs:label "benutzt von" ;
+    rdfs:comment "etwas wird von jemandem benutzt" ;
+    rdfs:domain local:Haltestelle,
+        local:Schienennetz,
+        local:Strecke ;
+    rdfs:range local:Bus,
+        local:Verkehrsmittel,
+        local:Winterdienst,
+        local:Zug .
+
+local:beschlossen_an a owl:ObjectProperty ;
+    rdfs:label "beschlossen an" ;
+    rdfs:comment "durch Beschluss an einem Zeitpunkt entschieden" ;
+    rdfs:domain local:Bezeichnung ;
+    rdfs:range local:Datum .
+
+local:beschlossen_von a owl:ObjectProperty ;
+    rdfs:label "beschlossen von" ;
+    rdfs:comment "von jemandem wurde ein Entschluss über etwas gefasst" ;
+    rdfs:domain local:Bauma_nahme,
+        local:Bezeichnung,
+        local:Blitzer,
+        local:Verkehrszeichen ;
+    rdfs:range local:Amt,
+        local:Gemeinde,
+        local:Herkunft .
+
+local:besteht_aus a owl:ObjectProperty ;
+    rdfs:label "besteht aus" ;
+    rdfs:comment "ist ein Teil eines Ganzen" ;
+    rdfs:domain local:Adresse,
+        local:Amtlicher_Gemeindeschl_ssel__AGS_,
+        local:Anbindung,
+        local:Bezugsmonat,
+        local:CMYK_Farbmodell,
+        local:DHID,
+        local:DTVw_Belastung,
+        local:Geographische_Linie,
+        local:Geographische_Multilinie,
+        local:Geographischer_Punkt,
+        local:Geographisches_Polygon,
+        local:Gesamtverkehr,
+        local:Haltestelle,
+        local:Hausnummernbereich,
+        local:Identifikator,
+        local:Kfz_Kennzeichen,
+        local:Knotenpunkt,
+        local:Kontaktdaten,
+        local:Kosteninformation,
+        local:Ladestation,
+        local:Nullpunkt,
+        local:RGB_Farbmodell,
+        local:Schwerverkehr,
+        local:Standortbezeichnung,
+        local:Uniform_Resource_Locator__URL_,
+        local:Verkehrsliniengruppe,
+        local:Verkehrsmittel,
+        local:Wetter,
+        local:Wetterstation,
+        local:Zeitabschnitt,
+        local:Zeitstempel ;
+    rdfs:range local:August,
+        local:Bezirk,
+        local:Blauanteil,
+        local:Bundesland,
+        local:Bus,
+        local:Cyananteil,
+        local:DTVw_Belastung,
+        local:Datum,
+        local:Dezember,
+        local:E_Mail_Adresse,
+        local:Ellipsoidische_H_he,
+        local:Faxnummer,
+        local:G_terverkehr,
+        local:Geb_hr,
+        local:Gef_hlte_Temperatur,
+        local:Gelbanteil,
+        local:Gemeinde,
+        local:Geographische_Breite,
+        local:Geographische_L_nge,
+        local:Geographische_Linie,
+        local:Geographischer_Punkt,
+        local:Gerade_Hausnummer,
+        local:Gr_nanteil,
+        local:Haltestellennummer,
+        local:Hausnummer,
+        local:Hausnummernbereich,
+        local:Hochwert,
+        local:Host,
+        local:Jahr,
+        local:Juli,
+        local:Juni,
+        local:Kreisschl_ssel,
+        local:Ladepunkt,
+        local:Land,
+        local:Landkreis,
+        local:Lastkraftwagen,
+        local:Lieferwagen,
+        local:Lufttemperatur,
+        local:Magentaanteil,
+        local:Mai,
+        local:Mast,
+        local:Monat,
+        local:Motorrad,
+        local:Niederschlag,
+        local:November,
+        local:Oktober,
+        local:Ortsteil,
+        local:Personenkraftwagen,
+        local:Personenverkehr,
+        local:Pfad,
+        local:Postleitzahl,
+        local:Pt100_Sensor,
+        local:Pyranometer,
+        local:Rechtswert,
+        local:Region,
+        local:Rotanteil,
+        local:Schwarzanteil,
+        local:September,
+        local:Stadt,
+        local:Standortbezeichnung,
+        local:Stra_e,
+        local:Stra_enklasse,
+        local:Stra_enschl_ssel,
+        local:Stunde,
+        local:Telefonnummer,
+        local:UTM_false_easting,
+        local:UTM_northing,
+        local:Uhrzeit,
+        local:Ungerade_Hausnummer,
+        local:Unterscheidungszeichen,
+        local:Verkehrslinie,
+        local:Verkehrsmittelklasse,
+        local:Wochentag,
+        local:Wochentag_nummeriert .
+
+local:betrieben_durch a owl:ObjectProperty ;
+    rdfs:label "betrieben durch" ;
+    rdfs:comment "Das Objekt wird vom nachfolgendem Objekt betrieben" ;
+    rdfs:domain local:CarSharing_Station,
+        local:Fahrradluftstation,
+        local:Fahrradverleih,
+        local:Haltestelle,
+        local:Ladestation,
+        local:Lichtsignalanlage,
+        local:Parkm_glichkeit,
+        local:Tankstelle ;
+    rdfs:range local:Betreiber,
+        local:Cambio .
+
+local:bezahlbar_mit a owl:ObjectProperty ;
+    rdfs:label "bezahlbar mit" ;
+    rdfs:comment "Gibt an, womit etwas bezahlbar ist." ;
+    rdfs:domain local:Elektrischer_Strom ;
+    rdfs:range local:Ladekarte .
+
+local:bezeichnung a owl:DatatypeProperty ;
+    rdfs:label "bezeichnung" ;
+    rdfs:comment "Eine Bezeichnung ist in der Semiotik ein Code aus Zeichen oder Symbolen, der auf einen Gegenstand oder Sachverhalt (bzw. den Begriff davon) verweist." ;
+    rdfs:domain local:Stra_e ;
+    rdfs:range xsd:string .
+
+local:bezieht_sich_auf a owl:ObjectProperty ;
+    rdfs:label "bezieht sich auf" ;
+    rdfs:comment "sich auf etwas berufen" ;
+    rdfs:domain local:Beschr_nkung,
+        local:Boolescher_Ausdruck,
+        local:DTVw_Belastung,
+        local:Fahrzeug,
+        local:Haltestelle,
+        local:Kategorie,
+        local:Luftqualit_tsmessung,
+        local:Messung,
+        local:Messwert,
+        local:NO2_Messung,
+        local:P_nktlichkeit,
+        local:Planquadrat,
+        local:Prozent,
+        local:Radfahrer,
+        local:Stellplatz,
+        local:Verkehrsbeeintr_chtigung,
+        local:Verkehrsmittelwahl,
+        local:Versto_,
+        local:Wetterstationsmessung,
+        local:Z_hlung,
+        local:Zusatzinformation ;
+    rdfs:range local:Amtliche_Karte,
+        local:Anzeige,
+        local:Bezugsmonat,
+        local:Dach,
+        local:Fahrstreifen,
+        local:Fahrtrichtung,
+        local:Flie_ender_Verkehr,
+        local:G_terverkehr,
+        local:Gesamtverkehr,
+        local:Herkunft,
+        local:Jahr,
+        local:Kategorie,
+        local:L_nge,
+        local:Messgr__e,
+        local:Personenverkehr,
+        local:Ruhender_Verkehr,
+        local:Schwerverkehr,
+        local:Tag,
+        local:Vorjahr,
+        local:Zeitabschnitt,
+        local:Zeitstempel,
+        local:Zustiegsplattform .
+
+local:bietet_Autogas_an a owl:ObjectProperty ;
+    rdfs:label "bietet Autogas an" ;
+    rdfs:comment "Gibt an, ob eine Tankstelle Autogas anbietet." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:bietet_Benzin_an a owl:ObjectProperty ;
+    rdfs:label "bietet Benzin an" ;
+    rdfs:comment "Gibt an, ob eine Tankstelle Benzin anbietet." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:bietet_Biodiesel_an a owl:ObjectProperty ;
+    rdfs:label "bietet Biodiesel an" ;
+    rdfs:comment "Gibt an, ob eine Tankstelle Biodiesel anbietet." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:bietet_Diesel_an a owl:ObjectProperty ;
+    rdfs:label "bietet Diesel an" ;
+    rdfs:comment "Gibt an, ob eine Tankstelle Diesel anbietet." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:bietet_Diesel_f_r_LKW_an a owl:ObjectProperty ;
+    rdfs:label "bietet Diesel für LKW an" ;
+    rdfs:comment "Gibt an, ob eine Tankstelle Diesel für LKW anbietet." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:bietet_Erdgas_an a owl:ObjectProperty ;
+    rdfs:label "bietet Erdgas an" ;
+    rdfs:comment "Gibt an, ob eine Tankstelle Erdgas anbietet." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:bietet_Ethanol_an a owl:ObjectProperty ;
+    rdfs:label "bietet Ethanol an" ;
+    rdfs:comment "Gibt an, ob eine Tankstelle Ethanol anbietet." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:bietet_Fahrradverleih_an a owl:ObjectProperty ;
+    rdfs:label "bietet Fahrradverleih an" ;
+    rdfs:comment "Gibt an ob etwas Fahrräder verleiht." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:bietet_Pflanzen_l_an a owl:ObjectProperty ;
+    rdfs:label "bietet Pflanzenöl an" ;
+    rdfs:comment "Gibt an, ob eine Tankstelle Pflanzenöl anbietet." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:bietet_Schlauch_O_Mat_an a owl:ObjectProperty ;
+    rdfs:label "bietet Schlauch-O-Mat an" ;
+    rdfs:comment "Gibt an ob etwas einen Schlauch-O-Mat anbietet." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:bietet_Self_Service_an a owl:ObjectProperty ;
+    rdfs:label "bietet Self-Service an" ;
+    rdfs:comment "Gibt an ob etwas Self-Service anbietet." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:bietet_Wartung_und_Reparatur_an a owl:ObjectProperty ;
+    rdfs:label "bietet Wartung und Reparatur an" ;
+    rdfs:comment "Gibt an ob etwas eine Reparatur anbietet." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:bietet_Wasserstoff_an a owl:ObjectProperty ;
+    rdfs:label "bietet Wasserstoff an" ;
+    rdfs:comment "Gibt an, ob eine Tankstelle Wasserstoff anbietet." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:bietet_an a owl:ObjectProperty ;
+    rdfs:label "bietet an" ;
+    rdfs:comment "etwas wird vom Objekt angeboten" ;
+    rdfs:domain local:CarSharing_Station,
+        local:Ladepunkt,
+        local:Park_and_Ride_Anlage,
+        local:Parkscheinautomat ;
+    rdfs:range local:Adresse,
+        local:Bezeichnung,
+        local:Elektrischer_Strom,
+        local:Fahrzeug,
+        local:Stellplatz,
+        local:Tarif .
+
+local:bietet_verkauf_von_Fahrr_dern_an a owl:ObjectProperty ;
+    rdfs:label "bietet verkauf von Fahrrädern an" ;
+    rdfs:comment "Gibt an ob etwas Fahrräder verkauft." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:bietet_verkauf_von_Zubeh_r_an a owl:ObjectProperty ;
+    rdfs:label "bietet verkauf von Zubehör an" ;
+    rdfs:comment "Gibt an ob etwas Zubehör verkauft." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:dargestellt_auf a owl:ObjectProperty ;
+    rdfs:label "dargestellt auf" ;
+    rdfs:comment "das Objekt wird auf etwas dargestellt" ;
+    rdfs:domain local:Anzeige,
+        local:Beschr_nkung,
+        local:Ladestation,
+        local:Radmonitor,
+        local:Zusatzinformation ;
+    rdfs:range local:Foto,
+        local:Verkehrsmitteilung,
+        local:Website .
+
+local:dargestellt_in a owl:ObjectProperty ;
+    rdfs:label "dargestellt in" ;
+    rdfs:comment "Gibt an, in welcher Art und Weise etwas dargestellt wird." ;
+    rdfs:domain local:Byte ;
+    rdfs:range local:Dezimalsystem .
+
+local:dauer a owl:ObjectProperty ;
+    rdfs:label "dauer" ;
+    rdfs:comment "Zeit zwischen einem Start und Endpunkt." ;
+    rdfs:domain local:Messung,
+        local:Route,
+        local:Zeitstempel,
+        local:Zone ;
+    rdfs:range local:Minute,
+        local:Zeitabschnitt .
+
+local:durchgef_hrt_in a owl:ObjectProperty ;
+    rdfs:label "durchgeführt in" ;
+    rdfs:comment "Gibt an wann etwas durchführt." ;
+    rdfs:domain local:Messung,
+        local:Z_hlung ;
+    rdfs:range local:Berlin,
+        local:Stra_e,
+        local:Zeitabschnitt .
+
+local:durchgef_hrt_von a owl:ObjectProperty ;
+    rdfs:label "durchgeführt von" ;
+    rdfs:comment "Gibt an wer oder was etwas durchführt." ;
+    rdfs:domain local:Messung,
+        local:NO2_Messung,
+        local:Reinigung,
+        local:Schulpause,
+        local:Wetterstationsmessung,
+        local:Z_hlung ;
+    rdfs:range local:Betriebshof,
+        local:Dauerz_hlstelle,
+        local:Geschwindigkeitsanzeigeanlage,
+        local:Messstation,
+        local:Radmonitor,
+        local:Smart_Citizen_Kit,
+        local:Wetterstation,
+        local:Zeitabschnitt,
+        local:Zollstelle .
+
+local:durchschnitt a owl:ObjectProperty ;
+    rdfs:label "durchschnitt" ;
+    rdfs:comment "Die Summe der betrachteten Zahlen durch ihre Anzahl geteilt." ;
+    rdfs:domain local:Bezugsmonat,
+        local:Jahr,
+        local:Messung,
+        local:Messwert,
+        local:Tag,
+        local:Wetterstationsmessung,
+        local:Zeitabschnitt ;
+    rdfs:range local:Aussteiger,
+        local:Bedeckungsgrad,
+        local:Bewerteter_Schalldruckpegel,
+        local:Einsteiger,
+        local:Geschwindigkeit,
+        local:Lufttemperatur,
+        local:Mensch,
+        local:Messwert,
+        local:Radfahrer,
+        local:Relative_Luftfeuchtigkeit,
+        local:Stickstoffdioxid_Konzentration,
+        local:Tagesh_chsttemperatur,
+        local:Tagestiefsttemperatur,
+        local:Windst_rke .
+
+local:eingerichtet_in a owl:ObjectProperty ;
+    rdfs:label "eingerichtet in" ;
+    rdfs:comment "zur öffentlichen Nutzung schaffen in einem Zeitraum" ;
+    rdfs:domain local:Behindertenparkplatz,
+        local:Fahrradstra_e ;
+    rdfs:range local:Jahr,
+        local:Zeitabschnitt .
+
+local:einsatzbereich a owl:ObjectProperty ;
+    rdfs:label "einsatzbereich" ;
+    rdfs:comment "Bereich, wo jemand, etwas zum Einsatz kommt" ;
+    rdfs:domain local:Zug ;
+    rdfs:range local:Schienenpersonennahverkehr .
+
+local:einseitiger_KFZ_Verkehr_zugelassen a owl:ObjectProperty ;
+    rdfs:label "einseitiger KFZ-Verkehr zugelassen" ;
+    rdfs:comment "Gibt an ob KFZ-Verkehr in eine Richtung zugelassen ist" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ende a owl:ObjectProperty ;
+    rdfs:label "ende" ;
+    rdfs:comment "zeitliches oder räumliches Ende oder Endpunkt eines Vorgangs oder einer Sache" ;
+    rdfs:domain local:Bauma_nahme,
+        local:Bezirk,
+        local:Expositionszeitraum,
+        local:Fahrradstra_e,
+        local:Fahrradweg,
+        local:Fahrt,
+        local:Fahrtrichtung,
+        local:Hausnummernbereich,
+        local:Reinigungsbereich,
+        local:Stra_e,
+        local:Strecke,
+        local:Zeitabschnitt,
+        local:Zone ;
+    rdfs:range local:Datum,
+        local:Geographisches_Polygon,
+        local:Haltestelle,
+        local:Hausnummer,
+        local:Jahr,
+        local:Knotenpunkt,
+        local:Standortbezeichnung,
+        local:Stra_e,
+        local:Unixzeit,
+        local:Unixzeit__Millisekunden_,
+        local:Zeitstempel .
+
+local:endpunkt a owl:DatatypeProperty,
+        owl:ObjectProperty ;
+    rdfs:label "endpunkt" ;
+    rdfs:comment "zeitliches oder räumliches Ende oder Endpunkt eines Vorgangs oder einer Sache" ;
+    rdfs:domain local:Zeitabschnitt ;
+    rdfs:range xsd:string .
+
+local:enth_lt a owl:ObjectProperty ;
+    rdfs:label "enthält" ;
+    rdfs:comment "etwas bekommen, empfangen" ;
+    rdfs:domain local:Wetterstationsmessung ;
+    rdfs:range local:Luftdruck,
+        local:Lufttemperatur,
+        local:Relative_Luftfeuchtigkeit,
+        local:Taupunkttemperatur .
+
+local:erfasst_am a owl:ObjectProperty ;
+    rdfs:label "erfasst am" ;
+    rdfs:comment "wann etwas erfasst wurde" ;
+    rdfs:domain local:Beschr_nkung,
+        local:Ladezustand,
+        local:Lichtsignalanlage,
+        local:Radfahrer,
+        local:Stra_e,
+        local:Stra_enbeleuchtung,
+        local:Taxistand,
+        local:Verkehrsbeeintr_chtigung,
+        local:Verkehrsmittelwahl,
+        local:Verkehrszeichen,
+        local:Versto_,
+        local:Z_hlung,
+        local:Zone ;
+    rdfs:range local:Datum,
+        local:Quartal,
+        local:Zeitstempel .
+
+local:erh_lt a owl:ObjectProperty ;
+    rdfs:label "erhält" ;
+    rdfs:comment "etwas bekommen, empfangen" ;
+    rdfs:domain local:Fahrradverleih ;
+    rdfs:range local:Fahrrad .
+
+local:erlaubt a owl:ObjectProperty ;
+    rdfs:label "erlaubt" ;
+    rdfs:comment "(jemanden) in die Lage setzen, (jemandem) ermöglichen (etwas Bestimmtes zu tun)" ;
+    rdfs:domain local:Blitzer,
+        local:Standortbezeichnung,
+        local:Stra_e ;
+    rdfs:range local:Geschwindigkeit,
+        local:Zusatzinformation .
+
+local:f_hrt_ab a owl:ObjectProperty ;
+    rdfs:label "fährt ab" ;
+    rdfs:comment "eine bestimmte Strecke entlangfahren" ;
+    rdfs:domain local:Bus,
+        local:Taxi,
+        local:Verkehrslinie ;
+    rdfs:range local:Haltestelle,
+        local:Route,
+        local:Strecke .
+
+local:findet_statt_in a owl:ObjectProperty ;
+    rdfs:label "findet statt in" ;
+    rdfs:comment "Wann etwas stattfindet." ;
+    rdfs:domain local:Fahrt,
+        local:Verkehrsbeeintr_chtigung ;
+    rdfs:range local:Zeitabschnitt .
+
+local:fully_qualified_domain_name a owl:DatatypeProperty ;
+    rdfs:label "fully qualified domain name" ;
+    rdfs:comment "Der vollständige Name einer Domain." ;
+    rdfs:domain local:Host ;
+    rdfs:range xsd:string .
+
+local:g_ltig a owl:ObjectProperty ;
+    rdfs:label "gültig" ;
+    rdfs:comment "mit etwas im gleichen Zusammenhang sein" ;
+    rdfs:domain local:Tarif ;
+    rdfs:range local:Abends,
+        local:Tags_ber .
+
+local:g_ltig_ab a owl:ObjectProperty ;
+    rdfs:label "gültig ab" ;
+    rdfs:comment "Geltung besitzend ab einem Zeitpunkt" ;
+    rdfs:domain local:Bezeichnung,
+        local:Reinigungsklasse ;
+    rdfs:range local:Datum,
+        local:Jahr .
+
+local:geh_rt_zu a owl:ObjectProperty ;
+    rdfs:label "gehört zu" ;
+    rdfs:comment "gehört zu etwas" ;
+    rdfs:domain local:Adresse,
+        local:Amtliche_Karte,
+        local:Bauma_nahme,
+        local:Busliniennetz,
+        local:CarSharing_Station,
+        local:Fahrkarte,
+        local:Fahrzeug,
+        local:Gemeinde,
+        local:Haltestelle,
+        local:Kfz_Kennzeichen,
+        local:Ladestation,
+        local:Lichtsignalanlage,
+        local:Nullpunkt,
+        local:Ortsteil,
+        local:Parkm_glichkeit,
+        local:Parkschein,
+        local:Parkscheinautomat,
+        local:Sektor,
+        local:Stadtviertel,
+        local:Stra_e,
+        local:Stra_enverzeichnis,
+        local:Tankstelle,
+        local:Unterscheidungszeichen,
+        local:Verkehrslinie,
+        local:Wetter ;
+    rdfs:range local:Betriebsbereich,
+        local:Bezirk,
+        local:D_sseldorf,
+        local:Deutschland,
+        local:Gebietsk_rperschaft,
+        local:Gemeinde,
+        local:Gemeindeverband,
+        local:K_ln,
+        local:Kategorie,
+        local:Knotenpunkt,
+        local:Kreis_Geldern,
+        local:Ortsteil,
+        local:Parkm_glichkeit,
+        local:Statistisches_Quartier,
+        local:Stra_enklasse,
+        local:Tarifzone,
+        local:Verbund,
+        local:Verkehrsunternehmen,
+        local:Verkehrsverbund_Berlin_Brandenburg,
+        local:Verwaltungseinheit,
+        local:Wahlbezirk .
+
+local:geliehen_an a owl:ObjectProperty ;
+    rdfs:label "geliehen an" ;
+    rdfs:comment "jemanden etwas ausleihen" ;
+    rdfs:domain local:Fahrrad ;
+    rdfs:range local:Mensch .
+
+local:gemessen_am a owl:ObjectProperty ;
+    rdfs:label "gemessen am" ;
+    rdfs:comment "Gibt den Zeitpunkt einer Messung an." ;
+    rdfs:domain local:Fahrzeug,
+        local:Kapazit_t,
+        local:Luftqualit_tsmessung,
+        local:Messung,
+        local:Wetterstationsmessung ;
+    rdfs:range local:Datum,
+        local:Zeitstempel .
+
+local:gemessen_in a owl:ObjectProperty ;
+    rdfs:label "gemessen in" ;
+    rdfs:comment "Die Einheit in der etwas gemessen wurde." ;
+    rdfs:domain local:Anschlussleistung,
+        local:Bedeckungsgrad,
+        local:Beleuchtungsst_rke,
+        local:Beschr_nkung,
+        local:Bestrahlungsst_rke,
+        local:Bewerteter_Schalldruckpegel,
+        local:Binnenverkehr,
+        local:Blauanteil,
+        local:Bodenfreiheit,
+        local:Bodentemperatur,
+        local:CO___quivalent,
+        local:Cyananteil,
+        local:Fahrrad,
+        local:Feinstaub,
+        local:Fl_cheninhalt,
+        local:Geb_hr,
+        local:Gef_hlte_Temperatur,
+        local:Gelbanteil,
+        local:Gesamtverkehr,
+        local:Geschwindigkeit,
+        local:Gewicht,
+        local:Gr_nanteil,
+        local:H_chstparkdauer,
+        local:H_he,
+        local:Kohlenstoffdioxid,
+        local:Kosteninformation,
+        local:L_nge,
+        local:Ladezustand,
+        local:Luftdruck,
+        local:Lufttemperatur,
+        local:Magentaanteil,
+        local:Messung,
+        local:Motorisierter_Individualverkehr__Fahrer_,
+        local:Motorisierter_Individualverkehr__Mitfahrer_,
+        local:Nachfrage,
+        local:Niederschlag,
+        local:P_nktlichkeit,
+        local:Quell_Zielverkehr,
+        local:Relative_Luftfeuchtigkeit,
+        local:Richtung,
+        local:Rotanteil,
+        local:Schwarzanteil,
+        local:Sonnenscheindauer,
+        local:Standzeit,
+        local:Stauwahrscheinlichkeit,
+        local:Steigung,
+        local:Stickstoffdioxid_Konzentration,
+        local:TVOC,
+        local:Tagesh_chsttemperatur,
+        local:Tagestiefsttemperatur,
+        local:Taupunkttemperatur,
+        local:Wetterstationsmessung,
+        local:Windspitze,
+        local:Windst_rke,
+        local:Zu_Fu_,
+        local:_ffentlicher_Personennahverkehr___PNV_ ;
+    rdfs:range local:Achtel,
+        local:Beaufortskala,
+        local:Byte,
+        local:Dezibel___Bewertungskurve_A,
+        local:Euro,
+        local:Gewichtung,
+        local:Grad_Celsius,
+        local:Gradma_,
+        local:Hektopascal,
+        local:Kilometer,
+        local:Kilometer_pro_Stunde,
+        local:Kilopascal,
+        local:Kilowatt,
+        local:Liter_pro_Quadratmeter,
+        local:Lux,
+        local:Meter,
+        local:Meter_pro_Sekunde,
+        local:Millimeter,
+        local:Parts_per_billion,
+        local:Parts_per_million,
+        local:Prozent,
+        local:Quadratmeter,
+        local:Sekunde,
+        local:Stunde,
+        local:Tonne,
+        local:Watt_pro_Quadratmeter,
+        local:Zeitabschnitt,
+        local:Zentimeter,
+        local:_g_m_ .
+
+local:gemessen_von a owl:ObjectProperty ;
+    rdfs:label "gemessen von" ;
+    rdfs:comment "Gibt an, von wem oder was etwas gemessen wurde." ;
+    rdfs:domain local:Bestrahlungsst_rke,
+        local:Lufttemperatur ;
+    rdfs:range local:Pt100_Sensor,
+        local:Pyranometer .
+
+local:gilt_auch_f_r_Verkehr_aus_Gegenrichtung a owl:ObjectProperty ;
+    rdfs:label "gilt auch für Verkehr aus Gegenrichtung" ;
+    rdfs:comment "Gibt an, ob ein Vekehrszeichen auch für den aus der Gegenrichtung kommenden Verkehr gilt." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:h_ufigkeit a owl:DatatypeProperty,
+        owl:ObjectProperty ;
+    rdfs:label "häufigkeit" ;
+    rdfs:comment "Anzahl von Ereignissen innerhalb eines Zeitraums" ;
+    rdfs:domain local:Zeitabschnitt ;
+    rdfs:range xsd:string .
+
+local:hat a owl:ObjectProperty ;
+    rdfs:label "hat" ;
+    rdfs:comment "drückt das Vorhandensein von etwas aus" ;
+    rdfs:domain local:Adresse,
+        local:Amt,
+        local:Baustelle,
+        local:Bedeckungsgrad,
+        local:Behindertenparkplatz,
+        local:Beschr_nkung,
+        local:Betreiber,
+        local:Bezeichnung,
+        local:Bezugsmonat,
+        local:Bike_and_Ride_Anlage,
+        local:Blitzer,
+        local:Bus,
+        local:CarSharing_Station,
+        local:Dauerz_hlstelle,
+        local:Elektrischer_Strom,
+        local:Ellipsoidische_H_he,
+        local:Fahrplan,
+        local:Fahrradabstellanlage,
+        local:Fahrradluftstation,
+        local:Fahrradstation,
+        local:Fahrradstellplatz,
+        local:Fahrradstra_e,
+        local:Fahrradstrecke,
+        local:Fahrradverleih,
+        local:Fahrradweg,
+        local:Fahrt,
+        local:Fahrtrichtung,
+        local:Fahrtrichtungspfeil,
+        local:Fahrzeug,
+        local:Gebiet,
+        local:Geographisches_Polygon,
+        local:Geschwindigkeitsanzeigeanlage,
+        local:Haltestelle,
+        local:Hausnummer,
+        local:Historisches_Bauwerk,
+        local:Jahr,
+        local:Kapazit_t,
+        local:Knotenpunkt,
+        local:Kreis_Kleve,
+        local:Laden,
+        local:Ladepunkt,
+        local:Ladestation,
+        local:Lastkraftwagen,
+        local:Lichtsignalanlage,
+        local:Lufttemperatur,
+        local:Mensch,
+        local:Messstation,
+        local:Messung,
+        local:Niederschlag,
+        local:Nullpunkt,
+        local:Ortsteil,
+        local:Park_and_Ride_Anlage,
+        local:Parkhaus,
+        local:Parkleitsystem_Schild,
+        local:Parkm_glichkeit,
+        local:Parkscheinautomat,
+        local:Potentielle_Gefahrenstelle,
+        local:RAL_Farbe,
+        local:Radmonitor,
+        local:Reinigung,
+        local:Schule,
+        local:Schwebebahnstation,
+        local:Schwerverkehr,
+        local:Sektor,
+        local:Smart_Citizen_Kit,
+        local:Sonnenscheindauer,
+        local:Steile_Radstrecke,
+        local:Stellplatz,
+        local:Stra_e,
+        local:Stra_enbeleuchtung,
+        local:Stra_enverkehrsunfall,
+        local:Strecke,
+        local:Symbol,
+        local:Tagesh_chsttemperatur,
+        local:Tagestiefsttemperatur,
+        local:Tankstelle,
+        local:Taxistand,
+        local:Thalasso_Kurweg,
+        local:UTM_false_easting,
+        local:UTM_northing,
+        local:Umweltzone,
+        local:Verkehrsbeeintr_chtigung,
+        local:Verkehrslinie,
+        local:Verkehrsliniengruppe,
+        local:Verkehrszeichen,
+        local:Verkehrszeichen_Nummer,
+        local:Verkehrszeichenstandort,
+        local:Verwaltungseinheit,
+        local:Wetterstation,
+        local:Wetterstationsmessung,
+        local:Windspitze,
+        local:Windst_rke,
+        local:Z_hlung,
+        local:Zeitstempel,
+        local:Zone,
+        local:Zustand,
+        local:Zustiegsplattform ;
+    rdfs:range local:Achsentyp,
+        local:Adresse,
+        local:Amtlicher_Stra_enname,
+        local:Anbindung,
+        local:Anh_nger,
+        local:Anschlussleistung,
+        local:Ausf_hrung,
+        local:Bauart,
+        local:Bauma_nahme,
+        local:Befestigungsort,
+        local:Begr_ndung,
+        local:Beleuchtungsst_rke,
+        local:Bemerkung,
+        local:Beschreibung,
+        local:Bestrahlungsst_rke,
+        local:Betriebsart,
+        local:Betriebsart_fuehrung,
+        local:Bewerteter_Schalldruckpegel,
+        local:Bezeichnung,
+        local:Bodenfreiheit,
+        local:CO___quivalent,
+        local:DTVw_Belastung,
+        local:E_Mail_Adresse,
+        local:Eigenschaften,
+        local:Eigent_mer,
+        local:Eintrittswahrscheinlichkeit,
+        local:Expositionszeitraum,
+        local:Fahrplan,
+        local:Fahrplansuche,
+        local:Fahrtrichtung,
+        local:Fahrtrichtungspfeiltyp,
+        local:Fahrzeugbestand,
+        local:Farbe,
+        local:Faxnummer,
+        local:Feinstaub,
+        local:Fl_cheninhalt,
+        local:Fundament,
+        local:Funktion,
+        local:Geschwindigkeitsbegrenzung,
+        local:Getrennt_verlaufende_Fahrbahn,
+        local:Gewicht,
+        local:H_chstparkdauer,
+        local:H_he,
+        local:Hausnummernkennziffer,
+        local:Kapazit_t,
+        local:Kategorie,
+        local:Kfz_Kennzeichen,
+        local:Kohlenstoffdioxid,
+        local:Kontaktdaten,
+        local:Kosteninformation,
+        local:L_nge,
+        local:Ladezustand,
+        local:Lage,
+        local:Lichtverh_ltnis,
+        local:Luftdruck,
+        local:Lufttemperatur,
+        local:Material,
+        local:Maximale_Parkdauer,
+        local:Messfrequenz,
+        local:Nachfrage,
+        local:Nullpunktsbuchstabe,
+        local:Nummer,
+        local:P_nktlichkeit,
+        local:Postleitzahl,
+        local:Prognose,
+        local:Public_Key,
+        local:Qualitaetsniveau,
+        local:Rechtsgrundlage,
+        local:Reinigung,
+        local:Reinigungsbereich,
+        local:Reinigungsklasse,
+        local:Relative_Luftfeuchtigkeit,
+        local:Richtung,
+        local:Roter_Punkt_Zone,
+        local:Schaden,
+        local:Schulpause,
+        local:Schultr_ger,
+        local:Standardabweichung,
+        local:Standortbezeichnung,
+        local:Standzeit,
+        local:Statusinformation,
+        local:Stauwahrscheinlichkeit,
+        local:Steckverbinder,
+        local:Steigung,
+        local:Steigungsstufe,
+        local:Stellplatz,
+        local:Stickstoffdioxid_Konzentration,
+        local:Stra_enseite,
+        local:Stra_enzustand,
+        local:Symbol,
+        local:TVOC,
+        local:Telefonnummer__Festnetz_,
+        local:Telefonnummer__Mobil_,
+        local:Unfallart,
+        local:Unfallkategorie,
+        local:Unfalltyp,
+        local:Ursache,
+        local:Verkehrslage,
+        local:Verkehrsmitteilung,
+        local:Verkehrsmittelwahl,
+        local:Verwendungszweck,
+        local:Wagenumlaufnummer,
+        local:Website,
+        local:Wetter,
+        local:Z_hlung,
+        local:Zeitstempel,
+        local:Zugangsinformation,
+        local:Zusatzinformation,
+        local:Zustand,
+        local:_ffnungszeit .
+
+local:hat_Anzeige a owl:ObjectProperty ;
+    rdfs:label "hat Anzeige" ;
+    rdfs:comment "Gibt an ob es zu einer Verkehrsbeeinträchtigung eine Anzeige gibt." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:hat_Blindenleitsystem a owl:ObjectProperty ;
+    rdfs:label "hat Blindenleitsystem" ;
+    rdfs:comment "Gibt an ob das Subjekt über ein Blindenleitsystem verfügt." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:hat_E_Bikes a owl:ObjectProperty ;
+    rdfs:label "hat E-Bikes" ;
+    rdfs:comment "Gibt an, ob etwas im besitz von E-Bikes ist." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:hat_Fahrgastunterstand a owl:ObjectProperty ;
+    rdfs:label "hat Fahrgastunterstand" ;
+    rdfs:comment "Gibt an, ob eine Haltestelle über eine bauliche Anlage verfügt, die den wartenden Fahrgästen Schutz vor widrigen Witterungseinflüssen (Regen, Schnee etc.) bietet." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:hat_Fahrkartenautomat a owl:ObjectProperty ;
+    rdfs:label "hat Fahrkartenautomat" ;
+    rdfs:comment "Vorhandensein eines Fahrkahrtenautomats" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:hat_Hoch_Tief_Einstellung a owl:ObjectProperty ;
+    rdfs:label "hat Hoch-Tief-Einstellung" ;
+    rdfs:comment "Gibt an ob etwas eine Hoch-Tief-Einstellung hat" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:hat_Ladem_glichkeit a owl:ObjectProperty ;
+    rdfs:label "hat Lademöglichkeit" ;
+    rdfs:comment "Gibt an ob es die Möglichkeit zum Aufladen von etwas gibt." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:hat_Lieferdienst a owl:ObjectProperty ;
+    rdfs:label "hat Lieferdienst" ;
+    rdfs:comment "Gibt an, ob etwas einen Lieferdienst anbietet." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:holt_ab a owl:ObjectProperty ;
+    rdfs:label "holt ab" ;
+    rdfs:comment "von einem Ort nehmen, um es (mit sich) an einen anderen zu bringen" ;
+    rdfs:domain local:M_llabfuhr ;
+    rdfs:range local:Abfall .
+
+local:identifiziert_durch a owl:ObjectProperty ;
+    rdfs:label "identifiziert durch" ;
+    rdfs:comment "identifizierung von etwas" ;
+    rdfs:domain local:Adresse,
+        local:Baustelle,
+        local:Befestigungsort,
+        local:Behindertenparkplatz,
+        local:Beschr_nkung,
+        local:Bezeichnung,
+        local:Bezirk,
+        local:Blitzer,
+        local:CarSharing_Station,
+        local:Dauerz_hlstelle,
+        local:Fahrplan,
+        local:Fahrradabstellanlage,
+        local:Fahrradluftstation,
+        local:Fahrradstellplatz,
+        local:Fahrradstra_e,
+        local:Fahrradstrecke,
+        local:Fahrradverleih,
+        local:Fahrradweg,
+        local:Fahrt,
+        local:Fahrtrichtung,
+        local:Farbe,
+        local:Gebiet,
+        local:Gemeinde,
+        local:Gemeindeverband,
+        local:Geographisches_Polygon,
+        local:Haltestelle,
+        local:Kategorie,
+        local:Knotenpunkt,
+        local:Ladestation,
+        local:Lebensweltlich_orientierter_Raum__LOR_,
+        local:Lichtsignalanlage,
+        local:Mast,
+        local:Messstation,
+        local:Messung,
+        local:Nullpunkt,
+        local:Ortsteil,
+        local:Park_and_Ride_Anlage,
+        local:Parkhaus,
+        local:Parkleitsystem_Schild,
+        local:Parkm_glichkeit,
+        local:Parkscheinautomat,
+        local:RAL_Farbe,
+        local:Radmonitor,
+        local:Region,
+        local:Route,
+        local:Sektor,
+        local:Sozialraum,
+        local:Stadt,
+        local:Stadtbezirk,
+        local:Stadtviertel,
+        local:Statistisches_Quartier,
+        local:Statusinformation,
+        local:Stellplatz,
+        local:Stra_e,
+        local:Stra_enbahnstrecke,
+        local:Stra_enbeleuchtung,
+        local:Stra_enverkehrsunfall,
+        local:Strecke,
+        local:Symbol,
+        local:Tankstelle,
+        local:Taxi,
+        local:Taxistand,
+        local:Thalasso_Kurweg,
+        local:Verkehrsbeeintr_chtigung,
+        local:Verkehrslinie,
+        local:Verkehrsliniengruppe,
+        local:Verkehrszeichen,
+        local:Verkehrszeichenstandort,
+        local:Verwaltungseinheit,
+        local:Wetterstation,
+        local:Wohnplatz,
+        local:Zone,
+        local:Zustiegsplattform ;
+    rdfs:range local:Amtlicher_Gemeindeschl_ssel__AGS_,
+        local:Amtlicher_Regionalschl_ssel__ARS_,
+        local:CMYK_Farbmodell,
+        local:DHID,
+        local:DLM250_Identifikator,
+        local:Haltestellennummer,
+        local:Hexadezimale_Farbdefinition,
+        local:Identifikator,
+        local:Interne_Bahnhofsnummer__IBNR_,
+        local:Knotenpunkt_Nummer,
+        local:LOR_Schl_ssel,
+        local:L_nge,
+        local:Lichtsignalanlagen_Nummer,
+        local:Nationaler_Namensidentifikator,
+        local:Nummer,
+        local:Parkscheinautomaten_Nummer,
+        local:RAL_Farbe,
+        local:RGB_Farbmodell,
+        local:Stadtbezirk_Nummer,
+        local:Standortbezeichnung,
+        local:Stationsidentifikationsnummer,
+        local:Stellplatz_Nummer,
+        local:Stra_enbeleuchtungs_Nummer,
+        local:Stra_enschl_ssel,
+        local:Streckennummer,
+        local:Universally_Unique_Identifier__UUID_,
+        local:Verkehrszeichen_Nummer .
+
+local:in a owl:ObjectProperty ;
+    rdfs:label "in" ;
+    rdfs:comment "örtliche oder zeitliche Angabe" ;
+    rdfs:domain local:Ortsteil,
+        local:Reinigungsklasse,
+        local:Verkehrsbeeintr_chtigung ;
+    rdfs:range local:Hausnummernbereich,
+        local:Reinigungsbereich,
+        local:Zeitabschnitt .
+
+local:inbetriebnahme a owl:ObjectProperty ;
+    rdfs:label "inbetriebnahme" ;
+    rdfs:comment "Die erstmalige Nutzung einer Anlage, Maschine" ;
+    rdfs:domain local:Dauerz_hlstelle,
+        local:Ladestation,
+        local:Messstation ;
+    rdfs:range local:Datum .
+
+local:innen a owl:ObjectProperty ;
+    rdfs:label "innen" ;
+    rdfs:comment "an der, auf der Innenseite; im Inneren" ;
+    rdfs:domain local:Geographisches_Multipolygon ;
+    rdfs:range local:Geographisches_Polygon .
+
+local:ist_Autobahnknoten a owl:ObjectProperty ;
+    rdfs:label "ist Autobahnknoten" ;
+    rdfs:comment "Gibt an ob ein Netzknoten ein Autobahnknoten ist." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist_BAB_Knoten a owl:ObjectProperty ;
+    rdfs:label "ist BAB-Knoten" ;
+    rdfs:comment "Gibt an ob ein Knotenpunkt ein BAB-Knoten ist." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist_Bike_and_ride_Anlage a owl:ObjectProperty ;
+    rdfs:label "ist Bike and ride Anlage" ;
+    rdfs:comment "Gibt an, ob das Objekt eine Bike and ride Anlage ist." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist_Fahrrad_beteiligt a owl:ObjectProperty ;
+    rdfs:label "ist Fahrrad beteiligt" ;
+    rdfs:comment "Unfall mit Rad: 1, wenn an dem Unfall mindestens ein Fahrrad beteiligt war" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist_Fu_g_nger_beteiligt a owl:ObjectProperty ;
+    rdfs:label "ist Fußgänger beteiligt" ;
+    rdfs:comment "Unfall mit Fußgänger: 1, wenn an dem Unfall mindestens ein Fußgänger beteiligt war" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist_G_terkraftfahrzeug_beteiligt a owl:ObjectProperty ;
+    rdfs:label "ist Güterkraftfahrzeug beteiligt" ;
+    rdfs:comment "Unfall mit Güterkraftfahrzeug: 1, wenn an dem Unfall mindestens ein Lastkraftwagen mit Normalaufbau und einem Gesamtgewicht über 3,5 t, ein Lastkraftwagen mit Tankauflage bzw. Spezialaufbau, eine Sattelzugmaschine oder eine andere Zugmaschine beteiligt war" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist_Geb_hrenpflichtig a owl:ObjectProperty ;
+    rdfs:label "ist Gebührenpflichtig" ;
+    rdfs:comment "verbunden mit der Zahlung von Abgaben" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist_Kraftrad_beteiligt a owl:ObjectProperty ;
+    rdfs:label "ist Kraftrad beteiligt" ;
+    rdfs:comment "Unfall mit Kraftrad: 1, wenn an dem Unfall mindestens ein Kraftrad, wie z.B. Mofa, Motorrad/-roller beteiligt war" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist_Personenkraftwagen_beteiligt a owl:ObjectProperty ;
+    rdfs:label "ist Personenkraftwagen beteiligt" ;
+    rdfs:comment "Unfall mit PKW: 1, wenn an dem Unfall mindestens ein Personenkraftwagen beteiligt war" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist_Seitenarm a owl:ObjectProperty ;
+    rdfs:label "ist Seitenarm" ;
+    rdfs:comment "liegt vor, wenn eine Straße von einer durchgehenden Straße abzweigt und die gleiche Straßenbezeichnung hat" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist_Teil_von a owl:ObjectProperty ;
+    rdfs:label "ist Teil von" ;
+    rdfs:comment "Subjekt ist Teil des Objekts (Teil-Ganzes-Relation)" ;
+    rdfs:domain local:Adresse,
+        local:Bus,
+        local:Fahrkarte,
+        local:Haltestelle,
+        local:K_ln_Chorweiler,
+        local:K_ln_Ehrenfeld,
+        local:K_ln_Innenstadt,
+        local:K_ln_Kalk,
+        local:K_ln_Lindenthal,
+        local:K_ln_M_lheim,
+        local:K_ln_Nippes,
+        local:K_ln_Porz,
+        local:K_ln_Rodenkirchen,
+        local:Stra_e,
+        local:Stra_enbahnstrecke,
+        local:Strecke,
+        local:Wetterstationsmessung,
+        local:Zustiegsplattform ;
+    rdfs:range local:Busliniennetz,
+        local:Fahrradweg,
+        local:Fahrt,
+        local:Haltestelle,
+        local:K_ln,
+        local:Messung,
+        local:Schienennetz,
+        local:Schleswig_Holstein_Tarif,
+        local:Stra_e,
+        local:Stra_ennetz,
+        local:Stra_enreinigungsverzeichnis,
+        local:Stra_enverzeichnis,
+        local:Strecke,
+        local:Verkehrslinie .
+
+local:ist_Wechselverkehrszeichen a owl:ObjectProperty ;
+    rdfs:label "ist Wechselverkehrszeichen" ;
+    rdfs:comment "Gibt an, ob ein Verkehrszeichen vom Charakter her ein Wechselverkehrszeichen ist" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist__berdacht a owl:ObjectProperty ;
+    rdfs:label "ist überdacht" ;
+    rdfs:comment "Gibt an ob etwas überdacht ist" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist__ffentlich a owl:ObjectProperty ;
+    rdfs:label "ist öffentlich" ;
+    rdfs:comment "für die Allgemeinheit zugänglich, benutzbar" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist_anderes_Verkehrsmittel_beteiligt a owl:ObjectProperty ;
+    rdfs:label "ist anderes Verkehrsmittel beteiligt" ;
+    rdfs:comment "Unfall mit Sonstigen: 1, wenn an dem Unfall mindestens ein oben nicht genanntes Verkehrsmittel (z.B. Bus oder Bahn) beteiligt war" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist_barrierefrei a owl:ObjectProperty ;
+    rdfs:label "ist barrierefrei" ;
+    rdfs:comment "Kann von allen Menschen ohne fremde Hilfe und ohne jegliche Einschränkung genutzt werden" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist_belegt a owl:ObjectProperty ;
+    rdfs:label "ist belegt" ;
+    rdfs:comment "Gibt an ob etwas belegt ist." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist_benutzbar a owl:ObjectProperty ;
+    rdfs:label "ist benutzbar" ;
+    rdfs:comment "Gibt an ob etwas benutzbar ist" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:ist_ein_e_ a owl:ObjectProperty ;
+    rdfs:label "ist ein(e)" ;
+    rdfs:comment "Art einer Typenbeschränkung" ;
+    rdfs:domain local:Aussteiger,
+        local:CMYK_Farbmodell,
+        local:Datum,
+        local:Einsteiger,
+        local:Gebiet,
+        local:RAL_Farbe,
+        local:RGB_Farbmodell,
+        local:Schwebebahnstation,
+        local:Smart_Citizen_Kit ;
+    rdfs:range local:Farbmodell,
+        local:Haltestelle,
+        local:Lebensweltlich_orientierter_Raum__LOR_,
+        local:Mensch,
+        local:Messstation,
+        local:Wochentag .
+
+local:ist_ge_ffnet_am a owl:ObjectProperty ;
+    rdfs:label "ist geöffnet am" ;
+    rdfs:comment "Zeitraum, in dem etwas geöffnet ist" ;
+    rdfs:domain local:Ladestation ;
+    rdfs:range local:Zeitabschnitt .
+
+local:ist_vom_Typ a owl:ObjectProperty ;
+    rdfs:label "ist vom Typ" ;
+    rdfs:comment "Deklarierung des Types" ;
+    rdfs:domain local:Abfahrtsplan,
+        local:Abfahrtstafel,
+        local:Abfall,
+        local:Blitzer,
+        local:Dauerz_hlstelle,
+        local:Fahrplansuche,
+        local:Fahrradabstellanlage,
+        local:Fahrradstation,
+        local:Foto,
+        local:Haltestelle,
+        local:Kategorie,
+        local:Knotenpunkt,
+        local:Nullpunkt,
+        local:Parkm_glichkeit,
+        local:Reinigung,
+        local:Schule,
+        local:Sektor,
+        local:Stra_e,
+        local:Stra_enseite,
+        local:Tag,
+        local:Tankstelle,
+        local:Verkehrsbeeintr_chtigung,
+        local:Verkehrslinie,
+        local:Verkehrsliniengruppe,
+        local:Verkehrsmitteilung,
+        local:Verkehrszeichen,
+        local:Versto_,
+        local:Website ;
+    rdfs:range local:Art,
+        local:Ausf_hrung,
+        local:Bauart,
+        local:Betriebsart,
+        local:Bus,
+        local:Kategorie,
+        local:Schildtyp,
+        local:Schulform,
+        local:Stra_enart,
+        local:Stra_enbahn,
+        local:Tagestyp,
+        local:Tatbestandsnummer,
+        local:Uniform_Resource_Locator__URL_,
+        local:Verkehrsmittel,
+        local:Wochendtag,
+        local:WochentagMo_Fr,
+        local:Zug .
+
+local:kalenderjahr a owl:DatatypeProperty,
+        owl:ObjectProperty ;
+    rdfs:label "kalenderjahr" ;
+    rdfs:comment "ein Jahr im gregorianischen Kalender, der Zeitraum vom 1. Januar bis zum 31. Dezember" ;
+    rdfs:domain local:DTVw_Belastung,
+        local:Fahrzeug,
+        local:Zeitabschnitt ;
+    rdfs:range xsd:string .
+
+local:kategorie a owl:DatatypeProperty ;
+    rdfs:label "kategorie" ;
+    rdfs:comment "Einheit zum Einordnen und Auffinden von Personen, Sachen, Sachverhalten, Begriffen und anderem" ;
+    rdfs:domain local:Feinstaub ;
+    rdfs:range xsd:string .
+
+local:kein_KFZ_Verkehr_zugelassen a owl:ObjectProperty ;
+    rdfs:label "kein KFZ-Verkehr zugelassen" ;
+    rdfs:comment "Gibt an ob kein KFZ-Verkehr zugelassen ist" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:koordinatenformat a owl:DatatypeProperty ;
+    rdfs:label "koordinatenformat" ;
+    rdfs:comment "Format für Geo-Koordinaten nach ISO-6709" ;
+    rdfs:domain local:Geographische_Breite,
+        local:Geographische_L_nge ;
+    rdfs:range xsd:string .
+
+local:koordinatenreferenzsystem a owl:DatatypeProperty,
+        owl:ObjectProperty ;
+    rdfs:label "koordinatenreferenzsystem" ;
+    rdfs:comment "Referenzsystem welches bei der Erstellung einer Karte verwendet wird." ;
+    rdfs:domain local:Geographischer_Punkt ;
+    rdfs:range xsd:string .
+
+local:kostet a owl:ObjectProperty ;
+    rdfs:label "kostet" ;
+    rdfs:comment "zu zahlender Geldbetrag" ;
+    rdfs:domain local:Parkschein,
+        local:Tarif,
+        local:Versto_ ;
+    rdfs:range local:Geb_hr .
+
+local:liegt_an a owl:ObjectProperty ;
+    rdfs:label "liegt an" ;
+    rdfs:comment "ein Bereich an dem etwas liegt" ;
+    rdfs:domain local:Fahrradstation,
+        local:Fahrtrichtung ;
+    rdfs:range local:Haltestelle,
+        local:Stra_e .
+
+local:liegt_in a owl:ObjectProperty ;
+    rdfs:label "liegt in" ;
+    rdfs:comment "ein Bereich in dem etwas liegt" ;
+    rdfs:domain local:Adresse,
+        local:Behindertenparkplatz,
+        local:Beschr_nkung,
+        local:Bezirk,
+        local:Blitzer,
+        local:Fahrradabstellanlage,
+        local:Fahrradstellplatz,
+        local:Fahrradstra_e,
+        local:Gebiet,
+        local:Geographische_Linie,
+        local:Geographischer_Punkt,
+        local:Geographisches_Polygon,
+        local:Haltestelle,
+        local:Ortsteil,
+        local:Parkscheinautomat,
+        local:Standortbezeichnung,
+        local:Stra_e,
+        local:Wohnplatz ;
+    rdfs:range local:Bezeichnung,
+        local:Bezirk,
+        local:Bundesland,
+        local:Gemeinde,
+        local:Ortsteil,
+        local:Planquadrat,
+        local:Sozialraum,
+        local:Stadtbezirk,
+        local:Stadtviertel,
+        local:Wahlbezirk,
+        local:Wohnplatz .
+
+local:liegt_in_Exklave_eines_Statistischen_Quartiers a owl:ObjectProperty ;
+    rdfs:label "liegt in Exklave eines Statistischen Quartiers" ;
+    rdfs:comment "Gibt an, ob Adresse in einer Exklave eines Statistischen Quartiers liegt" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:maximum a owl:ObjectProperty ;
+    rdfs:label "maximum" ;
+    rdfs:comment "das größte Element einer geordneten Menge" ;
+    rdfs:domain local:Messung,
+        local:Messwert,
+        local:Wetterstationsmessung,
+        local:Zeitabschnitt ;
+    rdfs:range local:Geschwindigkeit,
+        local:Lufttemperatur,
+        local:Messwert,
+        local:Niederschlag,
+        local:Radfahrer,
+        local:Relative_Luftfeuchtigkeit,
+        local:Windspitze .
+
+local:messh_he a owl:DatatypeProperty ;
+    rdfs:label "messhöhe" ;
+    rdfs:comment "Höhe in der etwas gemessen wurde" ;
+    rdfs:domain local:Lufttemperatur,
+        local:Relative_Luftfeuchtigkeit,
+        local:Taupunkttemperatur ;
+    rdfs:range xsd:string .
+
+local:minimum a owl:ObjectProperty ;
+    rdfs:label "minimum" ;
+    rdfs:comment "kleinster Wert aus einer geordneten Menge" ;
+    rdfs:domain local:Messwert,
+        local:Wetterstationsmessung ;
+    rdfs:range local:Bodentemperatur,
+        local:Lufttemperatur,
+        local:Messwert,
+        local:Relative_Luftfeuchtigkeit .
+
+local:misst a owl:ObjectProperty ;
+    rdfs:label "misst" ;
+    rdfs:comment "eine Größe mit Hilfe eines Maßes bestimmen" ;
+    rdfs:domain local:Messstation ;
+    rdfs:range local:Stickstoffdioxid_Konzentration .
+
+local:muss_benutzt_werden_in a owl:ObjectProperty ;
+    rdfs:label "muss benutzt werden in" ;
+    rdfs:comment "wann oder wo etwas benutzt werden muss" ;
+    rdfs:domain local:Parkscheinautomat ;
+    rdfs:range local:Zone .
+
+local:nach a owl:ObjectProperty ;
+    rdfs:label "nach" ;
+    rdfs:comment "in eine Richtung" ;
+    rdfs:domain local:Fahrzeug,
+        local:Strecke ;
+    rdfs:range local:Deutschland,
+        local:Knotenpunkt,
+        local:Schweiz .
+
+local:nach_Einrichtung_ist_Radverkehr_vorherrschend a owl:ObjectProperty ;
+    rdfs:label "nach Einrichtung ist Radverkehr vorherrschend" ;
+    rdfs:comment "Gibt an ob nach der Einrichtung der Fahrradstraße, der Radverkehr stärker ist als der KFZ-Verkehr." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:nur_aussteigen_erlaubt a owl:ObjectProperty ;
+    rdfs:label "nur aussteigen erlaubt" ;
+    rdfs:comment "Nur das Aussteigen aus einem Verkehrsobjekt ist erlaubt" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:nur_durch_Ersatzverkehr_angefahren a owl:ObjectProperty ;
+    rdfs:label "nur durch Ersatzverkehr angefahren" ;
+    rdfs:comment "Das Objekt wird nur von Ersatzverkehr angefahren" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:nur_einsteigen_erlaubt a owl:ObjectProperty ;
+    rdfs:label "nur einsteigen erlaubt" ;
+    rdfs:comment "Nur das Einsteigen in ein Verkehrsobjekt ist erlaubt" ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:pr_zisiert_durch a owl:ObjectProperty ;
+    rdfs:label "präzisiert durch" ;
+    rdfs:comment "genau angeben, genauer bestimmen" ;
+    rdfs:domain local:Standortbezeichnung ;
+    rdfs:range local:Bemerkung .
+
+local:pro a owl:ObjectProperty ;
+    rdfs:label "pro" ;
+    rdfs:comment "je, jeweils für" ;
+    rdfs:domain local:Reinigung ;
+    rdfs:range local:Woche .
+
+local:repr_sentiert_dasselbe_wie a owl:ObjectProperty ;
+    rdfs:label "repräsentiert dasselbe wie" ;
+    rdfs:comment "Unterschiedliche Objekte stellen das gleiche Konzept auf unterschiedliche Art und Weise dar" ;
+    rdfs:domain local:Geographischer_Punkt ;
+    rdfs:range local:Geographischer_Punkt .
+
+local:sprache a owl:ObjectProperty ;
+    rdfs:label "sprache" ;
+    rdfs:comment "Kommunikation unter Verwendung von Symbolen (z. B. Wörtern), die mit Grammatik strukturiert sind" ;
+    rdfs:domain local:Zusatzinformation ;
+    rdfs:range local:Deutsch,
+        local:Englisch .
+
+local:stadtausw_rts a owl:ObjectProperty ;
+    rdfs:label "stadtauswärts" ;
+    rdfs:comment "von innerhalb aus einer Stadt hinaus" ;
+    rdfs:domain local:Radfahrer ;
+    rdfs:range local:Radfahrer .
+
+local:stadteinw_rts a owl:ObjectProperty ;
+    rdfs:label "stadteinwärts" ;
+    rdfs:comment "von außerhalb in eine Stadt hinein" ;
+    rdfs:domain local:Radfahrer ;
+    rdfs:range local:Radfahrer .
+
+local:startpunkt a owl:DatatypeProperty,
+        owl:ObjectProperty ;
+    rdfs:label "startpunkt" ;
+    rdfs:comment "zeitlicher oder räumlicher Beginn oder Ausgangspunkt eines Vorgangs oder einer Sache" ;
+    rdfs:domain local:Zeitabschnitt ;
+    rdfs:range xsd:string .
+
+local:summe a owl:ObjectProperty ;
+    rdfs:label "summe" ;
+    rdfs:comment "Ergebnis einer Addition mehrerer Zahlen" ;
+    rdfs:domain local:Wetterstationsmessung ;
+    rdfs:range local:Niederschlag,
+        local:Sonnenscheindauer .
+
+local:termin a owl:ObjectProperty ;
+    rdfs:label "termin" ;
+    rdfs:comment "Zeitpunkt, zu dem etwas geschah, geschieht oder geschehen soll" ;
+    rdfs:domain local:M_llabfuhr ;
+    rdfs:range local:Datum .
+
+local:ver_nderung a owl:ObjectProperty ;
+    rdfs:label "veränderung" ;
+    rdfs:comment "der Wechsel von einem (alten) Zustand in einen anderen (neuen)" ;
+    rdfs:domain local:Radfahrer ;
+    rdfs:range local:Prozent .
+
+local:verkauft a owl:ObjectProperty ;
+    rdfs:label "verkauft" ;
+    rdfs:comment "einen Gegenstand, eine Ware gegen Geld abgeben" ;
+    rdfs:domain local:Laden,
+        local:Parkscheinautomat ;
+    rdfs:range local:Fahrkarte,
+        local:Parkschein .
+
+local:verkn_pft_mit a owl:ObjectProperty ;
+    rdfs:label "verknüpft mit" ;
+    rdfs:comment "mit etwas im gleichen Zusammenhang sein" ;
+    rdfs:domain local:Verkehrszeichen ;
+    rdfs:range local:Verkehrszeichen .
+
+local:vermietet a owl:ObjectProperty ;
+    rdfs:label "vermietet" ;
+    rdfs:comment "etwas gegen Bezahlung für eine bestimmte Zeit zur Benutzung überlassen" ;
+    rdfs:domain local:Fahrradverleih ;
+    rdfs:range local:Fahrrad .
+
+local:verursacht a owl:ObjectProperty ;
+    rdfs:label "verursacht" ;
+    rdfs:comment "die Ursache, der Urheber (von etwas nicht Beabsichtigtem) sein" ;
+    rdfs:domain local:Bauma_nahme ;
+    rdfs:range local:Verkehrsbeeintr_chtigung .
+
+local:verwendungszweck a owl:ObjectProperty ;
+    rdfs:label "verwendungszweck" ;
+    rdfs:comment "Absicht/Aufgabe, die erfüllt werden soll" ;
+    rdfs:domain local:Bezeichnung,
+        local:Nummer ;
+    rdfs:range local:Intern,
+        local:Kurzform,
+        local:Langform,
+        local:Open_Data_Portal .
+
+local:von a owl:ObjectProperty ;
+    rdfs:label "von" ;
+    rdfs:comment "aus einer Richtung" ;
+    rdfs:domain local:Fahrzeug,
+        local:Strecke ;
+    rdfs:range local:Deutschland,
+        local:Knotenpunkt,
+        local:Schweiz .
+
+local:vor_Einrichtung_war_Radverkehr_vorherrschend a owl:ObjectProperty ;
+    rdfs:label "vor Einrichtung war Radverkehr vorherrschend" ;
+    rdfs:comment "Gibt an ob vor der Einrichtung der Fahrradstraße, der Radverkehr stärker war als der KFZ-Verkehr." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:wert a owl:DatatypeProperty ;
+    rdfs:label "wert" ;
+    rdfs:comment "Belegung einer Variable, die zur informationstechnischen Weiterverarbeitung ausgelesen oder geändert werden kann" ;
+    rdfs:domain local:Bezeichnung,
+        local:Geographische_Breite,
+        local:Geographische_L_nge,
+        local:Geschwindigkeitsbegrenzung,
+        local:Gewicht,
+        local:Hausnummer,
+        local:Jahr,
+        local:Messfrequenz,
+        local:Postleitzahl,
+        local:Stadt,
+        local:Stra_e,
+        local:Unterscheidungszeichen ;
+    rdfs:range xsd:string .
+
+local:wird_am_Dienstag_gereinigt a owl:ObjectProperty ;
+    rdfs:label "wird am Dienstag gereinigt" ;
+    rdfs:comment "Gibt an ob etwas an einem Dienstag gereinigt wird." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:wird_am_Donnerstag_gereinigt a owl:ObjectProperty ;
+    rdfs:label "wird am Donnerstag gereinigt" ;
+    rdfs:comment "Gibt an ob etwas an einem Donnerstag gereinigt wird." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:wird_am_Feiertag_gereinigt a owl:ObjectProperty ;
+    rdfs:label "wird am Feiertag gereinigt" ;
+    rdfs:comment "Gibt an ob etwas an einem Feiertag gereinigt wird." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:wird_am_Freitag_gereinigt a owl:ObjectProperty ;
+    rdfs:label "wird am Freitag gereinigt" ;
+    rdfs:comment "Gibt an ob etwas an einem Freitag gereinigt wird." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:wird_am_Mittwoch_gereinigt a owl:ObjectProperty ;
+    rdfs:label "wird am Mittwoch gereinigt" ;
+    rdfs:comment "Gibt an ob etwas an einem Mittwoch gereinigt wird." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:wird_am_Montag_gereinigt a owl:ObjectProperty ;
+    rdfs:label "wird am Montag gereinigt" ;
+    rdfs:comment "Gibt an ob etwas an einem Montag gereinigt wird." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:wird_am_Samstag_gereinigt a owl:ObjectProperty ;
+    rdfs:label "wird am Samstag gereinigt" ;
+    rdfs:comment "Gibt an ob etwas an einem Samstag gereinigt wird." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:wird_am_Sonntag_gereinigt a owl:ObjectProperty ;
+    rdfs:label "wird am Sonntag gereinigt" ;
+    rdfs:comment "Gibt an ob etwas an einem Sonntag gereinigt wird." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:wird_beleuchtet a owl:ObjectProperty ;
+    rdfs:label "wird beleuchtet" ;
+    rdfs:comment "Gibt an, ob etwas beleuchtet wird." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:wird_durch_Eigent_mer_gereinigt a owl:ObjectProperty ;
+    rdfs:label "wird durch Eigentümer gereinigt" ;
+    rdfs:comment "Gibt an ob etwas von einem Eigentümer gereinigt werden muss." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:wird_durch_Stadt_gereinigt a owl:ObjectProperty ;
+    rdfs:label "wird durch Stadt gereinigt" ;
+    rdfs:comment "Gibt an ob etwas von der Stadt gereinigt wird." ;
+    rdfs:domain local:Eigenschaften ;
+    rdfs:range local:Boolescher_Ausdruck .
+
+local:zeigt_an a owl:ObjectProperty ;
+    rdfs:label "zeigt an" ;
+    rdfs:comment "etwas wird dargestellt" ;
+    rdfs:domain local:Haltestelle,
+        local:Verkehrszeichen ;
+    rdfs:range local:Abfahrtsplan,
+        local:Abfahrtstafel,
+        local:Symbol .
+
+local:zeitraum a owl:DatatypeProperty,
+        owl:ObjectProperty ;
+    rdfs:label "zeitraum" ;
+    rdfs:comment "Zeit zwischen einem Start und Endpunkt." ;
+    rdfs:domain local:Geb_hr,
+        local:Kosteninformation,
+        local:Zeitabschnitt ;
+    rdfs:range xsd:string .
+
+local:zeitstempelformat a owl:DatatypeProperty,
+        owl:ObjectProperty ;
+    rdfs:label "zeitstempelformat" ;
+    rdfs:comment "Datums- und Zeitformat nach ISO-8601" ;
+    rdfs:domain local:Datum,
+        local:Uhrzeit,
+        local:Zeitabschnitt,
+        local:Zeitstempel ;
+    rdfs:range xsd:string .
+
+local:zustand a owl:ObjectProperty ;
+    rdfs:label "zustand" ;
+    rdfs:comment "Art und Weise, wie etwas zu einem bestimmten Zeitpunkt ist" ;
+    rdfs:domain local:Fahrstreifen ;
+    rdfs:range local:Gesperrt .
+
+local:Abends a owl:Class ;
+    rdfs:label "Abends" ;
+    rdfs:comment "Tageszeit um die Dämmerung, das Dunkelwerden vor Beginn der Nacht" .
+
+local:Achsentyp a owl:Class ;
+    rdfs:label "Achsentyp" ;
+    rdfs:comment "Haupt-, Neben- oder Bestandsachse" .
+
+local:Achtel a owl:Class ;
+    rdfs:label "Achtel" ;
+    rdfs:comment "einer von acht gleichgroßen Teilen von etwas" .
+
+local:Amtlicher_Stra_enname a owl:Class ;
+    rdfs:label "Amtlicher Straßenname" ;
+    rdfs:comment "Benennung einer Straße zur Unterscheidung von anderen Straßen" .
+
+local:Anh_nger a owl:Class ;
+    rdfs:label "Anhänger" ;
+    rdfs:comment "Fahrzeuge, die über eine Ladefläche jedoch über keinen eigenen Antrieb verfügen" .
+
+local:August a plcm:NamedEntity ;
+    rdfs:label "August" ;
+    rdfs:comment "achter Monat des Jahres" .
+
+local:Beaufortskala a owl:Class ;
+    rdfs:label "Beaufortskala" ;
+    rdfs:comment "Skala zur Einteilung von Windstärken" .
+
+local:Begr_ndung a owl:Class ;
+    rdfs:label "Begründung" ;
+    rdfs:comment "argumentativ entwickelte Darstellung komplexer Grundgedanken von Ursachen und Auswirkungen" .
+
+local:Berlin a plcm:NamedEntity ;
+    rdfs:label "Berlin" ;
+    rdfs:comment "Hauptstadt und Land der Bundesrepublik Deutschland" .
+
+local:Betriebsart_fuehrung a owl:Class ;
+    rdfs:label "Betriebsart" ;
+    rdfs:comment "Art und Weise der Führung eines wirtschaftlichen Betriebes" .
+
+local:Betriebsbereich a owl:Class ;
+    rdfs:label "Betriebsbereich" ;
+    rdfs:comment "Bereich in einem Betrieb" .
+
+local:Betriebshof a owl:Class ;
+    rdfs:label "Betriebshof" ;
+    rdfs:comment "Einrichtung zum Abstellen, Betanken usw. von Fahrzeugen von Dienstleistungsbetrieben" .
+
+local:Bike_and_Ride_Anlage a owl:Class ;
+    rdfs:label "Bike and Ride-Anlage" ;
+    rdfs:comment "Bike and Ride-Anlagen (B+R) sind Fahrrad-Abstellanlagen an Haltestellen des öffentlichen Personenverkehrs. Sie dienen der einfachen und sicheren Verknüpfung von Fahrrad und dem ÖPNV." ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:hat local:Adresse,
+        local:Anbindung,
+        local:Bezeichnung .
+
+local:Cambio a plcm:NamedEntity ;
+    rdfs:label "Cambio" ;
+    rdfs:comment "Cambio Carsharing bzw. kurz Cambio ist eine europäische Dienstleistungs-Unternehmensgruppe in der Carsharing-Branche, die in Deutschland und Belgien vertreten ist." .
+
+local:DLM250_Identifikator a owl:Class ;
+    rdfs:label "DLM250 Identifikator" ;
+    rdfs:comment "Identifikator eines Objekts im digitalem Landschaftsmodell DLM250" .
+
+local:D_sseldorf a plcm:NamedEntity ;
+    rdfs:label "Düsseldorf" ;
+    rdfs:comment "Landeshauptstadt von Nordrhein-Westfalen, Deutschland" .
+
+local:Dach a owl:Class ;
+    rdfs:label "Dach" ;
+    rdfs:comment "obere Abdeckung eines Gebäudes, eines Fahrzeugs oder eines Zeltes" .
+
+local:Deutsch a plcm:NamedEntity ;
+    rdfs:label "Deutsch" ;
+    rdfs:comment "westgermanische Sprache" .
+
+local:Dezember a plcm:NamedEntity ;
+    rdfs:label "Dezember" ;
+    rdfs:comment "zwölfter Monat des Jahres" .
+
+local:Dezibel___Bewertungskurve_A a owl:Class ;
+    rdfs:label "Dezibel - Bewertungskurve A" ;
+    rdfs:comment "dB(A) ist die Maßeinheit des Schalldruckpegels (ugs. Geräuschpegel) nach der international genormten Frequenzbewertungskurve A." .
+
+local:Dezimalsystem a owl:Class ;
+    rdfs:label "Dezimalsystem" ;
+    rdfs:comment "Zahlensystem, das als Basis die Zahl 10 verwendet" .
+
+local:Eigent_mer a owl:Class ;
+    rdfs:label "Eigentümer" ;
+    rdfs:comment "Person, der etwas als Eigentum gehört" .
+
+local:Eintrittswahrscheinlichkeit a owl:Class ;
+    rdfs:label "Eintrittswahrscheinlichkeit" ;
+    rdfs:comment "statistischer Erwartungswert oder die geschätzte Wahrscheinlichkeit für das Eintreten eines bestimmten Ereignisses in einem bestimmten Zeitraum in der Zukunft" .
+
+local:Englisch a plcm:NamedEntity ;
+    rdfs:label "Englisch" ;
+    rdfs:comment "westgermanische Sprache" .
+
+local:Fahrradhalter a owl:Class ;
+    rdfs:label "Fahrradhalter" ;
+    rdfs:comment "Objekt zum abstellen von Fahrrädern" .
+
+local:Fahrtrichtungspfeiltyp a owl:Class ;
+    rdfs:label "Fahrtrichtungspfeiltyp" ;
+    rdfs:comment "Gibt den Typ eines Fahrtrichtungspfeils an. \"G\" = Gerade, \"L\" = Links, \"R\" = Rechts sowie Kombinationen \"GR\", \"GL\", und \"RL\"" .
+
+local:Fernverkehr a owl:Class ;
+    rdfs:label "Fernverkehr" ;
+    rdfs:comment "Bezeichnung für die Bewegung von Personen und Gütern mit Straßen- oder Schienenfahrzeugen" .
+
+local:Flie_ender_Verkehr a owl:Class ;
+    rdfs:label "Fließender Verkehr" ;
+    rdfs:comment "sich in Bewegung befindlichen Fahrzeuge im öffentlichen Straßenverkehr" .
+
+local:Fundament a owl:Class ;
+    rdfs:label "Fundament" ;
+    rdfs:comment "der Unterbau eines Objekts" .
+
+local:Funktion a owl:Class ;
+    rdfs:label "Funktion" ;
+    rdfs:comment "Aufgabe, Sinn und Zweck" .
+
+local:Gebietsk_rperschaft a owl:Class ;
+    rdfs:label "Gebietskörperschaft" ;
+    rdfs:comment "Körperschaft, deren Hoheit auf einen abgegrenzten Bereich des Staatsgebiets beschränkt ist" .
+
+local:Geohash_7 a owl:Class ;
+    rdfs:label "Geohash-7" ;
+    rdfs:comment "Kodierung von geographischen Koordinaten in eine Folge von 7 Zeichen." .
+
+local:Gerade_Hausnummer a owl:Class ;
+    rdfs:label "Gerade Hausnummer" ;
+    rdfs:comment "Hausnummer bestehend aus einer geraden Zahl" .
+
+local:Gesperrt a owl:Class ;
+    rdfs:label "Gesperrt" ;
+    rdfs:comment "mit einer Sperre versehen" .
+
+local:Getrennt_verlaufende_Fahrbahn a owl:Class ;
+    rdfs:label "Getrennt verlaufende Fahrbahn" ;
+    rdfs:comment "0 = keine getrennt verlaufende Fahrbahn, 1 = getrennt verlaufende Fahrbahn, Zweig 1 (In Stationierungsrichtung befahren), 2 = getrennt verlaufende Fahrbahn, Zweig 2 (Gegen Stationierungsrichtung befahren)" .
+
+local:Gewichtung a owl:Class ;
+    rdfs:label "Gewichtung" ;
+    rdfs:comment "mathematische Bewertung von Faktoren" .
+
+local:Hausnummernkennziffer a owl:Class ;
+    rdfs:label "Hausnummernkennziffer" ;
+    rdfs:comment "1 = ungerader, 2 = gerader, 3 = gemischter Hausnummernbereich" .
+
+local:Heinrich_Heine_Universit_t_D_sseldorf a plcm:NamedEntity ;
+    rdfs:label "Heinrich-Heine-Universität Düsseldorf" ;
+    rdfs:comment "Universität in Deutschland" .
+
+local:Hektopascal a owl:Class ;
+    rdfs:label "Hektopascal" ;
+    rdfs:comment "Maßeinheit des Luftdrucks" .
+
+local:Historisches_Bauwerk a owl:Class ;
+    rdfs:label "Historisches Bauwerk" ;
+    rdfs:comment "Ein Bauwerk welches historisch bedeutungsvoll ist." ;
+    local:befindet_sich_an local:Geographische_Linie ;
+    local:hat local:Bezeichnung .
+
+local:Hochwert a owl:Class ;
+    rdfs:label "Hochwert" ;
+    rdfs:comment "Als Hochwert, auch mit x bezeichnet, wird der in Nord-Richtung gemessene Abstand eines Punktes zu seinem Fußpunkt auf der waagerecht verlaufenden Basislinie des Koordinatensystems (hier der y-Achse) bezeichnet. Gauß-Krüger-Koordinatensystem" .
+
+local:Interne_Bahnhofsnummer__IBNR_ a owl:Class ;
+    rdfs:label "Interne Bahnhofsnummer (IBNR)" ;
+    rdfs:comment "Die Interne Bahnhofsnummer (IBNR) ist ein Indikator bei der Deutschen Bahn zur tariflichen Identifikation von Personenbahnhöfen in Deutschland und anderen europäischen Ländern. Die IBNR umfasst in der Regel fünf Stellen. Oft findet sich auch eine Schreibweise, bei der eine führende „0“, gefolgt vom UIC-Ländercode vorangestellt werden, so dass sich insgesamt eine achtstellige Nummer ergibt." .
+
+local:Juli a plcm:NamedEntity ;
+    rdfs:label "Juli" ;
+    rdfs:comment "siebter Monat des Jahres" .
+
+local:Juni a plcm:NamedEntity ;
+    rdfs:label "Juni" ;
+    rdfs:comment "sechster Monat des Jahres" .
+
+local:K_ln_Chorweiler a plcm:NamedEntity ;
+    rdfs:label "Köln-Chorweiler" ;
+    rdfs:comment "Chorweiler ist der nördlichste Stadtbezirk von Köln. Er trägt in der offiziellen Nummerierung die Nummer 6." ;
+    local:anzahl local:Stellplatz ;
+    local:ist_Teil_von local:K_ln .
+
+local:K_ln_Ehrenfeld a plcm:NamedEntity ;
+    rdfs:label "Köln-Ehrenfeld " ;
+    rdfs:comment "Ehrenfeld ist Stadtbezirk 4 der Stadt Köln." ;
+    local:anzahl local:Stellplatz ;
+    local:ist_Teil_von local:K_ln .
+
+local:K_ln_Innenstadt a plcm:NamedEntity ;
+    rdfs:label "Köln-Innenstadt" ;
+    rdfs:comment "Innenstadt ist einer der neun Stadtbezirke der kreisfreien Stadt Köln. Er trägt in der offiziellen Nummerierung die Nummer 1." ;
+    local:anzahl local:Stellplatz ;
+    local:ist_Teil_von local:K_ln .
+
+local:K_ln_Kalk a plcm:NamedEntity ;
+    rdfs:label "Köln-Kalk" ;
+    rdfs:comment "Kalk ist der Stadtbezirk 8 von Köln." ;
+    local:anzahl local:Stellplatz ;
+    local:ist_Teil_von local:K_ln .
+
+local:K_ln_Lindenthal a plcm:NamedEntity ;
+    rdfs:label "Köln-Lindenthal" ;
+    rdfs:comment "Lindenthal ist der Stadtbezirk 3 der Stadt Köln." ;
+    local:anzahl local:Stellplatz ;
+    local:ist_Teil_von local:K_ln .
+
+local:K_ln_M_lheim a plcm:NamedEntity ;
+    rdfs:label "Köln-Mülheim" ;
+    rdfs:comment "Mülheim ist der Stadtbezirk 9 von Köln." ;
+    local:anzahl local:Stellplatz ;
+    local:ist_Teil_von local:K_ln .
+
+local:K_ln_Nippes a plcm:NamedEntity ;
+    rdfs:label "Köln-Nippes" ;
+    rdfs:comment "Nippes ist der Stadtbezirk 5 von Köln. " ;
+    local:anzahl local:Stellplatz ;
+    local:ist_Teil_von local:K_ln .
+
+local:K_ln_Porz a plcm:NamedEntity ;
+    rdfs:label "Köln-Porz" ;
+    rdfs:comment "Porz ist ein rechtsrheinischer Stadtbezirk im Südosten der kreisfreien Stadt Köln. Er trägt in der offiziellen Nummerierung die Nummer 7." ;
+    local:anzahl local:Stellplatz ;
+    local:ist_Teil_von local:K_ln .
+
+local:K_ln_Rodenkirchen a plcm:NamedEntity ;
+    rdfs:label "Köln-Rodenkirchen" ;
+    rdfs:comment "Rodenkirchen ist der zweite von neun Stadtbezirken Kölns." ;
+    local:anzahl local:Stellplatz ;
+    local:ist_Teil_von local:K_ln .
+
+local:Kilometer a owl:Class ;
+    rdfs:label "Kilometer" ;
+    rdfs:comment "eine Maßeinheit der Länge, der Entfernung; entspricht eintausend Metern" .
+
+local:Kilopascal a owl:Class ;
+    rdfs:label "Kilopascal " ;
+    rdfs:comment "SI-Einheit für den Druck, 1000 Pascal" .
+
+local:Kilowatt a owl:Class ;
+    rdfs:label "Kilowatt" ;
+    rdfs:comment "SI-Einheit der Leistung. 1 Kilowatt sind tausend Watt" .
+
+local:Knotenpunkt_Nummer a owl:Class ;
+    rdfs:label "Knotenpunkt-Nummer" ;
+    rdfs:comment "Eindeutiges Kennzeichen zur Bestimmung der Identität eines Knotenpunkts." .
+
+local:Kreis_Geldern a plcm:NamedEntity ;
+    rdfs:label "Kreis Geldern" ;
+    rdfs:comment "ehem. Kreis an der Grenze zu den Niederlanden, jetzt im Kreis Kleve" .
+
+local:Kreis_Kleve a plcm:NamedEntity ;
+    rdfs:label "Kreis Kleve" ;
+    rdfs:comment "Kreis in Nordrhein-Westfalen, Deutschland" ;
+    local:anzahl local:Fahrzeug ;
+    local:hat local:Fahrzeugbestand .
+
+local:Kurzform a owl:Class ;
+    rdfs:label "Kurzform" ;
+    rdfs:comment "kurze Fassung einer Äußerung oder eines Textes" .
+
+local:LOR_Schl_ssel a owl:Class ;
+    rdfs:label "LOR-Schlüssel" ;
+    rdfs:comment "7 -8 stelliger Schlüssel zur Identifikation eines Lebensweltlich orientierten Raums" .
+
+local:Ladekarte a owl:Class ;
+    rdfs:label "Ladekarte" ;
+    rdfs:comment "Bezahlkarte zum Bezahlen von Strom an Ladestationen." .
+
+local:Ladepunkte a owl:Class ;
+    rdfs:label "Ladepunkte" ;
+    rdfs:comment "Die Anzahl der Ladepunkte gibt also an, wie viele Elektrofahrzeuge gleichzeitig geladen werden können." .
+
+local:Landkreis a owl:Class ;
+    rdfs:label "Landkreis" ;
+    rdfs:comment "Gebietskörperschaft nach deutschem Kommunalrecht" .
+
+local:Langform a owl:Class ;
+    rdfs:label "Langform" ;
+    rdfs:comment "vollständige Fassung einer Äußerung oder eines Textes" .
+
+local:Lichtsignalanlagen_Nummer a owl:Class ;
+    rdfs:label "Lichtsignalanlagen-Nummer" ;
+    rdfs:comment "Eindeutiges Kennzeichen zur Bestimmung der Identität einer Lichtsignalanlage." .
+
+local:Lichtverh_ltnis a owl:Class ;
+    rdfs:label "Lichtverhältnis" ;
+    rdfs:comment "Lichtverhältnisse: 0 = Tageslicht, 1 = Dämmerung, 2 = Dunkelheit" .
+
+local:Lieferwagen a owl:Class ;
+    rdfs:label "Lieferwagen" ;
+    rdfs:comment "vorrangig zur Güterbeförderung bestimmtes Kraftfahrzeug" .
+
+local:Links a owl:Class ;
+    rdfs:label "Links" ;
+    rdfs:comment "relative Richtung" .
+
+local:Liter_pro_Quadratmeter a owl:Class ;
+    rdfs:label "Liter pro Quadratmeter" ;
+    rdfs:comment "Einheit der Nieferschlagsmenge. 1 Millimeter Niederschlag entspricht genau 1 Liter Niederschlag pro Quadratmeter" .
+
+local:Lux a owl:Class ;
+    rdfs:label "Lux" ;
+    rdfs:comment "SI-Einheit der Beleuchtungsstärke" .
+
+local:M_llabfuhr a owl:Class ;
+    rdfs:label "Müllabfuhr" ;
+    rdfs:comment "die Beseitigung von Müll durch Spezialfahrzeuge" ;
+    local:holt_ab local:Abfall ;
+    local:termin local:Datum .
+
+local:Mai a plcm:NamedEntity ;
+    rdfs:label "Mai" ;
+    rdfs:comment "fünfter Monat des Jahres" .
+
+local:Material a owl:Class ;
+    rdfs:label "Material" ;
+    rdfs:comment " Sammelbegriff für Rohstoffe, Werkstoffe, Halbzeuge, Hilfsstoffe, Betriebsstoffe, Teile und Gruppen, aus denen etwas hergestellt wird" .
+
+local:Maximale_Parkdauer a owl:Class ;
+    rdfs:label "Maximale Parkdauer" ;
+    rdfs:comment "Maximal zulässige Dauer zum Parken auf einer Parkmöglichkeit" .
+
+local:Messgr__e a owl:Class ;
+    rdfs:label "Messgröße" ;
+    rdfs:comment "diejenige physikalische Größe, der eine Messung gilt" .
+
+local:Meter_pro_Sekunde a owl:Class ;
+    rdfs:label "Meter pro Sekunde" ;
+    rdfs:comment "Einheit für Geschwindigkeit. Meter durch Sekunden" .
+
+local:Mietwagenunternehmen a owl:Class ;
+    rdfs:label "Mietwagenunternehmen" ;
+    rdfs:comment "Unternehmen, das die vorübergehende Nutzung von Autos gegen Entgelt anbietet" .
+
+local:Millimeter a owl:Class ;
+    rdfs:label "Millimeter" ;
+    rdfs:comment "Längenmaß, hundertstel eines Meters" .
+
+local:Motorrad a owl:Class ;
+    rdfs:label "Motorrad" ;
+    rdfs:comment "einspuriges Kraftfahrzeug" .
+
+local:NO2_Messung a owl:Class ;
+    rdfs:label "NO2-Messung" ;
+    rdfs:comment "Messung der Stickstoffdioxid-Konzentration" ;
+    local:bezieht_sich_auf local:Bezugsmonat,
+        local:Jahr ;
+    local:durchgef_hrt_von local:Messstation .
+
+local:Nationaler_Namensidentifikator a owl:Class ;
+    rdfs:label "Nationaler Namensidentifikator" ;
+    rdfs:comment "Identifkator eines geographischen Namens im Datensatz GN250" .
+
+local:November a plcm:NamedEntity ;
+    rdfs:label "November" ;
+    rdfs:comment "elfter Monat des Jahres" .
+
+local:Nullpunktsbuchstabe a owl:Class ;
+    rdfs:label "Nullpunktsbuchstabe" ;
+    rdfs:comment "Buchstabe, der an den Knotenpunkt angehängt wird. Dient zur Kennzeichnung der Nullpunkte." .
+
+local:Oktober a plcm:NamedEntity ;
+    rdfs:label "Oktober" ;
+    rdfs:comment "zehnter Monat des Jahres" .
+
+local:Open_Data_Portal a owl:Class ;
+    rdfs:label "Open-Data-Portal" ;
+    rdfs:comment "Website zur Verbreitung offener Daten" .
+
+local:Parkscheinautomaten_Nummer a owl:Class ;
+    rdfs:label "Parkscheinautomaten-Nummer" ;
+    rdfs:comment "Identifikator zur eindeutigen Identifizierung eines Parkscheinautomaten." .
+
+local:Parts_per_billion a owl:Class ;
+    rdfs:label "Parts per billion" ;
+    rdfs:comment "Maßeinheit, die auf der Anzahl der Partikel basiert, wird in Wissenschaft und Technik für den milliardsten Teil verwendet" .
+
+local:Personenkraftwagen a owl:Class ;
+    rdfs:label "Personenkraftwagen" ;
+    rdfs:comment "mehrspurige Fahrzeuge mit eigenem Antrieb zum vorwiegenden Zwecke der Personenbeförderung" .
+
+local:Pfad a owl:Class ;
+    rdfs:label "Pfad" ;
+    rdfs:comment "Pfad-Komponente einer URL. Der Pfad beschreibt eine bestimmte Ressource (diese kann sich beispielsweise mit der Verzeichnisstruktur des Zielsystems decken, also etwa eine Datei oder ein Verzeichnis) auf dem Server." .
+
+local:Potentielle_Gefahrenstelle a owl:Class ;
+    rdfs:label "Potentielle Gefahrenstelle" ;
+    rdfs:comment "Stelle, die potentiell gefährlich ist, an der besonders aufgepasst werden muss" ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:hat local:Zusatzinformation .
+
+local:Public_Key a owl:Class ;
+    rdfs:label "Public Key" ;
+    rdfs:comment "Einer der beiden in der asymmetrischen Kryptographie verwendeten Schlüssel, der im Gegensatz zum privaten Schlüssel veröffentlicht wird" .
+
+local:Quadratmeter a owl:Class ;
+    rdfs:label "Quadratmeter" ;
+    rdfs:comment "SI-Einheit der Fläche. 1 Quadratmeter ist der Flächeninhalt eines Quadrats der Seitenlänge 1 Meter." .
+
+local:Quartal a owl:Class ;
+    rdfs:label "Quartal" ;
+    rdfs:comment "Zeiteinheit; 3 Monate, Quartal eines Jahres" .
+
+local:Rechts a owl:Class ;
+    rdfs:label "Rechts" ;
+    rdfs:comment "relative Richtung" .
+
+local:Rechtsgrundlage a owl:Class ;
+    rdfs:label "Rechtsgrundlage" ;
+    rdfs:comment "Rechtsnorm, die eine Behörde auf dem Gebiet des öffentlichen Rechts zur Regelung eines Einzelfalls ermächtigt" .
+
+local:Rechtswert a owl:Class ;
+    rdfs:label "Rechtswert" ;
+    rdfs:comment "Als Rechtswert, auch mit y bezeichnet, wird in ebenen kartesischen, auf die Erdoberfläche bezogenen Koordinatensystemen der Abstand eines Punktes von der (hier vertikal verlaufenden) Abszisse bzw. x-Achse bezeichnet. Gauß-Krüger-Koordinatensystem" .
+
+local:Roter_Punkt_Zone a owl:Class ;
+    rdfs:label "Roter Punkt Zone" ;
+    rdfs:comment "Zone in Köln, in der kostenloses Parken mit entsprechendem Ausweis erlaubt ist." .
+
+local:Ruhender_Verkehr a owl:Class ;
+    rdfs:label "Ruhender Verkehr" ;
+    rdfs:comment "geparkte und haltende Fahrzeuge im öffentlichen Straßenverkehr" .
+
+local:Schienenpersonennahverkehr a owl:Class ;
+    rdfs:label "Schienenpersonennahverkehr" ;
+    rdfs:comment "Schienenpersonenverkehr, der hauptsächlich zwischen einem Stadtzentrum und den mittleren bis äußeren Vororten verkehrt" .
+
+local:Schildtyp a owl:Class ;
+    rdfs:label "Schildtyp" ;
+    rdfs:comment "Form eines Schildes" .
+
+local:Schleswig_Holstein_Tarif a plcm:NamedEntity ;
+    rdfs:label "Schleswig-Holstein-Tarif" ;
+    rdfs:comment "Der Schleswig-Holstein-Tarif (Kurzform: SH-Tarif) ist ein Tarif zur Beförderung von Personen in öffentlichen Verkehrsmitteln für das Bundesland Schleswig-Holstein sowie Hamburg und den Teilen von Niedersachsen, die im Großbereich Hamburg (Ring A+B) des Hamburger Verkehrsverbundes (HVV) liegen." .
+
+local:Schulform a owl:Class ;
+    rdfs:label "Schulform" ;
+    rdfs:comment "Schulform im deutschen Bildungssystem, z.B. Grundschule, Realschule, Gymnasium" .
+
+local:Schultr_ger a owl:Class ;
+    rdfs:label "Schulträger" ;
+    rdfs:comment "rechtsfähige Institutionen, die die sächlichen Bedingungen für eine Schuleinrichtung bereitstellen und unterhalten" .
+
+local:Sekunde a owl:Class ;
+    rdfs:label "Sekunde" ;
+    rdfs:comment "SI-Basiseinheit der Zeit" .
+
+local:September a plcm:NamedEntity ;
+    rdfs:label "September" ;
+    rdfs:comment "neunter Monat des Jahres" .
+
+local:Stadtbezirk_Nummer a owl:Class ;
+    rdfs:label "Stadtbezirk-Nummer" ;
+    rdfs:comment "Eindeutige Nummer für einen Stadtbezirk. Dient zur Identifikation." .
+
+local:Steckverbinder a owl:Class ;
+    rdfs:label "Steckverbinder" ;
+    rdfs:comment "Verbindungsteil zum trennen und verbinden von elektrischen Leitungen." .
+
+local:Steigungsstufe a owl:Class ;
+    rdfs:label "Steigungsstufe" ;
+    rdfs:comment "bemerkbar: 3% - 7%, schwer: größer als 7%" .
+
+local:Steile_Radstrecke a owl:Class ;
+    rdfs:label "Steile Radstrecke" ;
+    rdfs:comment "Radstrecke, welche eine Steigung von mindestens 3% hat." ;
+    local:befindet_sich_an local:Geographische_Linie ;
+    local:hat local:L_nge,
+        local:Steigungsstufe .
+
+local:Stellplatz_Nummer a owl:Class ;
+    rdfs:label "Stellplatz-Nummer" ;
+    rdfs:comment "Identifikator zur eindeutigen Identifizierung eines Stellplatzes." .
+
+local:Stellplatz__Bus_ a owl:Class ;
+    rdfs:label "Stellplatz (Bus)" ;
+    rdfs:comment "Stellplatz für einen Bus" .
+
+local:Stellplatz__Fahrradbox_ a owl:Class ;
+    rdfs:label "Stellplatz (Fahrradbox)" ;
+    rdfs:comment "Stellplatz in einer Fahrradbox" .
+
+local:Stellplatz__PKW_ a owl:Class ;
+    rdfs:label "Stellplatz (PKW)" ;
+    rdfs:comment "Stellplatz für einen Personenkraftwagen" .
+
+local:Stellplatz__Wohnmobil_ a owl:Class ;
+    rdfs:label "Stellplatz (Wohnmobil)" ;
+    rdfs:comment "Stellplatz für ein Wohnmobil" .
+
+local:Stellplatz___bderdacht_ a owl:Class ;
+    rdfs:label "Stellplatz (Übderdacht)" ;
+    rdfs:comment "Überdachter Stellplatz" .
+
+local:Stra_enart a owl:Class ;
+    rdfs:label "Straßenart" ;
+    rdfs:comment "Straßenart gem. § 6 Abs. 4 der Satzung FB = Fahrbahnen FZ = Fußgängerzone" .
+
+local:Stra_enbeleuchtungs_Nummer a owl:Class ;
+    rdfs:label "Straßenbeleuchtungs-Nummer" ;
+    rdfs:comment "Eindeutiges Kennzeichen zur Bestimmung der Identität einer Straßenbeleuchtung." .
+
+local:Stra_ennetz a owl:Class ;
+    rdfs:label "Straßennetz" ;
+    rdfs:comment "Verkehrsinfrastruktur des Straßenverkehrs" .
+
+local:Stra_enreinigungsverzeichnis a owl:Class ;
+    rdfs:label "Straßenreinigungsverzeichnis" ;
+    rdfs:comment "Liste der Straßen einer Stadt mit Informationen zu dessen Reinigung" .
+
+local:Stra_enzustand a owl:Class ;
+    rdfs:label "Straßenzustand" ;
+    rdfs:comment "Straßenzustand: 0 = trocken, 1 = nass/feucht/schlüpfrig, 2 = winterglatt" .
+
+local:Streckennummer a owl:Class ;
+    rdfs:label "Streckennummer" ;
+    rdfs:comment "Eindeutige Nummer für einen Strecke. Dient zur Identifikation." .
+
+local:Tagestyp a owl:Class ;
+    rdfs:label "Tagestyp" ;
+    rdfs:comment "`Mo-Fr`, `Sa`, `So` oder `Mo-So`" .
+
+local:Tags_ber a owl:Class ;
+    rdfs:label "Tagsüber" ;
+    rdfs:comment "während des Tages" .
+
+local:Tatbestandsnummer a owl:Class ;
+    rdfs:label "Tatbestandsnummer" ;
+    rdfs:comment "individuelle Tatbestandsnummer für eine Verkehrsordnungswidrigkeit, sechsstellige Ziffernfolge (Ziffer 1: Gesetzestext, Ziffer 2-3: Paragraph, Ziffer 4-6: Kennnummer)" .
+
+local:Taxiunternehmen a owl:Class ;
+    rdfs:label "Taxiunternehmen" ;
+    rdfs:comment "wirtschaftlich selbständige Organisationseinheit, spezialisiert auf Taxis" .
+
+local:Telefonnummer a owl:Class ;
+    rdfs:label "Telefonnummer" ;
+    rdfs:comment "Ziffernfolge zur Anwahl eines Zielteilnehmers bei einem Telefongespräch" .
+
+local:Telefonnummer__Mobil_ a owl:Class ;
+    rdfs:label "Telefonnummer (Mobil)" ;
+    rdfs:comment " bestimmte Nummer, Zahlenfolge, unter der man ein Mobiltelefon, dem diese zugeordnet ist, anwählen kann" .
+
+local:Umweltzone a owl:Class ;
+    rdfs:label "Umweltzone" ;
+    rdfs:comment "geographisch definiertes Gebiet in dem der Betrieb nicht als schadstoffarm gekennzeichneter Kraftfahrzeuge verboten ist" ;
+    local:befindet_sich_an local:Geographisches_Polygon ;
+    local:hat local:Bezeichnung .
+
+local:Unfallart a owl:Class ;
+    rdfs:label "Unfallart" ;
+    rdfs:comment "Unfallart: 1 = Zusammenstoß mit anfahrendem/anhaltendem/ruhendem Fahrzeug, 2 = Zusammenstoß mit vorausfahrendem/wartendem Fahrzeug, 3 = Zusammenstoß mit seitlich in gleicher Richtung fahrendem Fahrzeug, 4 = Zusammenstoß mit entgegenkommendem Fahrzeug, 5 = Zusammenstoß mit einbiegendem/kreuzendem Fahrzeug, 6 = Zusammenstoß zwischen Fahrzeug und Fußgänger, 7 = Aufprall auf Fahrbahnhindernis, 8 = Abkommen von Fahrbahn nach rechts, 9 = Abkommen von Fahrbahn nach links, 0 = Unfall anderer Art" .
+
+local:Unfallkategorie a owl:Class ;
+    rdfs:label "Unfallkategorie" ;
+    rdfs:comment "Unfallkategorie (Kriterium der Zuordnung ist jeweils die schwerste Unfallfolge): 1 = Unfall mit Getöteten, 2 = Unfall mit Schwerverletzten, 3 = Unfall mit Leichtverletzten" .
+
+local:Unfalltyp a owl:Class ;
+    rdfs:label "Unfalltyp" ;
+    rdfs:comment "Unfalltyp: 1 = Fahrunfall, 2 = Abbiegeunfall, 3 = Einbiegen/Kreuzen-Unfall, 4 = Überschreiten-Unfall, 5 = Unfall durch ruhenden Verkehr, 6 = Unfall im Längsverkehr, 7 = sonstiger Unfall" .
+
+local:Ungerade_Hausnummer a owl:Class ;
+    rdfs:label "Ungerade Hausnummer" ;
+    rdfs:comment "Hausnummer bestehend aus einer ungeraden Zahl" .
+
+local:Ursache a owl:Class ;
+    rdfs:label "Ursache" ;
+    rdfs:comment "Grund was die Verkehrsbeeinträchtigung verursacht. [1: Aktuelle Verkehrsnachricht: Achtung], [2: Baustelle, Verbot der Einfahrt], [3: Baustelle], [4: Kinder, Schulanfang], [5: Stau], [6: Glätte], [7: Hochwasser], [8: Veranstaltung in der LANXESS arena], [9: Veranstaltung im RheinEnergieStadion], [10: Messeveranstaltung], [11: Veranstaltung im RheinEnergieStadion: Fußball], [12: Laufveranstaltung], [13: Karneval], [14: Event], [15: Weihnachtsmarkt]" .
+
+local:Verbund a owl:Class ;
+    rdfs:label "Verbund" ;
+    rdfs:comment "Kooperation einzelner Organisationen" .
+
+local:Verkehrslage a owl:Class ;
+    rdfs:label "Verkehrslage" ;
+    rdfs:comment "momentaner Zustand des Verkehrs" .
+
+local:Verkehrsmittelklasse a owl:Class ;
+    rdfs:label "Verkehrsmittelklasse" ;
+    rdfs:comment "Eine Klassifizierung von Verkehrsmitteln." .
+
+local:Verkehrsunternehmen a owl:Class ;
+    rdfs:label "Verkehrsunternehmen" ;
+    rdfs:comment "Ein Verkehrsunternehmen (VU) ist ein Unternehmen, das Verkehrsdienstleistungen, also Transportweg, Verkehrsleistung, Abfertigung oder weitere Funktionen wie beispielsweise Lagern oder Verpacken, anbietet." .
+
+local:Verkehrsverbund_Berlin_Brandenburg a plcm:NamedEntity ;
+    rdfs:label "Verkehrsverbund Berlin-Brandenburg" ;
+    rdfs:comment "Zusammenschluss aller ÖPNV-Aufgabenträger in den Ländern Brandenburg und Berlin" .
+
+local:Verwendungszweck a owl:Class ;
+    rdfs:label "Verwendungszweck" ;
+    rdfs:comment "Absicht/Aufgabe, die erfüllt werden soll" .
+
+local:Vorjahr a owl:Class ;
+    rdfs:label "Vorjahr" ;
+    rdfs:comment "voriges, vorhergehendes Jahr" .
+
+local:Wagenumlaufnummer a owl:Class ;
+    rdfs:label "Wagenumlaufnummer" ;
+    rdfs:comment "Nummer zur Identifikation des Umlaufs eines Wagens" .
+
+local:Watt_pro_Quadratmeter a owl:Class ;
+    rdfs:label "Watt pro Quadratmeter" ;
+    rdfs:comment "SI-Einheit der Leistungsflussdichte" .
+
+local:Winterdienst a owl:Class ;
+    rdfs:label "Winterdienst" ;
+    rdfs:comment "Maßnahmen zum Sicherstellen von Verkehrssicherheit, Mobilität und Wirtschaftlichkeit des Verkehrsablaufes im Winter." .
+
+local:Woche a owl:Class ;
+    rdfs:label "Woche" ;
+    rdfs:comment "Zeiteinheit, 7 Tage" .
+
+local:Wochendtag a owl:Class ;
+    rdfs:label "Wochendtag" ;
+    rdfs:comment "Tag am Wochenende (Samstag - Sonntag)" .
+
+local:WochentagMo_Fr a owl:Class ;
+    rdfs:label "Wochentag" ;
+    rdfs:comment "Tag innerhalb einer Woche (Montag - Freitag)" .
+
+local:Wochentag_nummeriert a owl:Class ;
+    rdfs:label "Wochentag" ;
+    rdfs:comment "Wochentag, angegeben in den Zahlen 1 (Sonntag) bis 7 (Samstag)" .
+
+local:Wuppertaler_Schwebebahn a plcm:NamedEntity ;
+    rdfs:label "Wuppertaler Schwebebahn" ;
+    rdfs:comment "öffentliches Personennahverkehrssystem in Wuppertal (Nordrhein-Westfalen)" .
+
+local:Zentimeter a owl:Class ;
+    rdfs:label "Zentimeter" ;
+    rdfs:comment "hundertster Teil eines Meters" .
+
+local:Zugangsinformation a owl:Class ;
+    rdfs:label "Zugangsinformation" ;
+    rdfs:comment "Information wie man zu dem Objekt Zugang erhält." .
+
+local:Abfahrtsplan a owl:Class ;
+    rdfs:label "Abfahrtsplan" ;
+    rdfs:comment "Ein Abfahrtsfahrplan zeigt die Zeiten an, zu denen die öffentlichen Verkehrsmittel einen Bahnhof verlassen." ;
+    local:ist_vom_Typ local:Uniform_Resource_Locator__URL_ .
+
+local:Abfahrtstafel a owl:Class ;
+    rdfs:label "Abfahrtstafel" ;
+    rdfs:comment "Eine digitale Anzeige, welche den Passagieren direkt an der Haltestelle anzeigt, wann ein öffentliches Verkehrsmittel den Bahnhof verlässt." ;
+    local:ist_vom_Typ local:Uniform_Resource_Locator__URL_ .
+
+local:Amt a owl:Class ;
+    rdfs:label "Amt" ;
+    rdfs:comment "Verwaltungseinheit" ;
+    local:hat local:E_Mail_Adresse,
+        local:Telefonnummer__Festnetz_ .
+
+local:Amtliche_Karte a owl:Class ;
+    rdfs:label "Amtliche Karte" ;
+    rdfs:comment "von einer öffentlichen Institution (Amt, Behörde) in öffentlicher Aufgabe herausgegebene Karte" ;
+    local:geh_rt_zu local:D_sseldorf .
+
+local:Amtlicher_Regionalschl_ssel__ARS_ a owl:Class ;
+    rdfs:label "Amtlicher Regionalschlüssel (ARS)" ;
+    rdfs:comment "12-stelliger Schlüssel zur eindeutigen Identifizierung einer Gemeinde mit den Bestandteilen: Bundesland (2 Stellen), Regierungsbezirk (1 Stelle), Kreis (2 Stellen), Gemeindeverband (4 Stellen) und Gemeinde (3 Stellen)." .
+
+local:Anzeige a owl:Class ;
+    rdfs:label "Anzeige" ;
+    rdfs:comment "Eine Anzeige ist eine öffentliche Ankündigung oder Bekanntmachung, die im Auftrag und im Interesse des Bekanntmachenden und in der Regel gegen Bezahlung als Werbebotschaft in einer Druckschrift abgedruckt oder in anderen Medien veröffentlicht wird." ;
+    local:dargestellt_auf local:Website .
+
+local:Aussteiger a owl:Class ;
+    rdfs:label "Aussteiger" ;
+    rdfs:comment "jemand, der ein ÖPNV-Fahrzeug verlässt" ;
+    local:ist_ein_e_ local:Mensch .
+
+local:Baustelle a owl:Class ;
+    rdfs:label "Baustelle" ;
+    rdfs:comment "Eine Baustelle ist ein Ort, auf dem ein Bauwerk errichtet, umgebaut oder abgerissen wird." ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:hat local:Bauma_nahme ;
+    local:identifiziert_durch local:Universally_Unique_Identifier__UUID_ .
+
+local:Beleuchtungsst_rke a owl:Class ;
+    rdfs:label "Beleuchtungsstärke" ;
+    rdfs:comment "einfallender Lichtstrom pro Fläche" ;
+    local:gemessen_in local:Lux .
+
+local:Binnenverkehr a owl:Class ;
+    rdfs:label "Binnenverkehr" ;
+    rdfs:comment "Wege, die Quelle und Ziel innerhalb der Stadt haben" ;
+    local:gemessen_in local:Prozent .
+
+local:Blauanteil a owl:Class ;
+    rdfs:label "Blauanteil" ;
+    rdfs:comment "Blauanteil im RGB-Farbmodell" ;
+    local:gemessen_in local:Byte .
+
+local:Bodenfreiheit a owl:Class ;
+    rdfs:label "Bodenfreiheit" ;
+    rdfs:comment "iedrigster Abstand zwischen dem unteren Teil eines Objekts und dem Erdboden" ;
+    local:gemessen_in local:Zentimeter .
+
+local:Bodentemperatur a owl:Class ;
+    rdfs:label "Bodentemperatur" ;
+    rdfs:comment "Temperatur des oberen Bodens" ;
+    local:gemessen_in local:Grad_Celsius .
+
+local:Busliniennetz a owl:Class ;
+    rdfs:label "Busliniennetz" ;
+    rdfs:comment "Gesamtheit mehrerer Strecken welche von Bussen befahren werden" ;
+    local:geh_rt_zu local:Gebietsk_rperschaft .
+
+local:CO___quivalent a owl:Class ;
+    rdfs:label "CO₂-Äquivalent" ;
+    rdfs:comment "Masseinheit zur Vereinheitlichung der Klimawirkung der unterschiedlichen Treibhausgase" ;
+    local:gemessen_in local:Parts_per_million .
+
+local:Cyananteil a owl:Class ;
+    rdfs:label "Cyananteil" ;
+    rdfs:comment "Cyananteil im CMYK-Farbmodell" ;
+    local:gemessen_in local:Prozent .
+
+local:DHID a owl:Class ;
+    rdfs:label "DHID" ;
+    rdfs:comment "Deutschlandweit einheitliche Haltestellen-ID" ;
+    local:besteht_aus local:Haltestellennummer,
+        local:Kreisschl_ssel,
+        local:Land .
+
+local:Einsteiger a owl:Class ;
+    rdfs:label "Einsteiger" ;
+    rdfs:comment "jemand, der ein ÖPNV-Fahrzeug betritt" ;
+    local:ist_ein_e_ local:Mensch .
+
+local:Ellipsoidische_H_he a owl:Class ;
+    rdfs:label "Ellipsoidische Höhe" ;
+    rdfs:comment "Die ellipsoidische Höhe bezeichnet den kürzesten Abstand zwischen einem Geländepunkt und dem geodynamisch bestimmten Referenzellipsoid der Erde. Gemessen wird sie entlang der Ellipsoidnormalen, einem Lot auf die Oberfläche des Referenzellipsoids. ETRS89" ;
+    local:hat local:Standardabweichung .
+
+local:Euro a owl:Class ;
+    rdfs:label "Euro" ;
+    rdfs:comment "Der Euro (ISO-Code: EUR, Symbol: €) ist laut Art. 3 Abs. 4 EUV die Währung der Europäischen Wirtschafts- und Währungsunion, eines in Art. 127–144 AEUV geregelten Politikbereichs der Europäischen Union (EU)." .
+
+local:Fahrplansuche a owl:Class ;
+    rdfs:label "Fahrplansuche" ;
+    rdfs:comment "Eine URL zu einer Quelle, in der die Fahrpläne der öffentlichen Verkehrsmittel an einem bestimmten Bahnhof gesucht werden können." ;
+    local:ist_vom_Typ local:Uniform_Resource_Locator__URL_ .
+
+local:Fahrradstrecke a owl:Class ;
+    rdfs:label "Fahrradstrecke" ;
+    rdfs:comment "Strecke oder Rundkurs für Fahrradfahrer" ;
+    local:befindet_sich_an local:Geographische_Multilinie ;
+    local:hat local:Bezeichnung,
+        local:L_nge ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Fahrtrichtungspfeil a owl:Class ;
+    rdfs:label "Fahrtrichtungspfeil" ;
+    rdfs:comment "Fahrbahnmarkierung zum Vorschreiben der Fahrtrichtung eines Verkehrsteilnehmers." ;
+    local:ausrichtung local:Gradma_ ;
+    local:befindet_sich_an local:Geographisches_Polygon ;
+    local:hat local:Fahrtrichtungspfeiltyp .
+
+local:Fahrzeugbestand a owl:Class ;
+    rdfs:label "Fahrzeugbestand" ;
+    rdfs:comment "Menge von vorhandenen Fahrzeugen" ;
+    local:anzahl local:Fahrzeug .
+
+local:Fl_cheninhalt a owl:Class ;
+    rdfs:label "Flächeninhalt" ;
+    rdfs:comment "Maß für die Größe einer Fläche" ;
+    local:gemessen_in local:Quadratmeter .
+
+local:Foto a owl:Class ;
+    rdfs:label "Foto" ;
+    rdfs:comment "Ein das dauerhafte Lichtbild (Diapositiv, Filmbild oder Papierbild; kurz Bild, umgangssprachlich auch Foto genannt), das durch fotografische Verfahren hergestellt wird." ;
+    local:ist_vom_Typ local:Uniform_Resource_Locator__URL_ .
+
+local:Gef_hlte_Temperatur a owl:Class ;
+    rdfs:label "Gefühlte Temperatur" ;
+    rdfs:comment "aufgrund verschiedener Faktoren wahrgenommene Umgebungstemperatur" ;
+    local:gemessen_in local:Grad_Celsius .
+
+local:Gelbanteil a owl:Class ;
+    rdfs:label "Gelbanteil" ;
+    rdfs:comment "Gelbanteil im CMYK-Farbmodell" ;
+    local:gemessen_in local:Prozent .
+
+local:Gemeindeverband a owl:Class ;
+    rdfs:label "Gemeindeverband" ;
+    rdfs:comment "Ein Gemeindeverband ist in Deutschland der Zusammenschluss von mindestens zwei Gemeinden zu einer Körperschaft des öffentlichen Rechts mit dem Zweck, im Rahmen kommunaler Selbstverwaltung in größerem Umfange öffentliche Aufgaben unter Beibehaltung der Selbstständigkeit der Mitgliedsgemeinden wahrzunehmen." ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Geschwindigkeitsanzeigeanlage a owl:Class ;
+    rdfs:label "Geschwindigkeitsanzeigeanlage " ;
+    rdfs:comment "technische Vorrichtung zur Signalisierung der aktuell gefahrenen Geschwindigkeit ohne dessen Aufzeichnung" ;
+    local:hat local:Fahrtrichtung .
+
+local:Geschwindigkeitsbegrenzung a owl:Class ;
+    rdfs:label "Geschwindigkeitsbegrenzung" ;
+    rdfs:comment "maximal erlaubte Geschwindigkeit eines Fahrzeugs" .
+
+local:Gr_nanteil a owl:Class ;
+    rdfs:label "Grünanteil" ;
+    rdfs:comment "Grünanteil im RGB-Farbmodell" ;
+    local:gemessen_in local:Byte .
+
+local:H_chstparkdauer a owl:Class ;
+    rdfs:label "Höchstparkdauer" ;
+    rdfs:comment "Maximale Anzahl an Stunden, die man in dem Bereich parken darf." ;
+    local:gemessen_in local:Stunde .
+
+local:Hexadezimale_Farbdefinition a owl:Class ;
+    rdfs:label "Hexadezimale Farbdefinition" ;
+    rdfs:comment "Farbe durch drei aufeinander folgende Hexadezimalzahlen dargestellt, die jeweils für eine Farbe des RGB-Farbraums stehen" ;
+    local:basiert_auf local:RGB_Farbmodell .
+
+local:Host a owl:Class ;
+    rdfs:label "Host" ;
+    rdfs:comment "Host-Komponente einer URL. Wird in Form einer IPv4-Adresse in dezimaler Schreibweise durch Punkte getrennt, in Form einer IPv6-Adresse in hexadezimaler Schreibweise durch Doppelpunkte getrennt und in eckige Klammern gesetzt oder in Form eines FQDN notiert." .
+
+local:Intern a owl:Class ;
+    rdfs:label "Intern" ;
+    rdfs:comment "innerhalb eines bestimmten implizit mitdefinierten Bezugsystems" .
+
+local:Kohlenstoffdioxid a owl:Class ;
+    rdfs:label "Kohlenstoffdioxid" ;
+    rdfs:comment "chemische Verbindung CO²" ;
+    local:gemessen_in local:Parts_per_million .
+
+local:Kreisschl_ssel a owl:Class ;
+    rdfs:label "Kreisschlüssel" ;
+    rdfs:comment "fünfstellige Kennziffer des Landkreises" .
+
+local:Lebensweltlich_orientierter_Raum__LOR_ a owl:Class ;
+    rdfs:label "Lebensweltlich orientierter Raum (LOR)" ;
+    rdfs:comment "räumliche Grundlage für die Planung, Prognose und Beobachtung demografischer und sozialer Entwicklungen in Berlin" ;
+    local:identifiziert_durch local:LOR_Schl_ssel .
+
+local:Luftqualit_tsmessung a owl:Class ;
+    rdfs:label "Luftqualitätsmessung" ;
+    rdfs:comment "Messdaten, welche Informationen über die Luftqualität beinhalten." ;
+    local:befindet_sich_an local:Geohash_7 ;
+    local:bezieht_sich_auf local:Messgr__e ;
+    local:gemessen_am local:Zeitstempel .
+
+local:Magentaanteil a owl:Class ;
+    rdfs:label "Magentaanteil" ;
+    rdfs:comment "Magentaanteil im CMYK-Farbmodell" ;
+    local:gemessen_in local:Prozent .
+
+local:Messfrequenz a owl:Class ;
+    rdfs:label "Messfrequenz" ;
+    rdfs:comment "Anzahl der Messungen in einer bestimmten Zeit" .
+
+local:Minute a owl:Class ;
+    rdfs:label "Minute" ;
+    rdfs:comment "Zeitraum von sechzig Sekunden; der sechzigste Teil einer Stunde" ;
+    local:anzahl local:Fahrzeug,
+        local:Messwert .
+
+local:Motorisierter_Individualverkehr__Fahrer_ a owl:Class ;
+    rdfs:label "Motorisierter Individualverkehr (Fahrer)" ;
+    rdfs:comment "Kraftfahrzeuge zur individuellen Nutzung" ;
+    local:gemessen_in local:Prozent .
+
+local:Motorisierter_Individualverkehr__Mitfahrer_ a owl:Class ;
+    rdfs:label "Motorisierter Individualverkehr (Mitfahrer)" ;
+    rdfs:comment "Kraftfahrzeuge zur individuellen Nutzung als Mitfahrer" ;
+    local:gemessen_in local:Prozent .
+
+local:Nachfrage a owl:Class ;
+    rdfs:label "Nachfrage" ;
+    rdfs:comment "am Markt tatsächlich geäußerter Bedarf an Gütern" ;
+    local:gemessen_in local:Gewichtung .
+
+local:Parkhaus a owl:Class ;
+    rdfs:label "Parkhaus" ;
+    rdfs:comment "meist mehrstöckiges Gebäude, das dem Parken von Autos dient" ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:hat local:Bezeichnung,
+        local:Kapazit_t ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Parkleitsystem_Schild a owl:Class ;
+    rdfs:label "Parkleitsystem-Schild" ;
+    rdfs:comment "Liefert dynamisch informationen zur Verfügbarkeit von Stellplätzen und alternativen." ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:hat local:Richtung,
+        local:Standortbezeichnung ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Parts_per_million a owl:Class ;
+    rdfs:label "Parts per million" ;
+    rdfs:comment "Maßeinheit, die auf der Anzahl der Partikel basiert, wird in Wissenschaft und Technik für den millionsten Teil verwendet" .
+
+local:Prognose a owl:Class ;
+    rdfs:label "Prognose" ;
+    rdfs:comment "Vorhersage zukünftiger Ereignisse oder der voraussichtlichen Entwicklung mit wissenschaftlichen Methoden" .
+
+local:Quell_Zielverkehr a owl:Class ;
+    rdfs:label "Quell/Zielverkehr" ;
+    rdfs:comment "Wege, die entweder ihr Ziel oder ihre Quelle innerhalb der Stadt haben" ;
+    local:gemessen_in local:Prozent .
+
+local:Rathaus_Konstanz a plcm:NamedEntity ;
+    rdfs:label "Rathaus Konstanz" ;
+    rdfs:comment "Rathaus der Stadt Konstanz" .
+
+local:Region a owl:Class ;
+    rdfs:label "Region" ;
+    rdfs:comment "ein anhand bestimmter Merkmale abgegrenztes Teilgebiet der Erdoberfläche" ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Rotanteil a owl:Class ;
+    rdfs:label "Rotanteil" ;
+    rdfs:comment "Rotanteil im RGB-Farbmodell" ;
+    local:gemessen_in local:Byte .
+
+local:Schaden a owl:Class ;
+    rdfs:label "Schaden" ;
+    rdfs:comment "unerwünschte, negative Auswirkung; Beschädigung an einem Gegenstand" ;
+    local:befindet_sich_an local:Geographischer_Punkt .
+
+local:Schulpause a owl:Class ;
+    rdfs:label "Schulpause" ;
+    rdfs:comment "Unterbrechung des Unterrichts" ;
+    local:durchgef_hrt_von local:Zeitabschnitt .
+
+local:Schwarzanteil a owl:Class ;
+    rdfs:label "Schwarzanteil" ;
+    rdfs:comment "Schwarzanteil im CMYK-Farbmodell" ;
+    local:gemessen_in local:Prozent .
+
+local:Sozialraum a owl:Class ;
+    rdfs:label "Sozialraum " ;
+    rdfs:comment "Ein von geografischen Gegebenheiten und von der öffentlichen Verwaltung definierter Siedlungsraum auf kommunaler Ebene. Er umfasst Kreise, Dörfer und Städte mit ihren Quartieren." ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Standzeit a owl:Class ;
+    rdfs:label "Standzeit" ;
+    rdfs:comment "Zeit, in der eine Maschine, ein Fahrzeug o. Ä. nicht arbeitet, nicht läuft, stillsteht" ;
+    local:gemessen_in local:Sekunde .
+
+local:Stationsidentifikationsnummer a owl:Class ;
+    rdfs:label "Stationsidentifikationsnummer" ;
+    rdfs:comment "Identifikator zur eindeutigen Identifizierung einer Wetterstation." .
+
+local:Statistisches_Quartier a owl:Class ;
+    rdfs:label "Statistisches Quartier" ;
+    rdfs:comment "Teil der Kommunalen Gebietsgliederung in Köln. Gliedert das Kölner Stadtgebiet auf verschiedenen Ebenen in eine Stadtstruktur und Blockstruktur. Weitere Bestandteile sind eine Straßenstruktur und Adressen. Die Statistischen Quartiere wurden im Jahr 2020 als Nachfolger der Stadtviertel für kleinräumige statistische Auswertung in die Kommunalen Gebietsgliederung aufgenommen" ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Stauwahrscheinlichkeit a owl:Class ;
+    rdfs:label "Stauwahrscheinlichkeit" ;
+    rdfs:comment "Prognose, wie wahrscheinlich ein Verkehrsstau ist" ;
+    local:gemessen_in local:Prozent .
+
+local:Steigung a owl:Class ;
+    rdfs:label "Steigung" ;
+    rdfs:comment "Maß für die Steilheit einer Geraden oder einer Kurve in der Mathematik" ;
+    local:gemessen_in local:Prozent .
+
+local:TVOC a owl:Class ;
+    rdfs:label "TVOC" ;
+    rdfs:comment "Gesamtsumme der Emissionskonzentration" ;
+    local:gemessen_in local:Parts_per_billion .
+
+local:Thalasso_Kurweg a owl:Class ;
+    rdfs:label "Thalasso Kurweg" ;
+    rdfs:comment "Weg der gesundheitsförderndes, heilklimatisches Gehen und Wandern ermöglicht" ;
+    local:befindet_sich_an local:Geographische_Linie ;
+    local:hat local:Beschreibung,
+        local:Bezeichnung,
+        local:Eigenschaften,
+        local:L_nge ;
+    local:identifiziert_durch local:Universally_Unique_Identifier__UUID_ .
+
+local:Tonne a owl:Class ;
+    rdfs:label "Tonne" ;
+    rdfs:comment "Maßeinheit der Masse, 1000 kg" .
+
+local:UTM_false_easting a owl:Class ;
+    rdfs:label "UTM false easting" ;
+    rdfs:comment "UTM false Easting ohne Zonenkennziffer unter Bezug auf das Referenzsystem WGS84. Ostwerte liegen zwischen 100.000 und 900.000" ;
+    local:hat local:Standardabweichung .
+
+local:UTM_northing a owl:Class ;
+    rdfs:label "UTM northing" ;
+    rdfs:comment "UTM northing ohne Zonenkennziffer unter Bezug auf das Referenzsystem WGS84. Nordwerte liegen zwischen 1 und 9.999.999" ;
+    local:hat local:Standardabweichung .
+
+local:Uhrzeit a owl:Class ;
+    rdfs:label "Uhrzeit" ;
+    rdfs:comment "Angabe eines Zeitpunktes" .
+
+local:Verkehrszeichen_Nummer a owl:Class ;
+    rdfs:label "Verkehrszeichen-Nummer" ;
+    rdfs:comment "Nummer des Verkehrszeichen nach StVO" ;
+    local:hat local:Beschreibung .
+
+local:Zollstelle a owl:Class ;
+    rdfs:label "Zollstelle" ;
+    rdfs:comment "eine Dienststelle einer Zollbehörde zur Regelung von Zollangelegenheiten" ;
+    local:befindet_sich_an local:Geographischer_Punkt .
+
+local:Zu_Fu_ a owl:Class ;
+    rdfs:label "Zu Fuß" ;
+    rdfs:comment "durch Fortbewegung auf den Füßen" ;
+    local:gemessen_in local:Prozent .
+
+local:_ffentlicher_Personennahverkehr___PNV_ a owl:Class ;
+    rdfs:label "Öffentlicher Personennahverkehr (ÖPNV) " ;
+    rdfs:comment "Personenverkehr als Teil einer Grundversorgung" ;
+    local:gemessen_in local:Prozent .
+
+local:_g_m_ a owl:Class ;
+    rdfs:label "µg/m³" ;
+    rdfs:comment "Mikrogramm pro Kubikmeter" .
+
+local:Abfall a owl:Class ;
+    rdfs:label "Abfall" ;
+    rdfs:comment "Reste, die bei der Zubereitung oder Herstellung entstehen" ;
+    local:befindet_sich_an local:Adresse ;
+    local:ist_vom_Typ local:Kategorie .
+
+local:Amtlicher_Gemeindeschl_ssel__AGS_ a owl:Class ;
+    rdfs:label "Amtlicher Gemeindeschlüssel (AGS)" ;
+    rdfs:comment " Zahlenfolge zur Identifizierung politisch selbständiger Städte, Gemeinden oder gemeindefreier Gebiete in Deutschland. Bundesland (2 Stellen), Bezirk (1 Stelle), Landkreis (2 Stellen), Gemeinde im Landkreis (3 Stellen)" ;
+    local:besteht_aus local:Bezirk,
+        local:Bundesland,
+        local:Gemeinde,
+        local:Landkreis .
+
+local:Anbindung a owl:Class ;
+    rdfs:label "Anbindung" ;
+    rdfs:comment "Verbindung von Verkehrswegen, Gebieten oder Ländern" ;
+    local:besteht_aus local:Verkehrslinie .
+
+local:Anschlussleistung a owl:Class ;
+    rdfs:label "Anschlussleistung" ;
+    rdfs:comment "Die maximal von einem Energieversorger an der jeweiligen Anschlussstelle bereitgestellte und in der Auslegung der Installation zugrunde gelegte Leistung bei der Versorgung mit elektrischer Energie, Gas oder Fernwärme." ;
+    local:gemessen_in local:Kilowatt .
+
+local:Ausf_hrung a owl:Class ;
+    rdfs:label "Ausführung" ;
+    rdfs:comment "Art der Herstellung, Fertigung eines Produktes" .
+
+local:Bedeckungsgrad a owl:Class ;
+    rdfs:label "Bedeckungsgrad" ;
+    rdfs:comment "Bezeichnung für eine Ansammlung von kondensiertem Wasser in der Erdatmosphäre" ;
+    local:gemessen_in local:Achtel ;
+    local:hat local:Qualitaetsniveau .
+
+local:Beschreibung a owl:Class ;
+    rdfs:label "Beschreibung" ;
+    rdfs:comment "Beschreibung eines Objektes oder Textes" .
+
+local:Bestrahlungsst_rke a owl:Class ;
+    rdfs:label "Bestrahlungsstärke" ;
+    rdfs:comment "Flächendichte der einfallenden Strahlungsleistung" ;
+    local:gemessen_in local:Watt_pro_Quadratmeter ;
+    local:gemessen_von local:Pyranometer .
+
+local:CMYK_Farbmodell a owl:Class ;
+    rdfs:label "CMYK-Farbmodell" ;
+    rdfs:comment "subtraktives Farbmodell" ;
+    local:besteht_aus local:Cyananteil,
+        local:Gelbanteil,
+        local:Magentaanteil,
+        local:Schwarzanteil ;
+    local:ist_ein_e_ local:Farbmodell .
+
+local:Elektrischer_Strom a owl:Class ;
+    rdfs:label "Elektrischer Strom" ;
+    rdfs:comment "AC (Alternating Current) oder DC (Direct Current)" ;
+    local:bezahlbar_mit local:Ladekarte ;
+    local:hat local:Zusatzinformation .
+
+local:Fahrkarte a owl:Class ;
+    rdfs:label "Fahrkarte" ;
+    rdfs:comment "Ausweis, der gegen Entrichtung eines Geldbetrages zur Benutzung eines öffentlichen Verkehrsmittels berechtigt" ;
+    local:geh_rt_zu local:Verkehrsunternehmen ;
+    local:ist_Teil_von local:Schleswig_Holstein_Tarif .
+
+local:Fahrplan a owl:Class ;
+    rdfs:label "Fahrplan" ;
+    rdfs:comment "Fahrtverlauf eines Verkehrsmittels" ;
+    local:hat local:Bezeichnung,
+        local:Zusatzinformation ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Fahrradluftstation a owl:Class ;
+    rdfs:label "Fahrradluftstation" ;
+    rdfs:comment "Station an der die Luft in Fahrradreifen aufgefüllt werden kann." ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:betrieben_durch local:Betreiber ;
+    local:hat local:Bezeichnung,
+        local:Zusatzinformation ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Fahrradstation a owl:Class ;
+    rdfs:label "Fahrradstation" ;
+    rdfs:comment "Einrichtung zum Abstellen, Verleihen und Reparieren von Fahrrädern" ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:hat local:Adresse,
+        local:Bezeichnung,
+        local:Eigenschaften,
+        local:Kontaktdaten,
+        local:_ffnungszeit ;
+    local:ist_vom_Typ local:Kategorie ;
+    local:liegt_an local:Haltestelle .
+
+local:Farbe a owl:Class ;
+    rdfs:label "Farbe" ;
+    rdfs:comment "Sinneseindruck des sichtbaren Lichts im Spektrum" ;
+    local:identifiziert_durch local:CMYK_Farbmodell,
+        local:Hexadezimale_Farbdefinition,
+        local:RAL_Farbe,
+        local:RGB_Farbmodell .
+
+local:Farbmodell a owl:Class ;
+    rdfs:label "Farbmodell" ;
+    rdfs:comment "abstraktes mathematisches Modell, das beschreibt wie Farben als Tupel aus Zahlen repräsentiert werden können" .
+
+local:Faxnummer a owl:Class ;
+    rdfs:label "Faxnummer" ;
+    rdfs:comment "eindeutige, aus Ziffern bestehende Kennung zur Anwahl eines Telefaxanschlusses" .
+
+local:Feinstaub a owl:Class ;
+    rdfs:label "Feinstaub" ;
+    rdfs:comment "Teil des Schwebstaubs" ;
+    local:gemessen_in local:_g_m_ .
+
+local:G_terverkehr a owl:Class ;
+    rdfs:label "Güterverkehr" ;
+    rdfs:comment "Transport von Gütern und Tieren auf den Transport- und Verkehrswegen Straße, Schiene, Wasser und Luft" .
+
+local:Geographische_Breite a owl:Class ;
+    rdfs:label "Geographische Breite" ;
+    rdfs:comment "Die geographische Breite beschreibt eine der beiden Koordinaten eines Ortes auf der Erdoberfläche. Der Breitengrad wird vom Äquator aus nach Norden (0° bis 90° Nord am Nordpol) und nach Süden (0° bis 90° Süd am Südpol) gemessen (WGS 84 / EPSG 4326)." .
+
+local:Geographische_L_nge a owl:Class ;
+    rdfs:label "Geographische Länge" ;
+    rdfs:comment "Die geographische Länge beschreibt eine der beiden Koordinaten eines Ortes auf der Erdoberfläche. Die geographische Länge wird vom Nullmeridian aus von 0° bis 180° nach Osten und von 0° bis 180° nach Westen gemessen. (WGS 84 / EPSG 4326)" .
+
+local:Geographische_Multilinie a owl:Class ;
+    rdfs:label "Geographische Multilinie" ;
+    rdfs:comment "Eine geographische Multilinie ist eine Menge von geographischen Linien." ;
+    local:besteht_aus local:Geographische_Linie .
+
+local:Geographisches_Multipolygon a owl:Class ;
+    rdfs:label "Geographisches Multipolygon" ;
+    rdfs:comment "Ein geografische Multipolygon besteht aus ein oder mehreren inneren und äußeren geographischen Polygonen, die zusammen eine Fläche auf der Erdoberfläche darstellen. Innere Polygone werden von der Fläche der äußeren Polygone abgezogen." ;
+    local:au_en local:Geographisches_Polygon ;
+    local:innen local:Geographisches_Polygon .
+
+local:Gewicht a owl:Class ;
+    rdfs:label "Gewicht" ;
+    rdfs:comment "Eigenschaft der Materie, schwerfällig auf Änderungen des Bewegungszustandes zu reagieren und andere Körper anzuziehen" ;
+    local:gemessen_in local:Tonne .
+
+local:Herkunft a owl:Class ;
+    rdfs:label "Herkunft " ;
+    rdfs:comment "Ursprung eines Wortes" .
+
+local:Kfz_Kennzeichen a owl:Class ;
+    rdfs:label "Kfz-Kennzeichen" ;
+    rdfs:comment "Kraftfahrzeugkennzeichen, eine von der Kraftfahrzeug-Zulassungsbehörde zugeteilte individuelle numerische oder alphanumerische Registrierungsbezeichnung für Kraftfahrzeuge" ;
+    local:besteht_aus local:Unterscheidungszeichen ;
+    local:geh_rt_zu local:Deutschland,
+        local:Verwaltungseinheit .
+
+local:Kilometer_pro_Stunde a owl:Class ;
+    rdfs:label "Kilometer pro Stunde" ;
+    rdfs:comment "Einheit für Geschwindigkeit. Kilometer durch Stunde" .
+
+local:Kontaktdaten a owl:Class ;
+    rdfs:label "Kontaktdaten" ;
+    rdfs:comment "Daten, unter denen jemand mit einer anderen Person, einer Firma, Institution o. Ä. Kontakt aufnehmen kann" ;
+    local:besteht_aus local:E_Mail_Adresse,
+        local:Faxnummer,
+        local:Telefonnummer .
+
+local:Laden a owl:Class ;
+    rdfs:label "Laden" ;
+    rdfs:comment "Räumlichkeiten, in denen Waren oder Dienstleistungen gewerblich zum Verkauf angeboten werden" ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:befindet_sich_in local:Gemeinde ;
+    local:hat local:Adresse,
+        local:Bemerkung,
+        local:Bezeichnung,
+        local:_ffnungszeit ;
+    local:verkauft local:Fahrkarte .
+
+local:Ladezustand a owl:Class ;
+    rdfs:label "Ladezustand" ;
+    rdfs:comment "die aktuelle Kapazität einer Batterie" ;
+    local:erfasst_am local:Zeitstempel ;
+    local:gemessen_in local:Prozent .
+
+local:Land a owl:Class ;
+    rdfs:label "Land" ;
+    rdfs:comment "Ein Land ist ein abgegrenzter Bereich der Erdoberfläche, z. B. ein Staat, eine Nation oder eine andere politische Einheit. Es kann ein souveräner Staat sein oder einen Teil eines größeren Staates ausmachen." .
+
+local:Lastkraftwagen a owl:Class ;
+    rdfs:label "Lastkraftwagen" ;
+    rdfs:comment "Nutzfahrzeug zur Güterbeförderung" ;
+    local:hat local:Anh_nger .
+
+local:Mast a owl:Class ;
+    rdfs:label "Mast" ;
+    rdfs:comment "senkrecht stehender pfeilerähnlicher Träger (allgemein)" ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Meter a owl:Class ;
+    rdfs:label "Meter" ;
+    rdfs:comment "Der Meter ist die Basiseinheit der Länge im Internationalen Einheitensystem und in anderen metrischen Einheitensystemen. Ein Meter ist definiert als die Länge der Strecke, die das Licht im Vakuum während der Dauer von 1/299 792 458 Sekunde zurücklegt. Das Einheitenzeichen des Meters ist der Kleinbuchstabe „m“. " .
+
+local:Monat a owl:Class ;
+    rdfs:label "Monat" ;
+    rdfs:comment "Maß zur Festlegung einer Zeitspanne; der zwölfte Teil eines Jahres, der nach dem gregorianischen Kalender 28 bis 31 Tage betragen kann" .
+
+local:P_nktlichkeit a owl:Class ;
+    rdfs:label "Pünktlichkeit" ;
+    rdfs:comment "das präzise Einhalten eines vereinbarten Zeitpunkts oder Termins" ;
+    local:bezieht_sich_auf local:Zeitabschnitt ;
+    local:gemessen_in local:Prozent .
+
+local:Parkschein a owl:Class ;
+    rdfs:label "Parkschein" ;
+    rdfs:comment "Beleg, der als Quittung für eine zeitlich begrenzte Berechtigung zur Parkraumnutzung dient" ;
+    local:geh_rt_zu local:Parkm_glichkeit ;
+    local:kostet local:Geb_hr .
+
+local:Personenverkehr a owl:Class ;
+    rdfs:label "Personenverkehr" ;
+    rdfs:comment "Transport von Personen oder Passagieren durch Transportmittel zur Ortsveränderung" .
+
+local:Planquadrat a owl:Class ;
+    rdfs:label "Planquadrat" ;
+    rdfs:comment "von vier Linien begrenzte Fläche innerhalb eines Gitternetzes auf Landkarten oder Ähnlichem" ;
+    local:bezieht_sich_auf local:Amtliche_Karte .
+
+local:Pt100_Sensor a owl:Class ;
+    rdfs:label "Pt100-Sensor" ;
+    rdfs:comment "Platin Messwiderstand mit 100 Ohm, Temperatur-Sensor" .
+
+local:Pyranometer a owl:Class ;
+    rdfs:label "Pyranometer" ;
+    rdfs:comment "meteorologisches Messgerät zur Messung der Bestrahlungsstärke der Sonne" .
+
+local:Route a owl:Class ;
+    rdfs:label "Route " ;
+    rdfs:comment "genauer Weg zwischen mehreren Punkten" ;
+    local:dauer local:Zeitabschnitt ;
+    local:identifiziert_durch local:L_nge .
+
+local:Schienennetz a owl:Class ;
+    rdfs:label "Schienennetz" ;
+    rdfs:comment "Gesamtheit mehrerer Eisenbahnstrecken" ;
+    local:benutzt_von local:Zug .
+
+local:Schule a owl:Class ;
+    rdfs:label "Schule" ;
+    rdfs:comment "Institution für den Unterricht von Schülern unter der Leitung von Schullehrern" ;
+    local:anfang local:Zeitstempel ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:hat local:Adresse,
+        local:Bezeichnung,
+        local:Faxnummer,
+        local:Schulpause,
+        local:Schultr_ger,
+        local:Telefonnummer__Festnetz_,
+        local:Website ;
+    local:ist_vom_Typ local:Schulform .
+
+local:Schwebebahnstation a owl:Class ;
+    rdfs:label "Schwebebahnstation" ;
+    rdfs:comment "Station/Bahnhof der Wuppertaler Schwebebahn" ;
+    local:angefahren_von local:Wuppertaler_Schwebebahn ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:hat local:Bezeichnung ;
+    local:ist_ein_e_ local:Haltestelle .
+
+local:Schweiz a plcm:NamedEntity ;
+    rdfs:label "Schweiz" ;
+    rdfs:comment "Staat in Mitteleuropa" .
+
+local:Schwerverkehr a owl:Class ;
+    rdfs:label "Schwerverkehr" ;
+    rdfs:comment "Straßentransport von Gütern und Personen mit schweren Nutzfahrzeugen" ;
+    local:besteht_aus local:Bus,
+        local:Lastkraftwagen ;
+    local:hat local:Gewicht .
+
+local:Smart_Citizen_Kit a plcm:NamedEntity ;
+    rdfs:label "Smart Citizen Kit" ;
+    rdfs:comment "ermöglicht es den Menschen, auf einfache Weise Daten wie Luft- und Lärmbelastung in ihrer Umgebung zu messen, zu sammeln und zu visualisieren, während sie diese auf einer speziellen Plattform mit anderen teilen, die vollständig quelloffen und anpassbar ist" ;
+    local:hat local:Ladezustand ;
+    local:ist_ein_e_ local:Messstation .
+
+local:Sonnenscheindauer a owl:Class ;
+    rdfs:label "Sonnenscheindauer" ;
+    rdfs:comment "Summe der Zeit in einem bestimmten Zeitabschnitt, während die Sonne scheint" ;
+    local:gemessen_in local:Stunde ;
+    local:hat local:Qualitaetsniveau .
+
+local:Stadtviertel a owl:Class ;
+    rdfs:label "Stadtviertel" ;
+    rdfs:comment "geografisch lokalisierte Gemeinschaft innerhalb einer größeren Stadt, Stadt, Vorstadt oder ländlichen Region" ;
+    local:geh_rt_zu local:Ortsteil ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Standardabweichung a owl:Class ;
+    rdfs:label "Standardabweichung" ;
+    rdfs:comment "Maß für die Streuung der Werte einer Zufallsvariablen um ihren Erwartungswert" .
+
+local:Stra_enbahn a owl:Class ;
+    rdfs:label "Straßenbahn" ;
+    rdfs:comment "schienengebundenes Verkehrsmittel im Stadtverkehr des öffentlichen Personennahverkehrs" .
+
+local:Stra_enbahnstrecke a owl:Class ;
+    rdfs:label "Straßenbahnstrecke" ;
+    rdfs:comment "Schienenfahrweg einer Straßenbahn" ;
+    local:angefahren_von local:Verkehrslinie ;
+    local:befindet_sich_an local:Geographische_Linie ;
+    local:identifiziert_durch local:Universally_Unique_Identifier__UUID_ ;
+    local:ist_Teil_von local:Schienennetz .
+
+local:Stra_enbeleuchtung a owl:Class ;
+    rdfs:label "Straßenbeleuchtung" ;
+    rdfs:comment "öffentliche Beleuchtung von Verkehrswegen" ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:erfasst_am local:Zeitstempel ;
+    local:hat local:Befestigungsort,
+        local:Betriebsart,
+        local:H_he ;
+    local:identifiziert_durch local:Identifikator,
+        local:Standortbezeichnung,
+        local:Stra_enbeleuchtungs_Nummer .
+
+local:Stra_enschl_ssel a owl:Class ;
+    rdfs:label "Straßenschlüssel" ;
+    rdfs:comment "Ein Straßenschlüssel besteht üblicherweise aus einer Folge von fünf Ziffern. Durch ihn ist eine eindeutige Identifikation von öffentlichen Orten bestimmter Typen möglich. Zu den Typen gehören Straßen, Plätze, Brücken, Bahnhöfe." .
+
+local:Stra_enseite a owl:Class ;
+    rdfs:label "Straßenseite" ;
+    rdfs:comment "Teil einer Straße rechts oder links der Mitte, sowie der Bereich der rechts oder Links einer Straße liegt" ;
+    local:ausrichtung local:Links,
+        local:Rechts ;
+    local:ist_vom_Typ local:Kategorie .
+
+local:Stra_enverkehrsunfall a owl:Class ;
+    rdfs:label "Straßenverkehrsunfall" ;
+    rdfs:comment "Schadensereignis mit ursächlicher Beteiligung von Verkehrsteilnehmern im Straßenverkehr" ;
+    local:befindet_sich_an local:Geographischer_Punkt,
+        local:Stra_e ;
+    local:befindet_sich_in local:Gebiet ;
+    local:hat local:Eigenschaften,
+        local:Unfallart,
+        local:Unfallkategorie,
+        local:Unfalltyp,
+        local:Zeitstempel ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Stra_enverzeichnis a owl:Class ;
+    rdfs:label "Straßenverzeichnis" ;
+    rdfs:comment "Liste der Straßen in einer Stadt" ;
+    local:geh_rt_zu local:K_ln .
+
+local:Tagesh_chsttemperatur a owl:Class ;
+    rdfs:label "Tageshöchsttemperatur" ;
+    rdfs:comment "Die höchste, an einem bestimmten Tag aufgetretene Temperatur" ;
+    local:gemessen_in local:Grad_Celsius ;
+    local:hat local:Qualitaetsniveau .
+
+local:Tagestiefsttemperatur a owl:Class ;
+    rdfs:label "Tagestiefsttemperatur" ;
+    rdfs:comment "Die niedrigste, an einem bestimmten Tag aufgetretene Temperatur" ;
+    local:gemessen_in local:Grad_Celsius ;
+    local:hat local:Qualitaetsniveau .
+
+local:Tarif a owl:Class ;
+    rdfs:label "Tarif" ;
+    rdfs:comment "festgesetzter Preis; Entgelt, Gebühr für etwas (z. B. für die Inanspruchnahme von Dienstleistungen)" ;
+    local:g_ltig local:Abends,
+        local:Tags_ber ;
+    local:kostet local:Geb_hr .
+
+local:Tarifzone a owl:Class ;
+    rdfs:label "Tarifzone" ;
+    rdfs:comment "Tarifzonen sind Teilzonen von Bereichen, die von Verkehrsbetrieben im Öffentlichen Personennahverkehr mit öffentlichen Verkehrsmitteln bedient werden. Sie dienen zur Festlegung eines angemessenen Fahrpreises." .
+
+local:Taupunkttemperatur a owl:Class ;
+    rdfs:label "Taupunkttemperatur" ;
+    rdfs:comment "Der Kondensationspunkt in Luft." ;
+    local:gemessen_in local:Grad_Celsius .
+
+local:Taxi a owl:Class ;
+    rdfs:label "Taxi" ;
+    rdfs:comment "öffentliches Verkehrsmittel zur individuellen Personenbeförderung" ;
+    local:f_hrt_ab local:Route ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Telefonnummer__Festnetz_ a owl:Class ;
+    rdfs:label "Telefonnummer (Festnetz)" ;
+    rdfs:comment "eine eindeutige Nummer in einem Vorwahlbereich, die einem Telefonanschluss zugeordnet ist" .
+
+local:Unixzeit a owl:Class ;
+    rdfs:label "Unixzeit" ;
+    rdfs:comment "Die Unixzeit ist eine Zeitdefinition, die für das Betriebssystem Unix entwickelt und als POSIX-Standard festgelegt wurde. Die Unixzeit zählt die vergangenen Sekunden seit Donnerstag, dem 1. Januar 1970, 00:00 Uhr UTC." .
+
+local:Unixzeit__Millisekunden_ a owl:Class ;
+    rdfs:label "Unixzeit (Millisekunden)" ;
+    rdfs:comment "Die Unixzeit ist eine Zeitdefinition, die für das Betriebssystem Unix entwickelt und als POSIX-Standard festgelegt wurde. Zählt die vergangenen Millisekunden seit Donnerstag, dem 1. Januar 1970, 00:00 Uhr UTC." .
+
+local:Unterscheidungszeichen a owl:Class ;
+    rdfs:label "Unterscheidungszeichen " ;
+    rdfs:comment "standardisierte Buchstaben- oder Ziffernfolge, die mit Verwaltungsdistrikten oder spezifischen Verwaltungseinheiten (Militär, staatliche oder internationale Organisationen, Touristenbüros) verbunden ist" ;
+    local:geh_rt_zu local:Kreis_Geldern .
+
+local:Verkehrszeichenstandort a owl:Class ;
+    rdfs:label "Verkehrszeichenstandort" ;
+    rdfs:comment "Standort eines Verkehrszeichen auf der Erdoberfläche." ;
+    local:hat local:Ausf_hrung,
+        local:Bodenfreiheit,
+        local:Eigenschaften,
+        local:Fundament,
+        local:Lage,
+        local:Material,
+        local:Richtung,
+        local:Zustand ;
+    local:identifiziert_durch local:Identifikator,
+        local:Nummer .
+
+local:Versto_ a owl:Class ;
+    rdfs:label "Verstoß" ;
+    rdfs:comment "Verletzung eines Gesetzes" ;
+    local:bezieht_sich_auf local:Flie_ender_Verkehr,
+        local:Ruhender_Verkehr ;
+    local:erfasst_am local:Datum,
+        local:Zeitstempel ;
+    local:ist_vom_Typ local:Tatbestandsnummer ;
+    local:kostet local:Geb_hr .
+
+local:Wahlbezirk a owl:Class ;
+    rdfs:label "Wahlbezirk" ;
+    rdfs:comment "organisatorische Einheit bei politischen Wahlen" .
+
+local:Wetter a owl:Class ;
+    rdfs:label "Wetter" ;
+    rdfs:comment "aktueller Zustand des Klimas" ;
+    local:besteht_aus local:Gef_hlte_Temperatur,
+        local:Lufttemperatur,
+        local:Niederschlag ;
+    local:geh_rt_zu local:Kategorie .
+
+local:Windspitze a owl:Class ;
+    rdfs:label "Windspitze" ;
+    rdfs:comment "höchste momentane Windgeschwindigkeit (höchster 3-Sekunden-Mittelwert der Geschwindigkeit) in einem willkürlich festgelegten Zeitraum" ;
+    local:gemessen_in local:Kilometer_pro_Stunde,
+        local:Meter_pro_Sekunde ;
+    local:hat local:Qualitaetsniveau .
+
+local:Windst_rke a owl:Class ;
+    rdfs:label "Windstärke" ;
+    rdfs:comment "Geschwindigkeit der Luftbewegung" ;
+    local:gemessen_in local:Beaufortskala,
+        local:Kilometer_pro_Stunde ;
+    local:hat local:Qualitaetsniveau .
+
+local:Wohnplatz a owl:Class ;
+    rdfs:label "Wohnplatz" ;
+    rdfs:comment "räumlich geschlossene, dauernd bewohnte Ansiedlung" ;
+    local:identifiziert_durch local:Identifikator ;
+    local:liegt_in local:Ortsteil .
+
+local:Zustand a owl:Class ;
+    rdfs:label "Zustand" ;
+    rdfs:comment "Art und Weise, wie etwas zu einem bestimmten Zeitpunkt ist" ;
+    local:hat local:Prognose .
+
+local:Bauart a owl:Class ;
+    rdfs:label "Bauart" ;
+    rdfs:comment "die Art und Weise, auf die etwas (ein Gebäude) gebaut ist" .
+
+local:Befestigungsort a owl:Class ;
+    rdfs:label "Befestigungsort" ;
+    rdfs:comment "Ort wo etwas befestigt ist" ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Bewerteter_Schalldruckpegel a owl:Class ;
+    rdfs:label "Bewerteter Schalldruckpegel" ;
+    rdfs:comment "Wird in der akustischen Messtechnik verwendet, um auf Grundlage des Schalldruckpegels als physikalischer Größe eine der auditiven Wahrnehmung des Menschen angenäherte Größe zu erhalten." ;
+    local:gemessen_in local:Dezibel___Bewertungskurve_A .
+
+local:Bezugsmonat a owl:Class ;
+    rdfs:label "Bezugsmonat" ;
+    rdfs:comment "Monat, auf das sich etwas bezieht" ;
+    local:besteht_aus local:Jahr,
+        local:Monat ;
+    local:durchschnitt local:Stickstoffdioxid_Konzentration ;
+    local:hat local:Expositionszeitraum .
+
+local:Bundesland a owl:Class ;
+    rdfs:label "Bundesland" ;
+    rdfs:comment "selbständiges Staatsrechtssubjekt innerhalb der Verwaltungsgliederung der Bundesrepublik Deutschland" .
+
+local:Byte a owl:Class ;
+    rdfs:label "Byte" ;
+    rdfs:comment "Maßeinheit der Digitaltechnik und der Informatik, bestehend aus 8 Bit" ;
+    local:dargestellt_in local:Dezimalsystem .
+
+local:E_Mail_Adresse a owl:Class ;
+    rdfs:label "E-Mail-Adresse" ;
+    rdfs:comment "eine eindeutige Absender- und Empfangsadresse für den elektronischen Briefverkehr" .
+
+local:Expositionszeitraum a owl:Class ;
+    rdfs:label "Expositionszeitraum" ;
+    rdfs:comment "Zeitraum, indem etwas gegenüber schädlichen Umwelteinflüssen ausgesetzt ist" ;
+    local:anfang local:Datum ;
+    local:ende local:Datum .
+
+local:Fahrradstellplatz a owl:Class ;
+    rdfs:label "Fahrradstellplatz" ;
+    rdfs:comment "Ort, an dem Fahrräder abgestellt werden können." ;
+    local:anzahl local:Stellplatz ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:hat local:Standortbezeichnung,
+        local:Statusinformation ;
+    local:identifiziert_durch local:Stellplatz_Nummer ;
+    local:liegt_in local:Ortsteil .
+
+local:Fahrstreifen a owl:Class ;
+    rdfs:label "Fahrstreifen" ;
+    rdfs:comment "Teil der Fahrbahn" ;
+    local:zustand local:Gesperrt .
+
+local:Geographischer_Norden a owl:Class ;
+    rdfs:label "Geographischer Norden" ;
+    rdfs:comment "jene horizontale Richtung, die zum geografischen Nordpol führt" .
+
+local:Haltestellennummer a owl:Class ;
+    rdfs:label "Haltestellennummer" ;
+    rdfs:comment "Eindeutige Nummer für eine Haltestelle. Dient zur Identifikation." .
+
+local:Kapazit_t a owl:Class ;
+    rdfs:label "Kapazität" ;
+    rdfs:comment "Größe des Inhalts beziehungsweise Menge, die aufgenommen werden kann" ;
+    local:gemessen_am local:Zeitstempel ;
+    local:hat local:Prognose .
+
+local:Lage a owl:Class ;
+    rdfs:label "Lage" ;
+    rdfs:comment "Stelle, an der etwas liegt" .
+
+local:Luftdruck a owl:Class ;
+    rdfs:label "Luftdruck" ;
+    rdfs:comment "Der hydrostatische Druck der Luft, der an einem Ort herrscht." ;
+    local:gemessen_in local:Hektopascal,
+        local:Kilopascal .
+
+local:Park_and_Ride_Anlage a owl:Class ;
+    rdfs:label "Park and Ride-Anlage" ;
+    rdfs:comment "Park and Ride-Anlagen (P+R) sind Pkw-Abstellanlagen an Haltestellen des öffentlichen Personenverkehrs. Sie dienen der einfachen und sicheren Verknüpfung von Pkw und Bus oder Bahn für intermodale Reiseketten." ;
+    local:anzahl local:Stellplatz ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:bietet_an local:Adresse,
+        local:Bezeichnung,
+        local:Stellplatz ;
+    local:hat local:Adresse,
+        local:Anbindung,
+        local:Bezeichnung,
+        local:Standortbezeichnung,
+        local:Zusatzinformation,
+        local:_ffnungszeit ;
+    local:identifiziert_durch local:Identifikator .
+
+local:RAL_Farbe a owl:Class ;
+    rdfs:label "RAL-Farbe" ;
+    rdfs:comment "Palette von normierten Farben" ;
+    local:hat local:Bezeichnung ;
+    local:identifiziert_durch local:Nummer ;
+    local:ist_ein_e_ local:Farbmodell .
+
+local:Reinigungsklasse a owl:Class ;
+    rdfs:label "Reinigungsklasse" ;
+    rdfs:comment "Zweistelliger Schlüssel bzgl. Reinigungsklasse (1. Ziffer) und -häufigkeit (2. Ziffer)" ;
+    local:g_ltig_ab local:Jahr ;
+    local:in local:Reinigungsbereich .
+
+local:Sektor a owl:Class ;
+    rdfs:label "Sektor" ;
+    rdfs:comment "Abschnitt oder Ast, Kante im Straßennetz" ;
+    local:befindet_sich_an local:Geographische_Linie ;
+    local:geh_rt_zu local:Stra_enklasse ;
+    local:hat local:Achsentyp,
+        local:Bezeichnung,
+        local:Eigenschaften,
+        local:Getrennt_verlaufende_Fahrbahn,
+        local:L_nge,
+        local:Nummer ;
+    local:identifiziert_durch local:Identifikator ;
+    local:ist_vom_Typ local:Art .
+
+local:Stadt a owl:Class ;
+    rdfs:label "Stadt" ;
+    rdfs:comment "Eine Stadt ist eine größere, zentralisierte und abgegrenzte Siedlung im Schnittpunkt größerer Verkehrswege mit einer eigenen Verwaltungs- und Versorgungsstruktur." ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Statusinformation a owl:Class ;
+    rdfs:label "Statusinformation" ;
+    rdfs:comment "Information über den Status des Objekts." ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Stra_enklasse a owl:Class ;
+    rdfs:label "Straßenklasse" ;
+    rdfs:comment "A = Bundesautobahn,B = Bundesstraße,L = Landesstraße,S = Staatsstraße,K = Kreisstraße,G = Gemeindestraße,N = Nicht öffentliche Straße" .
+
+local:Stunde a owl:Class ;
+    rdfs:label "Stunde" ;
+    rdfs:comment "Zeitraum von 60 Minuten" .
+
+local:Taxistand a owl:Class ;
+    rdfs:label "Taxistand" ;
+    rdfs:comment "Ein Taxistand, oft auch Taxenstand, bei Taxifahrern auch Taxiposten oder Halteposten genannt, ist eine durch entsprechende Verkehrszeichen gekennzeichnete Wartefläche für Taxis, an der Fahrgäste einsteigen können." ;
+    local:anzahl local:Stellplatz ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:erfasst_am local:Zeitstempel ;
+    local:hat local:Adresse,
+        local:Eigenschaften,
+        local:Standortbezeichnung ;
+    local:identifiziert_durch local:Identifikator,
+        local:Universally_Unique_Identifier__UUID_ .
+
+local:Verkehrsmitteilung a owl:Class ;
+    rdfs:label "Verkehrsmitteilung" ;
+    rdfs:comment "Information für Verkehrsteilnehmer über die aktuelle Verkehrslage." ;
+    local:ist_vom_Typ local:Uniform_Resource_Locator__URL_ .
+
+local:Verkehrsmittelwahl a owl:Class ;
+    rdfs:label "Verkehrsmittelwahl" ;
+    rdfs:comment "Verteilung des Transportaufkommens auf verschiedene Verkehrsmittel" ;
+    local:anteil local:Fahrrad,
+        local:Motorisierter_Individualverkehr__Fahrer_,
+        local:Motorisierter_Individualverkehr__Mitfahrer_,
+        local:Zu_Fu_,
+        local:_ffentlicher_Personennahverkehr___PNV_ ;
+    local:bezieht_sich_auf local:Jahr ;
+    local:erfasst_am local:Quartal .
+
+local:Verwaltungseinheit a owl:Class ;
+    rdfs:label "Verwaltungseinheit" ;
+    rdfs:comment "Gebiete, die sich aus der Aufteilung eines Staatsgebiets in räumliche Zuständigkeitsbereiche ergeben." ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:hat local:Bezeichnung ;
+    local:identifiziert_durch local:Amtlicher_Regionalschl_ssel__ARS_,
+        local:DLM250_Identifikator .
+
+local:Wochentag a owl:Class ;
+    rdfs:label "Wochentag" ;
+    rdfs:comment "Tag innerhalb einer Woche (Montag - Sonntag)" .
+
+local:Behindertenparkplatz a owl:Class ;
+    rdfs:label "Behindertenparkplatz" ;
+    rdfs:comment "Ein Behindertenparkplatz ist eine spezielle, oft barrierefreie, Parkmöglichkeit für Menschen mit besonderen Anforderungen." ;
+    local:anzahl local:Stellplatz ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:eingerichtet_in local:Zeitabschnitt ;
+    local:hat local:Adresse,
+        local:Bemerkung,
+        local:Standortbezeichnung,
+        local:Zusatzinformation ;
+    local:identifiziert_durch local:Identifikator ;
+    local:liegt_in local:Ortsteil .
+
+local:Deutschland a plcm:NamedEntity ;
+    rdfs:label "Deutschland" ;
+    rdfs:comment "Bundesstaat in Mitteleuropa" .
+
+local:Fahrradabstellanlage a owl:Class ;
+    rdfs:label "Fahrradabstellanlage" ;
+    rdfs:comment "bauliche Einrichtung zum Abstellen von Fahrrädern" ;
+    local:anzahl local:Fahrradhalter,
+        local:Stellplatz ;
+    local:befindet_sich_an local:Geographischer_Punkt,
+        local:Geographisches_Polygon ;
+    local:hat local:Bauart,
+        local:Eigenschaften,
+        local:Eigent_mer,
+        local:Kategorie,
+        local:Standortbezeichnung ;
+    local:identifiziert_durch local:Identifikator,
+        local:Nummer ;
+    local:ist_vom_Typ local:Ausf_hrung ;
+    local:liegt_in local:Ortsteil .
+
+local:Fahrradstra_e a owl:Class ;
+    rdfs:label "Fahrradstraße" ;
+    rdfs:comment "Eine Fahrradstraße ist eine für den Radverkehr vorgesehene Straße bzw. deren Fahrbahn (nicht aber z. B. Gehwege). Sie soll die Attraktivität des Radverkehrs steigern und Vorteile gegenüber dem Kraftfahrzeugverkehr schaffen." ;
+    local:anfang local:Stra_e ;
+    local:eingerichtet_in local:Jahr ;
+    local:ende local:Stra_e ;
+    local:hat local:Bemerkung,
+        local:Bezeichnung,
+        local:Eigenschaften,
+        local:L_nge ;
+    local:identifiziert_durch local:Identifikator ;
+    local:liegt_in local:Stadtbezirk .
+
+local:Fahrradverleih a owl:Class ;
+    rdfs:label "Fahrradverleih" ;
+    rdfs:comment "Unternehmen, das Fahrräder für kurze Zeiträume vermietet" ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:betrieben_durch local:Betreiber ;
+    local:erh_lt local:Fahrrad ;
+    local:hat local:Adresse,
+        local:Bezeichnung,
+        local:Eigenschaften ;
+    local:identifiziert_durch local:Nummer ;
+    local:vermietet local:Fahrrad .
+
+local:Gesamtverkehr a owl:Class ;
+    rdfs:label "Gesamtverkehr" ;
+    rdfs:comment "Binnen- und Quell-/ Zielverkehr sowie Durchgangs- und Tangentialverkehr" ;
+    local:besteht_aus local:G_terverkehr,
+        local:Personenverkehr ;
+    local:gemessen_in local:Prozent .
+
+local:Gradma_ a owl:Class ;
+    rdfs:label "Gradmaß" ;
+    rdfs:comment "Das Gradmaß ist ein Winkelmaß. Als Einheitenzeichen für den Grad wird ein hochgestellter kleiner Kreis (°) verwendet, der ohne Zwischenraum an die letzte Ziffer des Zahlenwertes angehängt wird. 1 Grad ist definiert als der 360. Teil des Vollwinkels, wobei 1 Vollwinkel = 360°." ;
+    local:absolute_Bezugsrichtung local:Geographischer_Norden ;
+    local:ausrichtung local:Geographischer_Norden .
+
+local:H_he a owl:Class ;
+    rdfs:label "Höhe" ;
+    rdfs:comment "Abstand zwischen dem niedrigsten und dem höchsten Punkt eines Objekts" ;
+    local:gemessen_in local:Meter .
+
+local:Ladepunkt a owl:Class ;
+    rdfs:label "Ladepunkt" ;
+    rdfs:comment "Zum Aufladen eines Elektrofahrzeuges" ;
+    local:bietet_an local:Elektrischer_Strom ;
+    local:hat local:Anschlussleistung,
+        local:Public_Key,
+        local:Steckverbinder,
+        local:Zusatzinformation .
+
+local:Lichtsignalanlage a owl:Class ;
+    rdfs:label "Lichtsignalanlage" ;
+    rdfs:comment "Eine Lichtsignalanlage dient der Steuerung des Straßen- und Schienenverkehrs, indem diese gesteuerte Signale an die Verkehrsteilnehmer abgeben." ;
+    local:befindet_sich_an local:Geographischer_Punkt,
+        local:Knotenpunkt ;
+    local:betrieben_durch local:Betreiber ;
+    local:erfasst_am local:Zeitstempel ;
+    local:geh_rt_zu local:Knotenpunkt ;
+    local:hat local:Befestigungsort,
+        local:H_he,
+        local:Richtung,
+        local:Standortbezeichnung,
+        local:Verwendungszweck ;
+    local:identifiziert_durch local:Identifikator,
+        local:Lichtsignalanlagen_Nummer,
+        local:Universally_Unique_Identifier__UUID_ .
+
+local:Nullpunkt a owl:Class ;
+    rdfs:label "Nullpunkt" ;
+    rdfs:comment "Anfangs- oder Endpunkt eines Abschnitts oder Asts des Straßennetzes" ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:besteht_aus local:Stra_enklasse ;
+    local:geh_rt_zu local:Knotenpunkt ;
+    local:hat local:Nullpunktsbuchstabe,
+        local:Nummer ;
+    local:identifiziert_durch local:Identifikator ;
+    local:ist_vom_Typ local:Art .
+
+local:Postleitzahl a owl:Class ;
+    rdfs:label "Postleitzahl" ;
+    rdfs:comment "Eine Postleitzahl (Abk. PLZ) ist eine Ziffern- oder Buchstaben-/Ziffern-Kombination innerhalb von Postadressen auf Briefen, Paketen oder Päckchen, die den Zustellort eingrenzt." .
+
+local:RGB_Farbmodell a owl:Class ;
+    rdfs:label "RGB-Farbmodell" ;
+    rdfs:comment "additives Farbmodell, Farbe besteht aus Kombination der Farben Rot, Grün und Blau" ;
+    local:besteht_aus local:Blauanteil,
+        local:Gr_nanteil,
+        local:Rotanteil ;
+    local:ist_ein_e_ local:Farbmodell .
+
+local:Radmonitor a owl:Class ;
+    rdfs:label "Radmonitor" ;
+    rdfs:comment "Ein Gerät zum Zählen von Radfahrern." ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:dargestellt_auf local:Website ;
+    local:hat local:Standortbezeichnung ;
+    local:identifiziert_durch local:Identifikator,
+        local:Universally_Unique_Identifier__UUID_ .
+
+local:Reinigungsbereich a owl:Class ;
+    rdfs:label "Reinigungsbereich" ;
+    rdfs:comment "Bereich in dem eine bestimmte Regelung der Reinigung gilt." ;
+    local:anfang local:Standortbezeichnung ;
+    local:ende local:Standortbezeichnung .
+
+local:Stadtbezirk a owl:Class ;
+    rdfs:label "Stadtbezirk" ;
+    rdfs:comment "Ein Stadtbezirk ist ein Verwaltungsbezirk in Deutschland, der Teil einer größeren Stadt ist." ;
+    local:identifiziert_durch local:Stadtbezirk_Nummer .
+
+local:Symbol a owl:Class ;
+    rdfs:label "Symbol" ;
+    rdfs:comment "graphische Darstellung eines Sinnbildes" ;
+    local:hat local:Bezeichnung ;
+    local:identifiziert_durch local:Verkehrszeichen_Nummer .
+
+local:Tag a owl:Class ;
+    rdfs:label "Tag" ;
+    rdfs:comment "Zeiteinheit von 24 Stunden, abgeleitet von der Periode der Erdrotation um ihre Achse" ;
+    local:befindet_sich_in local:Jahr ;
+    local:durchschnitt local:Aussteiger,
+        local:Einsteiger,
+        local:Mensch ;
+    local:ist_vom_Typ local:Tagestyp,
+        local:Wochendtag,
+        local:WochentagMo_Fr .
+
+local:Tankstelle a owl:Class ;
+    rdfs:label "Tankstelle" ;
+    rdfs:comment "Eine Tankstelle ist eine Anlage, an der Kraftfahrzeuge mit den Kraftstoffen Benzin und Diesel, teilweise auch mit Flüssiggas, Erdgas, Wasserstoff oder Strom, versorgt werden können. Die Abgabe der Stoffe erfolgt an Zapfsäulen." ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:betrieben_durch local:Betreiber ;
+    local:geh_rt_zu local:Gemeinde ;
+    local:hat local:Adresse,
+        local:Betriebsart,
+        local:Bezeichnung,
+        local:Eigenschaften,
+        local:Website,
+        local:_ffnungszeit ;
+    local:identifiziert_durch local:Universally_Unique_Identifier__UUID_ ;
+    local:ist_vom_Typ local:Kategorie .
+
+local:Verkehrsliniengruppe a owl:Class ;
+    rdfs:label "Verkehrsliniengruppe" ;
+    rdfs:comment "Gruppe von Verkehrslinien. Beschreibt Verlauf einer bestimmten Strecke welche von verschiedenen Verkehrsmittel befahren wird." ;
+    local:besteht_aus local:Verkehrslinie ;
+    local:hat local:Farbe ;
+    local:identifiziert_durch local:Identifikator ;
+    local:ist_vom_Typ local:Verkehrsmittel .
+
+local:Wetterstation a owl:Class ;
+    rdfs:label "Wetterstation" ;
+    rdfs:comment "Eine Wetterstation ist eine Zusammenstellung verschiedener Messgeräte, die zur Messung meteorologischer Größen und damit der Wetterbeobachtung an einem bestimmten Ort und der Klimaforschung dienen." ;
+    local:befindet_sich_an local:Heinrich_Heine_Universit_t_D_sseldorf,
+        local:Rathaus_Konstanz ;
+    local:besteht_aus local:Pt100_Sensor,
+        local:Pyranometer ;
+    local:hat local:Adresse,
+        local:Messfrequenz ;
+    local:identifiziert_durch local:Stationsidentifikationsnummer .
+
+local:Zug a owl:Class ;
+    rdfs:label "Zug" ;
+    rdfs:comment "Verband von mehreren miteinander verbundenen Schienenfahrzeugen" ;
+    local:einsatzbereich local:Schienenpersonennahverkehr .
+
+local:Art a owl:Class ;
+    rdfs:label "Art" ;
+    rdfs:comment "eine Gruppe aus einer Gesamtheit, die sich durch besondere Merkmale auszeichnet" .
+
+local:Bauma_nahme a owl:Class ;
+    rdfs:label "Baumaßnahme" ;
+    rdfs:comment "Errichtung neuer Gebäude und bauliche Veränderungen an bestehenden Gebäuden." ;
+    local:anfang local:Zeitstempel ;
+    local:beschlossen_von local:Gemeinde ;
+    local:ende local:Zeitstempel ;
+    local:geh_rt_zu local:Kategorie ;
+    local:verursacht local:Verkehrsbeeintr_chtigung .
+
+local:CarSharing_Station a owl:Class ;
+    rdfs:label "CarSharing-Station" ;
+    rdfs:comment "Ort zur organisierten gemeinschaftlichen Nutzung eines oder mehrerer Automobile auf der Grundlage einer Rahmenvereinbarung" ;
+    local:anzahl local:Fahrzeug ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:betrieben_durch local:Betreiber,
+        local:Cambio ;
+    local:bietet_an local:Fahrzeug ;
+    local:geh_rt_zu local:Gemeinde ;
+    local:hat local:Adresse,
+        local:Bemerkung,
+        local:Bezeichnung,
+        local:Standortbezeichnung,
+        local:Website,
+        local:Zugangsinformation,
+        local:Zusatzinformation ;
+    local:identifiziert_durch local:Identifikator,
+        local:Universally_Unique_Identifier__UUID_ .
+
+local:Fahrradweg a owl:Class ;
+    rdfs:label "Fahrradweg" ;
+    rdfs:comment "Verkehrsweg für Radverkehr" ;
+    local:anfang local:Knotenpunkt ;
+    local:befindet_sich_an local:Geographische_Linie ;
+    local:ende local:Knotenpunkt ;
+    local:hat local:Eigenschaften,
+        local:Steigung,
+        local:Stra_enseite ;
+    local:identifiziert_durch local:Nummer .
+
+local:Fahrt a owl:Class ;
+    rdfs:label "Fahrt" ;
+    rdfs:comment "Bewegung von einem Ort zu einem anderen auf der Erdoberfläche und mittels eines Fahrzeugs" ;
+    local:anfang local:Geographisches_Polygon ;
+    local:ende local:Geographisches_Polygon ;
+    local:findet_statt_in local:Zeitabschnitt ;
+    local:hat local:Nachfrage ;
+    local:identifiziert_durch local:Nummer .
+
+local:Gebiet a owl:Class ;
+    rdfs:label "Gebiet" ;
+    rdfs:comment "Fläche von bestimmter Ausdehnung" ;
+    local:befindet_sich_an local:Geographisches_Polygon ;
+    local:hat local:Stauwahrscheinlichkeit ;
+    local:identifiziert_durch local:Amtlicher_Gemeindeschl_ssel__AGS_ ;
+    local:ist_ein_e_ local:Lebensweltlich_orientierter_Raum__LOR_ ;
+    local:liegt_in local:Bezirk .
+
+local:Grad_Celsius a owl:Class ;
+    rdfs:label "Grad Celsius" ;
+    rdfs:comment "eine Maßeinheit der Temperatur" .
+
+local:Hausnummernbereich a owl:Class ;
+    rdfs:label "Hausnummernbereich" ;
+    rdfs:comment "Straßenabschnitt der durch Anfangs- und Endhausnummer eingegrenzt wird" ;
+    local:anfang local:Hausnummer ;
+    local:besteht_aus local:Gerade_Hausnummer,
+        local:Ungerade_Hausnummer ;
+    local:ende local:Hausnummer .
+
+local:Kosteninformation a owl:Class ;
+    rdfs:label "Kosteninformation" ;
+    rdfs:comment "Information über die Kosten" ;
+    local:besteht_aus local:Geb_hr ;
+    local:gemessen_in local:Euro .
+
+local:Richtung a owl:Class ;
+    rdfs:label "Richtung" ;
+    rdfs:comment "Position, Wirkungs- oder Bewegungsziel eines Gegenstandes" ;
+    local:ausrichtung local:Geographischer_Norden ;
+    local:gemessen_in local:Gradma_ .
+
+local:Zustiegsplattform a owl:Class ;
+    rdfs:label "Zustiegsplattform" ;
+    rdfs:comment "Eine Zustiegsplattform ist eine befestigte Plattform die parallel und mit geringem Abstand zu einem Eisenbahngleis oder einer Straße angelegt ist, um Passagieren von öffentlichen Verkehrsmitteln das Ein- und Aussteigen zu erleichtern." ;
+    local:angefahren_von local:Verkehrslinie ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:hat local:Betriebsart ;
+    local:identifiziert_durch local:Identifikator ;
+    local:ist_Teil_von local:Haltestelle .
+
+local:_ffnungszeit a owl:Class ;
+    rdfs:label "Öffnungszeit" ;
+    rdfs:comment "Unternehmerische Entscheidung über die Öffnung der Verkaufsstelle." .
+
+local:Beschr_nkung a owl:Class ;
+    rdfs:label "Beschränkung" ;
+    rdfs:comment "etwas, was jemanden einschränkt" ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:bezieht_sich_auf local:Fahrtrichtung ;
+    local:dargestellt_auf local:Verkehrsmitteilung ;
+    local:erfasst_am local:Datum ;
+    local:gemessen_in local:Meter,
+        local:Tonne ;
+    local:hat local:Bezeichnung,
+        local:Standortbezeichnung ;
+    local:identifiziert_durch local:Identifikator ;
+    local:liegt_in local:Stadtbezirk .
+
+local:DTVw_Belastung a owl:Class ;
+    rdfs:label "DTVw-Belastung" ;
+    rdfs:comment "Durchschnittlicher täglicher Verkehr werktags" ;
+    local:besteht_aus local:Bus,
+        local:DTVw_Belastung,
+        local:Lastkraftwagen,
+        local:Lieferwagen,
+        local:Motorrad,
+        local:Personenkraftwagen ;
+    local:bezieht_sich_auf local:G_terverkehr,
+        local:Gesamtverkehr,
+        local:Personenverkehr,
+        local:Schwerverkehr .
+
+local:Dauerz_hlstelle a owl:Class ;
+    rdfs:label "Dauerzählstelle" ;
+    rdfs:comment "Permanent betriebene, automatische Zählstelle zur Erfassung der Verkehrsstärke auf einer Straße." ;
+    local:befindet_sich_an local:Geographischer_Punkt,
+        local:Standortbezeichnung ;
+    local:hat local:Betriebsart,
+        local:Bezeichnung,
+        local:Standortbezeichnung ;
+    local:identifiziert_durch local:Nummer ;
+    local:inbetriebnahme local:Datum ;
+    local:ist_vom_Typ local:Bauart .
+
+local:Geb_hr a owl:Class ;
+    rdfs:label "Gebühr" ;
+    rdfs:comment "für eine [öffentliche] Dienstleistung (an eine Behörde, ein Amt) zu bezahlender Betrag" ;
+    local:gemessen_in local:Euro .
+
+local:Geschwindigkeit a owl:Class ;
+    rdfs:label "Geschwindigkeit" ;
+    rdfs:comment "Wie schnell und in welcher Richtung ein Körper oder ein Phänomen im Lauf der Zeit seinen Ort verändert." ;
+    local:gemessen_in local:Kilometer_pro_Stunde .
+
+local:Niederschlag a owl:Class ;
+    rdfs:label "Niederschlag" ;
+    rdfs:comment "Wasser, das in flüssiger oder fester Form auf die Erde fällt" ;
+    local:gemessen_in local:Liter_pro_Quadratmeter,
+        local:Millimeter ;
+    local:hat local:Qualitaetsniveau .
+
+local:Reinigung a owl:Class ;
+    rdfs:label "Reinigung" ;
+    rdfs:comment "Aktivität, die Personen, Tiere und Gegenstände von Schmutz und anderen Ablagerungen befreit" ;
+    local:durchgef_hrt_von local:Betriebshof ;
+    local:hat local:Reinigungsklasse ;
+    local:ist_vom_Typ local:Art ;
+    local:pro local:Woche .
+
+local:Stickstoffdioxid_Konzentration a owl:Class ;
+    rdfs:label "Stickstoffdioxid-Konzentration" ;
+    rdfs:comment "Konzentration von Stickstoffdioxid" ;
+    local:gemessen_in local:_g_m_ .
+
+local:Verkehrsmittel a owl:Class ;
+    rdfs:label "Verkehrsmittel" ;
+    rdfs:comment "Verkehrsmittel sind die Gesamtheit der stationären oder mobilen sowie der materiellen oder immateriellen Arbeits- oder Produktionsmittel, welche die Bewegung von Personen, Gütern oder Nachrichten ermöglichen." ;
+    local:anteil local:Binnenverkehr,
+        local:Gesamtverkehr,
+        local:Quell_Zielverkehr ;
+    local:besteht_aus local:Verkehrsmittelklasse .
+
+local:Bemerkung a owl:Class ;
+    rdfs:label "Bemerkung" ;
+    rdfs:comment "Äußerung bzgl. des Objekts." .
+
+local:Betriebsart a owl:Class ;
+    rdfs:label "Betriebsart" ;
+    rdfs:comment "Art und Weise der Führung eines wirtschaftlichen Betriebes",
+        "eine von mehreren auswählbaren Arten und Weisen des Betriebes einer technischen Anlage oder einer Maschine" .
+
+local:Blitzer a owl:Class ;
+    rdfs:label "Blitzer" ;
+    rdfs:comment "Radargerät zur automatischen Verkehrskontrolle, das am Straßenrand aufgestellt wird." ;
+    local:ausrichtung local:Fahrtrichtung ;
+    local:befindet_sich_an local:Adresse,
+        local:Geographischer_Punkt ;
+    local:befindet_sich_in local:Lage ;
+    local:beschlossen_von local:Amt ;
+    local:erlaubt local:Zusatzinformation ;
+    local:hat local:Adresse,
+        local:Begr_ndung,
+        local:Betriebsart,
+        local:Rechtsgrundlage,
+        local:Standortbezeichnung ;
+    local:identifiziert_durch local:Identifikator ;
+    local:ist_vom_Typ local:Art ;
+    local:liegt_in local:Planquadrat .
+
+local:Fahrrad a owl:Class ;
+    rdfs:label "Fahrrad" ;
+    rdfs:comment "durch das Treten von Pedalen angetriebenes Fahrzeug mit zwei in einer Spur hintereinander angebrachten Rädern" ;
+    local:anzahl local:Messwert ;
+    local:geliehen_an local:Mensch ;
+    local:gemessen_in local:Prozent .
+
+local:Parkscheinautomat a owl:Class ;
+    rdfs:label "Parkscheinautomat" ;
+    rdfs:comment "Ein Parkscheinautomat ist eine Art Fahrkartenautomat, der zur Regelung des Parkens in städtischen Gebieten oder auf Parkplätzen verwendet wird." ;
+    local:befindet_sich_an local:Geographischer_Punkt,
+        local:Standortbezeichnung ;
+    local:befindet_sich_in local:Tarifzone ;
+    local:bietet_an local:Tarif ;
+    local:geh_rt_zu local:Parkm_glichkeit ;
+    local:hat local:Kosteninformation,
+        local:Roter_Punkt_Zone,
+        local:Standortbezeichnung,
+        local:Zusatzinformation ;
+    local:identifiziert_durch local:Parkscheinautomaten_Nummer ;
+    local:liegt_in local:Bezirk ;
+    local:muss_benutzt_werden_in local:Zone ;
+    local:verkauft local:Parkschein .
+
+local:Z_hlung a owl:Class ;
+    rdfs:label "Zählung" ;
+    rdfs:comment "Handlung zur Ermittlung der Anzahl der Elemente in einer endlichen Menge von gleichwertigen Objekten" ;
+    local:anzahl local:Fahrzeug,
+        local:Mietwagenunternehmen,
+        local:Taxi,
+        local:Taxiunternehmen ;
+    local:bezieht_sich_auf local:Tag ;
+    local:durchgef_hrt_in local:Berlin,
+        local:Zeitabschnitt ;
+    local:durchgef_hrt_von local:Dauerz_hlstelle ;
+    local:erfasst_am local:Zeitstempel ;
+    local:hat local:Zusatzinformation .
+
+local:Zone a owl:Class ;
+    rdfs:label "Zone" ;
+    rdfs:comment "festgelegter Bereich" ;
+    local:anfang local:Standortbezeichnung ;
+    local:befindet_sich_an local:Geographisches_Polygon ;
+    local:dauer local:Zeitabschnitt ;
+    local:ende local:Standortbezeichnung ;
+    local:erfasst_am local:Datum ;
+    local:hat local:Geschwindigkeitsbegrenzung,
+        local:Zusatzinformation ;
+    local:identifiziert_durch local:Identifikator,
+        local:Nummer .
+
+local:Betreiber a owl:Class ;
+    rdfs:label "Betreiber" ;
+    rdfs:comment "Der Betreiber ist ein Wirtschaftssubjekt, das unter Berücksichtigung der rechtlichen, wirtschaftlichen und tatsächlichen Umstände bestimmenden Einfluss auf die Beschaffenheit und den Betrieb eines Wirtschaftsobjekts ausübt. Als Wirtschaftssubjekt kommen natürliche (Privatpersonen) oder juristische Personen (Unternehmen, sonstige Personenvereinigungen oder der Staat mit seinen Behörden) in Betracht." ;
+    local:hat local:E_Mail_Adresse,
+        local:Kontaktdaten,
+        local:Telefonnummer__Festnetz_,
+        local:Telefonnummer__Mobil_ .
+
+local:Ladestation a owl:Class ;
+    rdfs:label "Ladestation" ;
+    rdfs:comment "Ladestation für Elektrofahrzeuge" ;
+    local:anzahl local:Ladepunkt,
+        local:Ladepunkte ;
+    local:befindet_sich_an local:Adresse,
+        local:Geographischer_Punkt ;
+    local:besteht_aus local:Ladepunkt ;
+    local:betrieben_durch local:Betreiber ;
+    local:dargestellt_auf local:Foto ;
+    local:geh_rt_zu local:Gemeinde,
+        local:Verbund ;
+    local:hat local:Adresse,
+        local:Anschlussleistung,
+        local:Betriebsart,
+        local:Betriebsart_fuehrung,
+        local:Kosteninformation,
+        local:Standortbezeichnung,
+        local:Statusinformation,
+        local:Website,
+        local:Zusatzinformation,
+        local:_ffnungszeit ;
+    local:identifiziert_durch local:Identifikator,
+        local:Universally_Unique_Identifier__UUID_ ;
+    local:inbetriebnahme local:Datum ;
+    local:ist_ge_ffnet_am local:Zeitabschnitt .
+
+local:Parkm_glichkeit a owl:Class ;
+    rdfs:label "Parkmöglichkeit" ;
+    rdfs:comment "Ort mit der Möglichkeit, sein Fahrzeug zu parken" ;
+    local:anzahl local:Stellplatz ;
+    local:befindet_sich_an local:Geographischer_Punkt,
+        local:Geographisches_Polygon ;
+    local:betrieben_durch local:Betreiber ;
+    local:geh_rt_zu local:Gemeinde ;
+    local:hat local:Adresse,
+        local:Bemerkung,
+        local:Bezeichnung,
+        local:Eigenschaften,
+        local:H_chstparkdauer,
+        local:Kapazit_t,
+        local:Kosteninformation,
+        local:Maximale_Parkdauer,
+        local:Standortbezeichnung,
+        local:Stellplatz,
+        local:Website,
+        local:Zusatzinformation,
+        local:Zustand,
+        local:_ffnungszeit ;
+    local:identifiziert_durch local:Identifikator,
+        local:Universally_Unique_Identifier__UUID_ ;
+    local:ist_vom_Typ local:Art,
+        local:Betriebsart,
+        local:Kategorie .
+
+local:Qualitaetsniveau a owl:Class ;
+    rdfs:label "Qualitaetsniveau" ;
+    rdfs:comment "Qualitätsniveau einer Messung des DWD. 1 - nur formale Prüfung beim Entschlüsseln und Laden; 2 - nach individuellen Kriterien geprüft; 3 - in ROUTINE mit dem Verfahren QUALIMET geprüft und korrigiert" .
+
+local:Mensch a owl:Class ;
+    rdfs:label "Mensch" ;
+    rdfs:comment "höheres Säugetier aus der Ordnung der Primaten, Trivialname von Homo sapiens und Homo sapiens sapiens" ;
+    local:auswahl local:Verkehrsmittel ;
+    local:hat local:Verkehrsmittelwahl .
+
+local:Uniform_Resource_Locator__URL_ a owl:Class ;
+    rdfs:label "Uniform Resource Locator (URL)" ;
+    rdfs:comment "Ein Uniform Resource Locator (URL) identifiziert und lokalisiert eine Ressource, beispielsweise eine Webseite, über die zu verwendende Zugriffsmethode und den Ort der Ressource in Computernetzwerken." ;
+    local:besteht_aus local:Host,
+        local:Pfad .
+
+local:Verkehrszeichen a owl:Class ;
+    rdfs:label "Verkehrszeichen" ;
+    rdfs:comment "Ein Verkehrszeichen ist ein an der Straße in Form eines Schildes aufgestelltes oder auf der Fahrbahn markiertes Symbol, ein Schriftzug oder eine Linie, was zur Beeinflussung oder Regelung des Straßenverkehrs dient." ;
+    local:aufgestellt_an local:Verkehrszeichenstandort ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:beschlossen_von local:Gemeinde ;
+    local:erfasst_am local:Zeitstempel ;
+    local:hat local:Adresse,
+        local:Befestigungsort,
+        local:Eigenschaften,
+        local:H_he,
+        local:Lage,
+        local:Richtung,
+        local:Symbol,
+        local:Zusatzinformation ;
+    local:identifiziert_durch local:Identifikator,
+        local:Nummer,
+        local:Universally_Unique_Identifier__UUID_ ;
+    local:ist_vom_Typ local:Schildtyp ;
+    local:verkn_pft_mit local:Verkehrszeichen ;
+    local:zeigt_an local:Symbol .
+
+local:Wetterstationsmessung a owl:Class ;
+    rdfs:label "Wetterstationsmessung" ;
+    rdfs:comment "Messung einer Wetterstation" ;
+    local:bezieht_sich_auf local:Zeitabschnitt ;
+    local:durchgef_hrt_von local:Wetterstation ;
+    local:durchschnitt local:Bedeckungsgrad,
+        local:Lufttemperatur,
+        local:Relative_Luftfeuchtigkeit,
+        local:Tagesh_chsttemperatur,
+        local:Tagestiefsttemperatur,
+        local:Windst_rke ;
+    local:enth_lt local:Luftdruck,
+        local:Lufttemperatur,
+        local:Relative_Luftfeuchtigkeit,
+        local:Taupunkttemperatur ;
+    local:gemessen_am local:Datum,
+        local:Zeitstempel ;
+    local:gemessen_in local:Zeitabschnitt ;
+    local:hat local:Bestrahlungsst_rke,
+        local:Lufttemperatur,
+        local:Qualitaetsniveau,
+        local:Wetter ;
+    local:ist_Teil_von local:Messung ;
+    local:maximum local:Lufttemperatur,
+        local:Niederschlag,
+        local:Relative_Luftfeuchtigkeit,
+        local:Windspitze ;
+    local:minimum local:Bodentemperatur,
+        local:Lufttemperatur,
+        local:Relative_Luftfeuchtigkeit ;
+    local:summe local:Niederschlag,
+        local:Sonnenscheindauer .
+
+local:Messstation a owl:Class ;
+    rdfs:label "Messstation" ;
+    rdfs:comment "eine Gruppierung von Instrumenten, die laufend Messungen von ausgewählten Parametern durchführt" ;
+    local:au_erbetriebnahme local:Datum ;
+    local:befindet_sich_an local:Geographischer_Punkt,
+        local:Rathaus_Konstanz ;
+    local:befindet_sich_in local:Stra_e ;
+    local:hat local:Adresse,
+        local:Zusatzinformation ;
+    local:identifiziert_durch local:Stationsidentifikationsnummer ;
+    local:inbetriebnahme local:Datum ;
+    local:misst local:Stickstoffdioxid_Konzentration .
+
+local:Relative_Luftfeuchtigkeit a owl:Class ;
+    rdfs:label "Relative Luftfeuchtigkeit" ;
+    rdfs:comment "Das prozentuale Verhältnis zwischen dem momentanen Dampfdruck des Wassers und dem Sättigungsdampfdruck desselben (bei der Lufttemperatur) über einer reinen und ebenen Wasseroberfläche." ;
+    local:gemessen_in local:Prozent .
+
+local:Verkehrsbeeintr_chtigung a owl:Class ;
+    rdfs:label "Verkehrsbeeinträchtigung" ;
+    rdfs:comment "das Beeinträchtigen des (Straßen)verkehrs" ;
+    local:anzahl local:Fahrstreifen ;
+    local:befindet_sich_an local:Adresse,
+        local:Geographischer_Punkt ;
+    local:befindet_sich_in local:Stra_e ;
+    local:bezieht_sich_auf local:Fahrstreifen,
+        local:L_nge ;
+    local:erfasst_am local:Zeitstempel ;
+    local:findet_statt_in local:Zeitabschnitt ;
+    local:hat local:Beschreibung,
+        local:Eigenschaften,
+        local:Eintrittswahrscheinlichkeit,
+        local:Standortbezeichnung,
+        local:Ursache,
+        local:Verkehrsmitteilung ;
+    local:identifiziert_durch local:Identifikator ;
+    local:in local:Zeitabschnitt ;
+    local:ist_vom_Typ local:Art .
+
+local:Website a owl:Class ;
+    rdfs:label "Website" ;
+    rdfs:comment "Eine Website auch Webpräsenz, Webauftritt, Webangebot oder Netzauftritt, ist die – unter einer individuellen Webadresse erreichbare – Präsenz eines Anbieters von Telemedien im weltweiten Netz (World Wide Web)." ;
+    local:befindet_sich_an local:Uniform_Resource_Locator__URL_ ;
+    local:ist_vom_Typ local:Uniform_Resource_Locator__URL_ .
+
+local:Bezirk a owl:Class ;
+    rdfs:label "Bezirk" ;
+    rdfs:comment "hierarchische Stufe der Verwaltungsgliederung in Belgien, Deutschland, Österreich und der Schweiz" ;
+    local:anfang local:Hausnummer ;
+    local:ende local:Hausnummer ;
+    local:identifiziert_durch local:Identifikator,
+        local:Nummer ;
+    local:liegt_in local:Bundesland .
+
+local:Bus a owl:Class ;
+    rdfs:label "Bus" ;
+    rdfs:comment "Straßenfahrzeug für den Personentransport" ;
+    local:befindet_sich_an local:Haltestelle ;
+    local:f_hrt_ab local:Strecke ;
+    local:hat local:Fahrplan,
+        local:Standzeit,
+        local:Wagenumlaufnummer ;
+    local:ist_Teil_von local:Verkehrslinie .
+
+local:Fahrtrichtung a owl:Class ;
+    rdfs:label "Fahrtrichtung" ;
+    rdfs:comment "Die Fahrtrichtung gibt oft einen bekannten Ort an, in dessen Richtung sich ein Verkehrsobjekt bewegt." ;
+    local:anfang local:Knotenpunkt ;
+    local:ende local:Knotenpunkt ;
+    local:hat local:DTVw_Belastung,
+        local:L_nge ;
+    local:identifiziert_durch local:Identifikator ;
+    local:liegt_an local:Stra_e .
+
+local:Geographische_Linie a owl:Class ;
+    rdfs:label "Geographische Linie" ;
+    rdfs:comment "Die geographische Linie besteht aus geographischen Punkten, die zusammen eine Strecke auf der Erdoberfläche darstellen." ;
+    local:besteht_aus local:Geographischer_Punkt .
+
+local:K_ln a plcm:NamedEntity ;
+    rdfs:label "Köln" ;
+    rdfs:comment "eine kreisfreie Stadt im Land Nordrhein-Westfalen" ;
+    local:anzahl local:Stellplatz .
+
+local:Hausnummer a owl:Class ;
+    rdfs:label "Hausnummer" ;
+    rdfs:comment "Nummer, mit der die einzelnen Häuser einer Straße bezeichnet sind" ;
+    local:hat local:Zusatzinformation .
+
+local:Messung a owl:Class ;
+    rdfs:label "Messung" ;
+    rdfs:comment "Ergebnis einer Messung" ;
+    local:anzahl local:Fahrzeug,
+        local:Mensch,
+        local:Messwert,
+        local:Radfahrer ;
+    local:befindet_sich_an local:Geographisches_Multipolygon ;
+    local:bezieht_sich_auf local:Zeitabschnitt ;
+    local:dauer local:Zeitabschnitt ;
+    local:durchgef_hrt_in local:Stra_e ;
+    local:durchgef_hrt_von local:Dauerz_hlstelle,
+        local:Geschwindigkeitsanzeigeanlage,
+        local:Messstation,
+        local:Radmonitor,
+        local:Smart_Citizen_Kit,
+        local:Zollstelle ;
+    local:durchschnitt local:Bewerteter_Schalldruckpegel,
+        local:Geschwindigkeit ;
+    local:gemessen_am local:Datum,
+        local:Zeitstempel ;
+    local:gemessen_in local:Zeitabschnitt ;
+    local:hat local:Beleuchtungsst_rke,
+        local:Bewerteter_Schalldruckpegel,
+        local:CO___quivalent,
+        local:DTVw_Belastung,
+        local:Feinstaub,
+        local:Kohlenstoffdioxid,
+        local:Luftdruck,
+        local:Lufttemperatur,
+        local:Relative_Luftfeuchtigkeit,
+        local:Stickstoffdioxid_Konzentration,
+        local:TVOC ;
+    local:identifiziert_durch local:Universally_Unique_Identifier__UUID_ ;
+    local:maximum local:Geschwindigkeit .
+
+local:Messwert a owl:Class ;
+    rdfs:label "Messwert" ;
+    rdfs:comment "Ein Messwert ist der Wert einer Messgröße, der von einem Messgerät oder einer Messeinrichtung geliefert wird." ;
+    local:bezieht_sich_auf local:Zeitabschnitt ;
+    local:durchschnitt local:Messwert ;
+    local:maximum local:Messwert ;
+    local:minimum local:Messwert .
+
+local:Strecke a owl:Class ;
+    rdfs:label "Strecke" ;
+    rdfs:comment "Stück eines Weges" ;
+    local:anfang local:Haltestelle ;
+    local:angefahren_von local:Verkehrslinie ;
+    local:befindet_sich_an local:Geographische_Linie ;
+    local:benutzt_von local:Winterdienst ;
+    local:ende local:Haltestelle ;
+    local:hat local:Fahrtrichtung,
+        local:L_nge,
+        local:Verkehrslage,
+        local:Z_hlung ;
+    local:identifiziert_durch local:Identifikator,
+        local:Streckennummer,
+        local:Universally_Unique_Identifier__UUID_ ;
+    local:ist_Teil_von local:Busliniennetz,
+        local:Fahrradweg,
+        local:Fahrt,
+        local:Schienennetz,
+        local:Stra_ennetz ;
+    local:nach local:Knotenpunkt ;
+    local:von local:Knotenpunkt .
+
+local:L_nge a owl:Class ;
+    rdfs:label "Länge" ;
+    rdfs:comment "Die Länge als physikalische Größe gibt die Ausdehnung physikalischer Objekte innerhalb einer Dimension und deren Abstände zueinander an." ;
+    local:gemessen_in local:Kilometer,
+        local:Meter .
+
+local:Ortsteil a owl:Class ;
+    rdfs:label "Ortsteil" ;
+    rdfs:comment "Abgegrenzter und mit eigenem Namen versehener Teil einer Siedlung." ;
+    local:geh_rt_zu local:Bezirk ;
+    local:hat local:Bezeichnung ;
+    local:identifiziert_durch local:Identifikator,
+        local:Nummer ;
+    local:in local:Hausnummernbereich ;
+    local:liegt_in local:Stadtbezirk .
+
+local:Radfahrer a owl:Class ;
+    rdfs:label "Radfahrer" ;
+    rdfs:comment "jemand, der mit dem Fahrrad fährt" ;
+    local:bezieht_sich_auf local:Tag ;
+    local:erfasst_am local:Datum ;
+    local:stadtausw_rts local:Radfahrer ;
+    local:stadteinw_rts local:Radfahrer ;
+    local:ver_nderung local:Prozent .
+
+local:Universally_Unique_Identifier__UUID_ a owl:Class ;
+    rdfs:label "Universally Unique Identifier (UUID)" ;
+    rdfs:comment "Ein Universally Unique Identifier (UUID) ist eine 128-Bit-Zahl, welche zur Identifikation von Informationen in Computersystemen verwendet wird." .
+
+local:Verkehrslinie a owl:Class ;
+    rdfs:label "Verkehrslinie" ;
+    rdfs:comment "Eine Verkehrslinie ist die Verbindung mehrerer geographischer Orte, die regelmäßig durch öffentliche Verkehrsmittel im Rahmen der Personen- und/oder Güterbeförderung bedient werden." ;
+    local:f_hrt_ab local:Haltestelle ;
+    local:geh_rt_zu local:Betriebsbereich,
+        local:Verkehrsverbund_Berlin_Brandenburg ;
+    local:hat local:Bezeichnung,
+        local:Farbe,
+        local:P_nktlichkeit ;
+    local:identifiziert_durch local:Identifikator,
+        local:Nummer ;
+    local:ist_vom_Typ local:Bus,
+        local:Stra_enbahn,
+        local:Zug .
+
+local:Fahrzeug a owl:Class ;
+    rdfs:label "Fahrzeug" ;
+    rdfs:comment "zur Fortbewegung dienendes Objekt" ;
+    local:bezieht_sich_auf local:Kategorie ;
+    local:geh_rt_zu local:Kategorie ;
+    local:gemessen_am local:Datum ;
+    local:hat local:Kfz_Kennzeichen ;
+    local:nach local:Deutschland,
+        local:Schweiz ;
+    local:von local:Deutschland,
+        local:Schweiz .
+
+local:Lufttemperatur a owl:Class ;
+    rdfs:label "Lufttemperatur" ;
+    rdfs:comment "Temperatur der bodennahen Atmosphäre bezeichnet, die weder von Sonnenstrahlung noch von Bodenwärme oder Wärmeleitung beeinflusst ist." ;
+    local:gemessen_in local:Grad_Celsius ;
+    local:gemessen_von local:Pt100_Sensor ;
+    local:hat local:Qualitaetsniveau .
+
+local:Gemeinde a owl:Class ;
+    rdfs:label "Gemeinde" ;
+    rdfs:comment "Als Gemeinde oder politische Gemeinde bezeichnet man Gebietskörperschaften, die im öffentlich-verwaltungsmäßigen Aufbau von Staaten meistens die kleinste räumlich-administrative, also politisch-geographische Verwaltungseinheit darstellen." ;
+    local:geh_rt_zu local:Gemeindeverband ;
+    local:identifiziert_durch local:Amtlicher_Gemeindeschl_ssel__AGS_,
+        local:Amtlicher_Regionalschl_ssel__ARS_,
+        local:Identifikator .
+
+local:Geographisches_Polygon a owl:Class ;
+    rdfs:label "Geographisches Polygon" ;
+    rdfs:comment "Das geografische Polygon besteht aus geographischen Punkten, die zusammen eine Fläche auf der Erdoberfläche darstellen." ;
+    local:besteht_aus local:Geographischer_Punkt ;
+    local:hat local:Fl_cheninhalt,
+        local:L_nge ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Nummer a owl:Class ;
+    rdfs:label "Nummer" ;
+    rdfs:comment "Eine Nummer ist ein Identifikator, der zur Kennzeichnung und Ordnung von Objekten verwendet wird. Eine Nummer besteht typischerweise aus einer Folge von Zeichen eines Zeichensatzes." ;
+    local:verwendungszweck local:Intern .
+
+local:Jahr a owl:Class ;
+    rdfs:label "Jahr" ;
+    rdfs:comment "periodischer wiederkehrender Zeitraum, etwa ein Umlauf der Erde um die Sonne, 12 Monate, 365 beziehungsweise 366 Tage" ;
+    local:durchschnitt local:Stickstoffdioxid_Konzentration ;
+    local:hat local:Expositionszeitraum .
+
+local:Kategorie a owl:Class ;
+    rdfs:label "Kategorie" ;
+    rdfs:comment "Einheit zum Einordnen und Auffinden von Personen, Sachen, Sachverhalten, Begriffen und anderem" ;
+    local:bezieht_sich_auf local:Dach ;
+    local:identifiziert_durch local:Identifikator ;
+    local:ist_vom_Typ local:Kategorie .
+
+local:Knotenpunkt a owl:Class ;
+    rdfs:label "Knotenpunkt" ;
+    rdfs:comment "Ein Knotenpunkt im Verkehr ist ein Ort, bei dem sich mehrere Verkehrswege gleicher Art kreuzen, beispielsweise ein Eisenbahnknoten oder Autobahnkreuz, oder ein Verkehrsweg in einen Verkehrsweg gleicher Art einmündet." ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:besteht_aus local:Stra_enklasse ;
+    local:hat local:Bezeichnung,
+        local:Eigenschaften,
+        local:Funktion,
+        local:H_he,
+        local:Nummer ;
+    local:identifiziert_durch local:Knotenpunkt_Nummer ;
+    local:ist_vom_Typ local:Bauart .
+
+local:Prozent a owl:Class ;
+    rdfs:label "Prozent" ;
+    rdfs:comment " Hilfsmaßeinheit für Verhältnisgrößen. Prozentangaben werden durch das Prozentzeichen % kenntlich gemacht. Ein Prozent ist ein Hundertstel." ;
+    local:bezieht_sich_auf local:Vorjahr .
+
+local:Stellplatz a owl:Class ;
+    rdfs:label "Stellplatz" ;
+    rdfs:comment "Platz zum Abstellen eines einzelnen Kfz" ;
+    local:anzahl local:Stellplatz__Bus_,
+        local:Stellplatz__Fahrradbox_,
+        local:Stellplatz__PKW_,
+        local:Stellplatz__Wohnmobil_,
+        local:Stellplatz___bderdacht_ ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:bezieht_sich_auf local:Kategorie ;
+    local:hat local:Eigenschaften ;
+    local:identifiziert_durch local:Identifikator .
+
+local:Zusatzinformation a owl:Class ;
+    rdfs:label "Zusatzinformation" ;
+    rdfs:comment "Zusätzliche Informationen zum Objekt." ;
+    local:befindet_sich_an local:Uniform_Resource_Locator__URL_ ;
+    local:bezieht_sich_auf local:Herkunft ;
+    local:dargestellt_auf local:Website ;
+    local:sprache local:Deutsch,
+        local:Englisch .
+
+local:Haltestelle a owl:Class ;
+    rdfs:label "Haltestelle" ;
+    rdfs:comment "Eine Haltestelle ist ein Ort auf einer Linie des öffentlichen Personennahverkehrs (ÖPNV), der von öffentlichen Verkehrsmitteln planmäßig oder zumindest regelmäßig bedient wird, um Fahrgästen das Zu- und Aussteigen zu ermöglichen." ;
+    local:angefahren_von local:Bus,
+        local:Fernverkehr,
+        local:Stra_enbahn,
+        local:Verkehrslinie,
+        local:Verkehrsliniengruppe ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:benutzt_von local:Bus,
+        local:Verkehrsmittel,
+        local:Zug ;
+    local:besteht_aus local:Mast ;
+    local:betrieben_durch local:Betreiber ;
+    local:bezieht_sich_auf local:Zustiegsplattform ;
+    local:geh_rt_zu local:Tarifzone ;
+    local:hat local:Adresse,
+        local:Bezeichnung,
+        local:Eigenschaften,
+        local:Fahrplansuche,
+        local:Fahrtrichtung,
+        local:Standortbezeichnung,
+        local:Statusinformation,
+        local:Z_hlung,
+        local:Zusatzinformation ;
+    local:identifiziert_durch local:DHID,
+        local:Haltestellennummer,
+        local:Identifikator,
+        local:Interne_Bahnhofsnummer__IBNR_,
+        local:Universally_Unique_Identifier__UUID_ ;
+    local:ist_Teil_von local:Haltestelle ;
+    local:ist_vom_Typ local:Kategorie ;
+    local:liegt_in local:Gemeinde,
+        local:Planquadrat ;
+    local:zeigt_an local:Abfahrtsplan,
+        local:Abfahrtstafel .
+
+local:Zeitstempel a owl:Class ;
+    rdfs:label "Zeitstempel" ;
+    rdfs:comment "Angabe eines Zeitpunkts" ;
+    local:besteht_aus local:Datum,
+        local:Jahr,
+        local:Monat,
+        local:Stunde,
+        local:Uhrzeit,
+        local:Wochentag,
+        local:Wochentag_nummeriert ;
+    local:dauer local:Minute ;
+    local:hat local:Lichtverh_ltnis .
+
+local:Adresse a owl:Class ;
+    rdfs:label "Adresse" ;
+    rdfs:comment "Besteht in der Regel aus der Angabe der Straße, der Hausnummer, der Postleitzahl, des Ortes (der Ortschaft) und des Landes." ;
+    local:befindet_sich_an local:Geographischer_Punkt ;
+    local:besteht_aus local:Bezirk,
+        local:Bundesland,
+        local:Hausnummer,
+        local:Land,
+        local:Ortsteil,
+        local:Postleitzahl,
+        local:Region,
+        local:Stadt,
+        local:Standortbezeichnung,
+        local:Stra_e ;
+    local:geh_rt_zu local:Statistisches_Quartier ;
+    local:hat local:Eigenschaften,
+        local:Zusatzinformation ;
+    local:identifiziert_durch local:Identifikator ;
+    local:ist_Teil_von local:Stra_enverzeichnis ;
+    local:liegt_in local:Sozialraum,
+        local:Stadtviertel,
+        local:Wahlbezirk .
+
+local:Datum a owl:Class ;
+    rdfs:label "Datum" ;
+    rdfs:comment "bestimmter, im Kalender spezifizierbarer Tag; genau angebbares Datum" ;
+    local:ist_ein_e_ local:Wochentag .
+
+local:Stra_e a owl:Class ;
+    rdfs:label "Straße" ;
+    rdfs:comment "Ein Verkehrsbauwerk, das Fußgängern und Fahrzeugen als Transport- und Verkehrsweg überwiegend dem Personentransport, dem Gütertransport und dem Tiertransport zur Ortsveränderung dient." ;
+    local:anfang local:Hausnummer ;
+    local:anzahl local:Reinigung ;
+    local:befindet_sich_an local:Geographische_Linie,
+        local:Geographische_Multilinie ;
+    local:ende local:Hausnummer ;
+    local:erfasst_am local:Datum ;
+    local:erlaubt local:Geschwindigkeit ;
+    local:geh_rt_zu local:Gemeinde,
+        local:Wahlbezirk ;
+    local:hat local:Amtlicher_Stra_enname,
+        local:Bemerkung,
+        local:Bezeichnung,
+        local:Eigenschaften,
+        local:Hausnummernkennziffer,
+        local:L_nge,
+        local:Postleitzahl,
+        local:Reinigung,
+        local:Reinigungsbereich,
+        local:Reinigungsklasse,
+        local:Schaden,
+        local:Standortbezeichnung,
+        local:Stra_enzustand ;
+    local:identifiziert_durch local:Identifikator,
+        local:Nummer,
+        local:Stra_enschl_ssel ;
+    local:ist_Teil_von local:Stra_e,
+        local:Stra_enreinigungsverzeichnis,
+        local:Stra_enverzeichnis,
+        local:Strecke ;
+    local:ist_vom_Typ local:Stra_enart ;
+    local:liegt_in local:Bezeichnung,
+        local:Bezirk,
+        local:Gemeinde,
+        local:Ortsteil,
+        local:Wohnplatz .
+
+local:Standortbezeichnung a owl:Class ;
+    rdfs:label "Standortbezeichnung" ;
+    rdfs:comment "Beschreibung eines Standorts." ;
+    local:besteht_aus local:Hausnummer,
+        local:Hausnummernbereich,
+        local:Postleitzahl,
+        local:Stadt,
+        local:Stra_e ;
+    local:erlaubt local:Geschwindigkeit ;
+    local:liegt_in local:Stadtbezirk ;
+    local:pr_zisiert_durch local:Bemerkung .
+
+local:Zeitabschnitt a owl:Class ;
+    rdfs:label "Zeitabschnitt" ;
+    rdfs:comment "Zeitraum" ;
+    local:anfang local:Datum,
+        local:Jahr,
+        local:Unixzeit,
+        local:Unixzeit__Millisekunden_,
+        local:Zeitstempel ;
+    local:besteht_aus local:August,
+        local:Dezember,
+        local:Jahr,
+        local:Juli,
+        local:Juni,
+        local:Mai,
+        local:Monat,
+        local:November,
+        local:Oktober,
+        local:September,
+        local:Wochentag ;
+    local:durchschnitt local:Radfahrer ;
+    local:ende local:Datum,
+        local:Jahr,
+        local:Unixzeit,
+        local:Unixzeit__Millisekunden_,
+        local:Zeitstempel ;
+    local:maximum local:Radfahrer .
+
+local:Bezeichnung a owl:Class ;
+    rdfs:label "Bezeichnung" ;
+    rdfs:comment "Eine Bezeichnung ist in der Semiotik ein Code aus Zeichen oder Symbolen, der auf einen Gegenstand oder Sachverhalt (bzw. den Begriff davon) verweist." ;
+    local:beschlossen_an local:Datum ;
+    local:beschlossen_von local:Herkunft ;
+    local:g_ltig_ab local:Datum ;
+    local:hat local:Zusatzinformation ;
+    local:identifiziert_durch local:Nationaler_Namensidentifikator ;
+    local:verwendungszweck local:Intern,
+        local:Kurzform,
+        local:Langform,
+        local:Open_Data_Portal .
+
+local:Geographischer_Punkt a owl:Class ;
+    rdfs:label "Geographischer Punkt" ;
+    rdfs:comment "Der geografische Punkt gibt die Position eines Ortes auf der Erdoberfläche in einem geografischen Koordinatensystem an. Geografische Koordinaten bestehen in der Regel aus Längen- und Breitengraden." ;
+    local:besteht_aus local:Ellipsoidische_H_he,
+        local:Geographische_Breite,
+        local:Geographische_L_nge,
+        local:Hochwert,
+        local:Rechtswert,
+        local:UTM_false_easting,
+        local:UTM_northing ;
+    local:liegt_in local:Bezeichnung ;
+    local:repr_sentiert_dasselbe_wie local:Geographischer_Punkt .
+
+local:Identifikator a owl:Class ;
+    rdfs:label "Identifikator" ;
+    rdfs:comment "Identifikator zur eindeutigen Identifizierung des Objekts." ;
+    local:besteht_aus local:Haltestellennummer,
+        local:Hausnummer,
+        local:Kreisschl_ssel,
+        local:Land,
+        local:Stra_enschl_ssel .
+
+local:Eigenschaften a owl:Class ;
+    rdfs:label "Eigenschaften" ;
+    rdfs:comment "Eine Eigenschaft bezeichnet etwas, das einer Person, einem Gegenstand, einem Begriff oder einer (anderen) Eigenschaft zugeschrieben wird." ;
+    local:beidseitiger_KFZ_Verkehr_zugelassen local:Boolescher_Ausdruck ;
+    local:bietet_Autogas_an local:Boolescher_Ausdruck ;
+    local:bietet_Benzin_an local:Boolescher_Ausdruck ;
+    local:bietet_Biodiesel_an local:Boolescher_Ausdruck ;
+    local:bietet_Diesel_an local:Boolescher_Ausdruck ;
+    local:bietet_Diesel_f_r_LKW_an local:Boolescher_Ausdruck ;
+    local:bietet_Erdgas_an local:Boolescher_Ausdruck ;
+    local:bietet_Ethanol_an local:Boolescher_Ausdruck ;
+    local:bietet_Fahrradverleih_an local:Boolescher_Ausdruck ;
+    local:bietet_Pflanzen_l_an local:Boolescher_Ausdruck ;
+    local:bietet_Schlauch_O_Mat_an local:Boolescher_Ausdruck ;
+    local:bietet_Self_Service_an local:Boolescher_Ausdruck ;
+    local:bietet_Wartung_und_Reparatur_an local:Boolescher_Ausdruck ;
+    local:bietet_Wasserstoff_an local:Boolescher_Ausdruck ;
+    local:bietet_verkauf_von_Fahrr_dern_an local:Boolescher_Ausdruck ;
+    local:bietet_verkauf_von_Zubeh_r_an local:Boolescher_Ausdruck ;
+    local:einseitiger_KFZ_Verkehr_zugelassen local:Boolescher_Ausdruck ;
+    local:gilt_auch_f_r_Verkehr_aus_Gegenrichtung local:Boolescher_Ausdruck ;
+    local:hat_Anzeige local:Boolescher_Ausdruck ;
+    local:hat_Blindenleitsystem local:Boolescher_Ausdruck ;
+    local:hat_E_Bikes local:Boolescher_Ausdruck ;
+    local:hat_Fahrgastunterstand local:Boolescher_Ausdruck ;
+    local:hat_Fahrkartenautomat local:Boolescher_Ausdruck ;
+    local:hat_Hoch_Tief_Einstellung local:Boolescher_Ausdruck ;
+    local:hat_Ladem_glichkeit local:Boolescher_Ausdruck ;
+    local:hat_Lieferdienst local:Boolescher_Ausdruck ;
+    local:ist_Autobahnknoten local:Boolescher_Ausdruck ;
+    local:ist_BAB_Knoten local:Boolescher_Ausdruck ;
+    local:ist_Bike_and_ride_Anlage local:Boolescher_Ausdruck ;
+    local:ist_Fahrrad_beteiligt local:Boolescher_Ausdruck ;
+    local:ist_Fu_g_nger_beteiligt local:Boolescher_Ausdruck ;
+    local:ist_G_terkraftfahrzeug_beteiligt local:Boolescher_Ausdruck ;
+    local:ist_Geb_hrenpflichtig local:Boolescher_Ausdruck ;
+    local:ist_Kraftrad_beteiligt local:Boolescher_Ausdruck ;
+    local:ist_Personenkraftwagen_beteiligt local:Boolescher_Ausdruck ;
+    local:ist_Seitenarm local:Boolescher_Ausdruck ;
+    local:ist_Wechselverkehrszeichen local:Boolescher_Ausdruck ;
+    local:ist__berdacht local:Boolescher_Ausdruck ;
+    local:ist__ffentlich local:Boolescher_Ausdruck ;
+    local:ist_anderes_Verkehrsmittel_beteiligt local:Boolescher_Ausdruck ;
+    local:ist_barrierefrei local:Boolescher_Ausdruck ;
+    local:ist_belegt local:Boolescher_Ausdruck ;
+    local:ist_benutzbar local:Boolescher_Ausdruck ;
+    local:kein_KFZ_Verkehr_zugelassen local:Boolescher_Ausdruck ;
+    local:liegt_in_Exklave_eines_Statistischen_Quartiers local:Boolescher_Ausdruck ;
+    local:nach_Einrichtung_ist_Radverkehr_vorherrschend local:Boolescher_Ausdruck ;
+    local:nur_aussteigen_erlaubt local:Boolescher_Ausdruck ;
+    local:nur_durch_Ersatzverkehr_angefahren local:Boolescher_Ausdruck ;
+    local:nur_einsteigen_erlaubt local:Boolescher_Ausdruck ;
+    local:vor_Einrichtung_war_Radverkehr_vorherrschend local:Boolescher_Ausdruck ;
+    local:wird_am_Dienstag_gereinigt local:Boolescher_Ausdruck ;
+    local:wird_am_Donnerstag_gereinigt local:Boolescher_Ausdruck ;
+    local:wird_am_Feiertag_gereinigt local:Boolescher_Ausdruck ;
+    local:wird_am_Freitag_gereinigt local:Boolescher_Ausdruck ;
+    local:wird_am_Mittwoch_gereinigt local:Boolescher_Ausdruck ;
+    local:wird_am_Montag_gereinigt local:Boolescher_Ausdruck ;
+    local:wird_am_Samstag_gereinigt local:Boolescher_Ausdruck ;
+    local:wird_am_Sonntag_gereinigt local:Boolescher_Ausdruck ;
+    local:wird_beleuchtet local:Boolescher_Ausdruck ;
+    local:wird_durch_Eigent_mer_gereinigt local:Boolescher_Ausdruck ;
+    local:wird_durch_Stadt_gereinigt local:Boolescher_Ausdruck .
+
+local:Boolescher_Ausdruck a owl:Class ;
+    rdfs:label "Boolescher Ausdruck" ;
+    rdfs:comment "Im Bereich der Softwareentwicklung versteht man unter einem booleschen Ausdruck einen Ausdruck, der nur die beiden Wahrheitswerte True und False (englisch für wahr und falsch) annehmen kann." ;
+    local:bezieht_sich_auf local:Anzeige,
+        local:Zeitstempel .
+

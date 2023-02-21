@@ -31,15 +31,15 @@ public class CombinedModelGenerator {
     }
 
     public static CombinedModel getCombinedModel(String namespace) {
-        SchemaNode root = new ObjectNode("ROOT", true);
+        SchemaNode root = new ObjectNode("ROOT");
         List<String> examples = Arrays.asList("10-11;suffix1", "20-21;suffix2", "test-test;suffix3");
-        PrimitiveNode identifierNode = new PrimitiveNode("ident", true, DataType.String, examples, null);
-        PrimitiveNode timeNode = new PrimitiveNode("time", true, DataType.String, null, null);
-        ObjectNode companyNode = new ObjectNode("carrier",  true);
-        PrimitiveNode nameNode = new PrimitiveNode("name", true, DataType.String, null, null);
+        PrimitiveNode identifierNode = new PrimitiveNode("ident",  DataType.String, examples, null);
+        PrimitiveNode timeNode = new PrimitiveNode("time",  DataType.String, null, null);
+        ObjectNode companyNode = new ObjectNode("carrier");
+        PrimitiveNode nameNode = new PrimitiveNode("name",  DataType.String, null, null);
 
-        SetNode codesNode = new SetNode( true);
-        PrimitiveNode codeNode = new PrimitiveNode("codes1", true, DataType.String, null, null);
+        SetNode codesNode = new SetNode();
+        PrimitiveNode codeNode = new PrimitiveNode("codes1",  DataType.String, null, null);
 
         List<SchemaNode> nodes = Arrays.asList(root, identifierNode, timeNode, companyNode, nameNode, codesNode, codeNode);
 

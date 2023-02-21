@@ -1,0 +1,49 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:7c2fc-barrierefrei a local:Boolescher_Ausdruck .
+
+plsm:7c2fc-erfassung_datum a local:Zeitstempel .
+
+plsm:7c2fc-geometry a local:Geographischer_Punkt ;
+    local:besteht_aus plsm:7c2fc-latitude,
+        plsm:7c2fc-longitude .
+
+plsm:7c2fc-hausnr a local:Hausnummer .
+
+plsm:7c2fc-latitude a local:Geographische_Breite .
+
+plsm:7c2fc-longitude a local:Geographische_L_nge .
+
+plsm:7c2fc-name a local:Standortbezeichnung .
+
+plsm:7c2fc-oeffentlich a local:Boolescher_Ausdruck .
+
+plsm:7c2fc-ort a local:Identifikator .
+
+plsm:7c2fc-ort_bezeichnung a local:Stadt ;
+    local:identifiziert_durch plsm:7c2fc-ort .
+
+plsm:7c2fc-plz a local:Postleitzahl .
+
+plsm:7c2fc-point_id a local:Identifikator .
+
+plsm:7c2fc-strasse a local:Identifikator .
+
+plsm:7c2fc-strasse_bezeichnung a local:Stra_e ;
+    local:identifiziert_durch plsm:7c2fc-strasse .
+
+[] a local:Taxistand ;
+    local:befindet_sich_an plsm:7c2fc-geometry ;
+    local:erfasst_am plsm:7c2fc-erfassung_datum ;
+    local:hat [ a local:Adresse ;
+            local:besteht_aus plsm:7c2fc-hausnr,
+                plsm:7c2fc-ort_bezeichnung,
+                plsm:7c2fc-plz,
+                plsm:7c2fc-strasse_bezeichnung ],
+        [ a local:Eigenschaften ;
+            local:ist__ffentlich plsm:7c2fc-oeffentlich ;
+            local:ist_barrierefrei plsm:7c2fc-barrierefrei ],
+        plsm:7c2fc-name ;
+    local:identifiziert_durch plsm:7c2fc-point_id .
+

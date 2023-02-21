@@ -5,7 +5,6 @@ import de.buw.tmdt.plasma.datamodel.CombinedModelElement;
 import de.buw.tmdt.plasma.datamodel.ModelMapping;
 import de.buw.tmdt.plasma.datamodel.PositionedCombinedModelElement;
 import de.buw.tmdt.plasma.datamodel.modification.DeltaModification;
-import de.buw.tmdt.plasma.datamodel.modification.operation.SyntacticOperationDTO;
 import de.buw.tmdt.plasma.datamodel.semanticmodel.Relation;
 import de.buw.tmdt.plasma.datamodel.semanticmodel.SemanticModelNode;
 import org.jetbrains.annotations.NotNull;
@@ -78,10 +77,6 @@ public interface ModelingAPI {
     List<Relation> getRelations(@NotNull @PathVariable("modelId") String modelId,
                                 @Nullable @RequestParam(value = "prefix", required = false) String prefix,
                                 @Nullable @RequestParam(value = "infix", required = false) String infix);
-
-    @NotNull
-    @PostMapping(value = "/{modelId}/invoke", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    CombinedModel modifySyntacticSchema(@NotNull @PathVariable("modelId") String modelId, @NotNull @RequestBody SyntacticOperationDTO syntacticOperationDTO);
 
     /* Cache operations */
 

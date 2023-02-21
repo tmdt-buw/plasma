@@ -1,0 +1,25 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:1665d-_object_1 a local:Geographischer_Punkt ;
+    local:besteht_aus plsm:1665d-latitude_1,
+        plsm:1665d-longitude_1 .
+
+plsm:1665d-geometry_1 a local:Geographische_Linie ;
+    local:besteht_aus plsm:1665d-_object_1 ;
+    local:koordinatenreferenzsystem "name" .
+
+plsm:1665d-klasse_1 a local:Steigungsstufe .
+
+plsm:1665d-laenge_1 a local:L_nge ;
+    local:gemessen_in [ a local:Meter ] .
+
+plsm:1665d-latitude_1 a local:UTM_northing .
+
+plsm:1665d-longitude_1 a local:UTM_false_easting .
+
+[] a local:Steile_Radstrecke ;
+    local:befindet_sich_an plsm:1665d-geometry_1 ;
+    local:hat plsm:1665d-klasse_1,
+        plsm:1665d-laenge_1 .
+

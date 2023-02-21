@@ -1,4 +1,4 @@
-/* tslint:disable:object-literal-key-quotes */  /* Strongly suggested by jointjs documentation for 'targetMarker' as native SVG props are passed */
+/* tslint:disable:object-literal-key-quotes */        /* Strongly suggested by jointjs documentation for 'targetMarker' as native SVG props are passed */
 import { dia, g, shapes } from 'jointjs';
 import { Nodes } from './node';
 import { groupBy } from 'lodash';
@@ -10,7 +10,9 @@ export type Link =
   'custom.SyntaxLink'
   | 'custom.ObjectPropertyLink'
   | 'custom.DataPropertyLink'
-  | 'custom.arrayContextLink';
+  | 'custom.arrayContextLink'
+  | 'custom.HighlightedObjectPropertyLink'
+  | 'custom.HighlightedDataPropertyLink';
 
 /**
  * Abstract class that provides configs for links
@@ -20,7 +22,9 @@ export abstract class Links {
   // internal link type names
   static readonly syntaxLinkName = 'custom.SyntaxLink';
   static readonly objectPropertyLinkName = 'custom.ObjectPropertyLink';
+  static readonly objectPropertyLinkHighlightedName = 'custom.HighlightedObjectPropertyLink';
   static readonly dataPropertyLinkName = 'custom.DataPropertyLink';
+  static readonly dataPropertyLinkHighlightedName = 'custom.HighlightedDataPropertyLink';
   static readonly arrayContextLinkName = 'custom.ArrayContextLink';
 
   // object property semantic link config
@@ -116,7 +120,9 @@ export abstract class Links {
    * @param link to test
    */
   static isSemanticLink(link: dia.CellView | dia.LinkView): boolean {
-    return [this.objectPropertyLinkName, this.dataPropertyLinkName, this.arrayContextLinkName].includes(link.model?.attributes?.type);
+    return [this.objectPropertyLinkName, this.dataPropertyLinkName,
+      this.arrayContextLinkName, this.dataPropertyLinkHighlightedName,
+      this.objectPropertyLinkHighlightedName].includes(link.model?.attributes?.type);
   }
 
   /**
@@ -144,7 +150,7 @@ export abstract class Links {
   /**
    * Calls constructor and return new semantic link
    */
-  static createObjectPropertyLink(id: string, source: string, target: string, label: string, opacity?: number): dia.Link {
+  static createObjectPropertyLink(id: string, source: string, target: string, label: string, opacity?: number, highlighted?: boolean): dia.Link {
     const link = new Links.objectPropertyLink({
       id,
       source: {id: source},
@@ -153,24 +159,27 @@ export abstract class Links {
       attrs: {
         line: {
           opacity: opacity ? opacity : 1,
-          targetMarker: {
-            fill: '#ababab'
-          }
         },
       }
     });
     // link style
-
     link.router('normal');
-    link.connector('jumpover');
-
+    if (highlighted) {
+      link.attributes.type = this.objectPropertyLinkHighlightedName;
+      // hardcoded for now as there is no way to do this in CSS
+      link.attr({
+        '.marker-target': {stroke: '#ff5900', d: 'M 10 0 L 0 5 L 10 10 z', strokeWidth: 4}
+      });
+    } else {
+      link.connector('jumpover');
+    }
     return link;
   }
 
   /**
    * Calls constructor and return new semantic datatype link
    */
-  static createDataPropertyLink(id: string, source: string, target: string, label: string, opacity?: number): dia.Link {
+  static createDataPropertyLink(id: string, source: string, target: string, label: string, opacity?: number, highlighted?: boolean): dia.Link {
     const link = new Links.dataPropertyLink({
       id,
       source: {id: source},
@@ -184,7 +193,16 @@ export abstract class Links {
     });
     // link style
     link.router('normal');
-    link.connector('jumpover');
+    if (highlighted) {
+      link.attributes.type = this.dataPropertyLinkHighlightedName;
+      // hardcoded for now as there is no way to do this in CSS
+      link.attr({
+        '.marker-target': {stroke: '#ff5900', d: 'M 10 0 L 0 5 L 10 10 z', strokeWidth: 4},
+        '.marker-source': {stroke: '#ff5900', d: 'M 10 0 L 0 5 L 10 10 z', strokeWidth: 4}
+      });
+    } else {
+      link.connector('jumpover');
+    }
     return link;
   }
 

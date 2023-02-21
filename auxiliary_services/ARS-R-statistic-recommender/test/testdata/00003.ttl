@@ -1,0 +1,25 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:1424f-_object_1 a local:Geographischer_Punkt ;
+    local:besteht_aus plsm:1424f-latitude_1,
+        plsm:1424f-longitude_1 .
+
+plsm:1424f-geometry_1 a local:Geographisches_Polygon ;
+    local:besteht_aus plsm:1424f-_object_1 ;
+    local:koordinatenreferenzsystem "name" .
+
+plsm:1424f-latitude_1 a local:UTM_northing .
+
+plsm:1424f-longitude_1 a local:UTM_false_easting .
+
+plsm:1424f-typ_1 a local:Fahrtrichtungspfeiltyp .
+
+plsm:1424f-winkel_1 a local:Gradma_ ;
+    local:absolute_Bezugsrichtung [ a local:Geographischer_Norden ] .
+
+[] a local:Fahrtrichtungspfeil ;
+    local:ausrichtung plsm:1424f-winkel_1 ;
+    local:befindet_sich_an plsm:1424f-geometry_1 ;
+    local:hat plsm:1424f-typ_1 .
+

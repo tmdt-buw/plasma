@@ -31,15 +31,15 @@ import java.util.stream.Collectors;
 public class OntologyHandler {
 
     private static final Logger log = LoggerFactory.getLogger(OntologyHandler.class);
-    private final Ontologies ontologies;
+    private final OntologyManagement ontologyManagement;
 
     @Value("${plasma.kgs.localontology.label:LOCAL}")
     private String localOntologyLabel;
 
     @Autowired
     public OntologyHandler(
-            Ontologies ontologies) {
-        this.ontologies = ontologies;
+            OntologyManagement ontologyManagement) {
+        this.ontologyManagement = ontologyManagement;
     }
 
     @NotNull
@@ -48,7 +48,7 @@ public class OntologyHandler {
                                                @Nullable String infix,
                                                @Nullable String uri
     ) {
-        List<OntModel> filteredOntologyModels = ontologies.getFilteredOntologyModels(ontologyLabels);
+        List<OntModel> filteredOntologyModels = ontologyManagement.getFilteredOntologyModels(ontologyLabels);
         List<SemanticModelNode> nodes = new ArrayList<>();
         if (uri != null && !uri.isBlank()) {
             findClasses(filteredOntologyModels, clazz -> uri.equals(clazz.getURI())).stream()
@@ -92,7 +92,7 @@ public class OntologyHandler {
 
     @NotNull
     public List<Relation> getRelations(@NotNull List<String> ontologyLabels, @Nullable String prefix, @Nullable String infix, String uri) {
-        List<OntModel> filteredOntologyModels = ontologies.getFilteredOntologyModels(ontologyLabels);
+        List<OntModel> filteredOntologyModels = ontologyManagement.getFilteredOntologyModels(ontologyLabels);
         List<Relation> relations = new ArrayList<>();
         if (uri != null && !uri.isBlank()) {
             findProperties(filteredOntologyModels, prop -> uri.equals(prop.getURI())).stream()
@@ -149,7 +149,7 @@ public class OntologyHandler {
     }
 
     public String downloadLocalOntology(ExportFormat format) {
-        Optional<OntModel> ontologyModelByLabel = ontologies.getOntologyModelByLabel(localOntologyLabel);
+        Optional<OntModel> ontologyModelByLabel = ontologyManagement.getOntologyModelByLabel(localOntologyLabel);
         if (ontologyModelByLabel.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find a local ontology. Check with system maintainer.");
         }

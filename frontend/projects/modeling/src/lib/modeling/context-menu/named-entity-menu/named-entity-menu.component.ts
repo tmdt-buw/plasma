@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { NamedEntity, SemanticModelNode, SyntacticOperationDTO } from '../../../api/generated/dms';
+import { NamedEntity } from '../../../api/generated/dms';
 import { ContextMenuEvent, ContextMenuEventType } from '../../model/events/context-menu-event';
 import { ContextMenuService } from '../context-menu.service';
-import { SyntaxNode } from '../../model/configuration/node';
 
 @Component({
   selector: 'pls-named-entity-menu',

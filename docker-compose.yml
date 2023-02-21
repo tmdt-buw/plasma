@@ -4,13 +4,14 @@ services:
 ########################### Infrastructure ######################################
 
   fuseki:
-    image: saiye/fuseki:4.4.0
+    image: saiye/fuseki:4.7.0
     hostname: fuseki
     restart: unless-stopped
     ports:
-      - 3030:3030
+      - "3030:3030"
     environment:
       - FUSEKI_DATASET_1=sm
+      - FUSEKI_DATASET_2=ontologies
       - ADMIN_PASSWORD=plasma
     volumes:
       - fuseki_data:/fuseki
@@ -32,7 +33,7 @@ services:
       retries: 3
       start_period: 5s
     ports:
-      - 3307:3306
+      - "3307:3306"
 
   mariadb-dms:
     image: mariadb:latest
@@ -51,7 +52,7 @@ services:
       retries: 3
       start_period: 5s
     ports:
-      - 3308:3306
+      - "3308:3306"
 
   ########################### Service Infrastructure ######################################
   discovery:
@@ -59,7 +60,7 @@ services:
     hostname: plasma-discovery-service
     restart: unless-stopped
     ports:
-      - 8761:8761
+      - "8761:8761"
 
   admin:
     image: "plasma/admin:${PLASMA_VERSION}"
@@ -68,7 +69,7 @@ services:
     depends_on:
       - discovery
     ports:
-     - 8080:8080       
+      - "8080:8080"
 
   gateway:
     image: "plasma/gateway:${PLASMA_VERSION}"
@@ -77,10 +78,10 @@ services:
     depends_on:
       - discovery
     ports:
-     - 8888:8888 
-     
-########################### Services ######################################
-     
+      - "8888:8888"
+
+      ########################### Services ######################################
+
   kgs:
     image: "plasma/kgs:${PLASMA_VERSION}"
     hostname: plasma-kgs
@@ -90,7 +91,7 @@ services:
       - discovery
       - fuseki
     ports:
-      - 8181:8181
+      - "8181:8181"
     environment:
       - plasma.kgs.ontologies.folder=/var/ontologies
     volumes:
@@ -104,7 +105,7 @@ services:
       - discovery
       - mariadb-sas      
     ports:
-     - 8189:8189   
+      - "8189:8189"
 
   dms:
     image: "plasma/dms:${PLASMA_VERSION}"
@@ -116,9 +117,10 @@ services:
       - discovery
       - mariadb-dms
     ports:
-      - 8186:8186
+      - "8186:8186"
     environment:
       - plasma.dms.feature.recommendations.enabled=true
+      - plasma.dms.feature.finalizemodels.enabled=true
 
   dps:
     image: "plasma/dps:${PLASMA_VERSION}"
@@ -128,7 +130,7 @@ services:
     depends_on:
       - discovery
     ports:
-      - 8193:8193
+      - "8193:8193"
     environment:
       - plasma.localstorage.directory=/var/plasma/localstorage
     volumes:
@@ -141,11 +143,11 @@ services:
     depends_on:
       - discovery   
     ports:
-     - 8190:8190
+      - "8190:8190"
     environment:
-      - plasma.ars.labeling.url=http://plasma-ars-l-lm:8201/api/plasma-ars-l-lm
+      - plasma.ars.labeling.urls=http://plasma-ars-l-lm:8201/api/plasma-ars-l-lm
       - plasma.ars.modeling.url=
-      - plasma.ars.refinement.url=
+      - plasma.ars.refinement.urls=http://plasma-ars-r-sr:8221/recommendation
 
   frontend:
     build: ./frontend
@@ -153,7 +155,37 @@ services:
     hostname: plasma-ui
     restart: unless-stopped
     ports:
-      - 80:80
+      - "80:80"
+
+########################### Auxiliary Services ######################################
+
+  ars-l-lm:
+    image: "plasma/ars-l-lm:${PLASMA_VERSION}"
+    hostname: plasma-ars-l-lm
+    restart: unless-stopped
+    depends_on:
+      - discovery
+      - kgs
+    volumes:
+      - configs:/var/plasma/configs
+    ports:
+      - "8201:8201"
+
+  ars-r-sr:
+    build: ./auxiliary_services/ARS-R-statistic-recommender
+    image: "plasma/ars-r-sr:${PLASMA_VERSION}"
+    hostname: plasma-ars-r-sr
+    restart: unless-stopped
+    environment:
+      - SERVICE_PORT=8221
+      - SPARQL_SM_STORE=http://fuseki:3030/sm
+      - SPARQL_ONTOLOGIES_STORE=http://fuseki:3030/ontologies
+    depends_on:
+      - fuseki
+    volumes:
+      - configs:/var/plasma/configs
+    ports:
+      - "8221:8221"
 
 
 volumes:

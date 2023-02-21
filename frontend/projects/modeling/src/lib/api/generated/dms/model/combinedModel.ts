@@ -25,6 +25,5 @@ export interface CombinedModel {
     finalized?: boolean;
     provisionalElements?: Array<SemanticModelNode>;
     provisionalRelations?: Array<CacheRelationRequest>;
-    arrayContexts?: Array<SemanticModel>;
 }
 

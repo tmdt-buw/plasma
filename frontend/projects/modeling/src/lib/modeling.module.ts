@@ -30,7 +30,6 @@ import { PlsConceptDialogComponent } from './modeling/dialogs/concept-dialog/con
 import { PlsImportDialogComponent } from './modeling/dialogs/import-dialog/import-dialog.component';
 import { PlsEditEntityDialogComponent } from './modeling/dialogs/edit-entity-dialog/edit-entity-dialog.component';
 import { PlsEditRelationDialogComponent } from './modeling/dialogs/edit-relation-dialog/edit-relation-dialog.component';
-import { PlsOperationsDialogModule } from './modeling/dialogs/operations-dialog/operations-dialog.module';
 import { PlsSemanticNodeDetailsComponent } from './modeling/dialogs/semantic-node-dialog/semantic-node.component';
 import { PlsSyntaxNodeDetailsComponent } from './modeling/dialogs/syntax-node-dialog/syntax-node.component';
 import { PlsFullscreenDirective } from './modeling/directives/fullscreen.directive';
@@ -63,7 +62,6 @@ import { UriGeneratorComponent } from './modeling/dialogs/common/uri-generator/u
   imports: [
     // Plasma
     ApiModule,
-    PlsOperationsDialogModule,
     KGSApiModule,
     // Angular
     CommonModule,

@@ -1,0 +1,42 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:a1e18-mess_datum a local:Zeitstempel ;
+    local:zeitstempelformat "YYYYMMDDhhmm" .
+
+plsm:a1e18-pp_10 a local:Luftdruck ;
+    local:gemessen_in [ a local:Hektopascal ] .
+
+plsm:a1e18-qn a local:Qualitaetsniveau .
+
+plsm:a1e18-rf_10 a local:Relative_Luftfeuchtigkeit ;
+    local:gemessen_in [ a local:Prozent ] ;
+    local:messh_he "2 Meter" .
+
+plsm:a1e18-stations_id a local:Stationsidentifikationsnummer .
+
+plsm:a1e18-td_10 a local:Taupunkttemperatur ;
+    local:gemessen_in _:nb5999ff4c42546d5b1c80c724100f1d7b1 ;
+    local:messh_he "2 Meter" .
+
+plsm:a1e18-tm5_10 a local:Lufttemperatur ;
+    local:gemessen_in _:nb5999ff4c42546d5b1c80c724100f1d7b1 ;
+    local:messh_he "0.05 Meter" .
+
+plsm:a1e18-tt_10 a local:Lufttemperatur ;
+    local:gemessen_in _:nb5999ff4c42546d5b1c80c724100f1d7b1 ;
+    local:messh_he "2 Meter" .
+
+[] a local:Wetterstationsmessung ;
+    local:durchgef_hrt_von [ a local:Wetterstation ;
+            local:identifiziert_durch plsm:a1e18-stations_id ] ;
+    local:enth_lt plsm:a1e18-pp_10,
+        plsm:a1e18-rf_10,
+        plsm:a1e18-td_10,
+        plsm:a1e18-tm5_10,
+        plsm:a1e18-tt_10 ;
+    local:gemessen_am plsm:a1e18-mess_datum ;
+    local:hat plsm:a1e18-qn .
+
+_:nb5999ff4c42546d5b1c80c724100f1d7b1 a local:Grad_Celsius .
+

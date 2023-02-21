@@ -1,0 +1,24 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:f3f0a-id a local:Identifikator .
+
+plsm:f3f0a-richtung a local:Richtung .
+
+plsm:f3f0a-standort a local:Standortbezeichnung ;
+    local:pr_zisiert_durch plsm:f3f0a-standortdetail .
+
+plsm:f3f0a-standortdetail a local:Bemerkung .
+
+plsm:f3f0a-x_gk4 a local:Rechtswert .
+
+plsm:f3f0a-y_gk4 a local:Hochwert .
+
+[] a local:Parkleitsystem_Schild ;
+    local:befindet_sich_an [ a local:Geographischer_Punkt ;
+            local:besteht_aus plsm:f3f0a-x_gk4,
+                plsm:f3f0a-y_gk4 ] ;
+    local:hat plsm:f3f0a-richtung,
+        plsm:f3f0a-standort ;
+    local:identifiziert_durch plsm:f3f0a-id .
+

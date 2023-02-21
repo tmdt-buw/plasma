@@ -8,7 +8,10 @@ import de.buw.tmdt.plasma.datamodel.semanticmodel.Class;
 import de.buw.tmdt.plasma.datamodel.semanticmodel.Instance;
 import de.buw.tmdt.plasma.datamodel.semanticmodel.Literal;
 import de.buw.tmdt.plasma.datamodel.semanticmodel.NamedEntity;
-import de.buw.tmdt.plasma.datamodel.syntaxmodel.*;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.CollisionSchema;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.ObjectNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.PrimitiveNode;
+import de.buw.tmdt.plasma.datamodel.syntaxmodel.SetNode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,7 +26,6 @@ import java.io.Serializable;
         @JsonSubTypes.Type(value = ObjectNode.class, name = "ObjectNode"),
         @JsonSubTypes.Type(value = SetNode.class, name = "SetNode"),
         @JsonSubTypes.Type(value = CollisionSchema.class, name = "CollisionSchema"),
-        @JsonSubTypes.Type(value = CompositeNode.class, name = "CompositeNode"),
         @JsonSubTypes.Type(value = Instance.class, name = "Instance"),
         @JsonSubTypes.Type(value = Literal.class, name = "Literal"),
         @JsonSubTypes.Type(value = Class.class, name = "Class"),

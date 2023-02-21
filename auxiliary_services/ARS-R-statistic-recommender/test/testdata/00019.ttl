@@ -1,0 +1,63 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:f1dd9-baubeginn a local:Zeitstempel .
+
+plsm:f1dd9-bauende a local:Zeitstempel .
+
+plsm:f1dd9-baumassnahme a local:Bauma_nahme ;
+    local:anfang plsm:f1dd9-baubeginn ;
+    local:beschlossen_von plsm:f1dd9-gemeinde_name ;
+    local:ende plsm:f1dd9-bauende ;
+    local:geh_rt_zu plsm:f1dd9-sparte ;
+    local:verursacht plsm:f1dd9-verkehrsbeeintraechtigungen .
+
+plsm:f1dd9-gemeinde_name a local:Gemeinde ;
+    local:geh_rt_zu plsm:f1dd9-gemeindeverband_name ;
+    local:identifiziert_durch plsm:f1dd9-gemeinde_schluessel .
+
+plsm:f1dd9-gemeinde_schluessel a local:Identifikator .
+
+plsm:f1dd9-gemeindeverband_name a local:Gemeindeverband ;
+    local:identifiziert_durch plsm:f1dd9-gemeindeverband_schluessel .
+
+plsm:f1dd9-gemeindeverband_schluessel a local:Identifikator .
+
+plsm:f1dd9-geometry a local:Geographischer_Punkt ;
+    local:besteht_aus plsm:f1dd9-latitude,
+        plsm:f1dd9-longitude .
+
+plsm:f1dd9-kreis_name a local:Region ;
+    local:identifiziert_durch plsm:f1dd9-kreis_schluessel .
+
+plsm:f1dd9-kreis_schluessel a local:Identifikator .
+
+plsm:f1dd9-latitude a local:Geographische_Breite .
+
+plsm:f1dd9-longitude a local:Geographische_L_nge .
+
+plsm:f1dd9-nach a local:Hausnummer .
+
+plsm:f1dd9-sparte a local:Kategorie .
+
+plsm:f1dd9-strasse_name a local:Stra_e ;
+    local:anfang plsm:f1dd9-von ;
+    local:ende plsm:f1dd9-nach ;
+    local:identifiziert_durch plsm:f1dd9-strasse_schluessel .
+
+plsm:f1dd9-strasse_schluessel a local:Identifikator .
+
+plsm:f1dd9-uuid a local:Universally_Unique_Identifier__UUID_ .
+
+plsm:f1dd9-verkehrsbeeintraechtigungen a local:Verkehrsbeeintr_chtigung ;
+    local:befindet_sich_an [ a local:Adresse ;
+            local:besteht_aus plsm:f1dd9-kreis_name,
+                plsm:f1dd9-strasse_name ] .
+
+plsm:f1dd9-von a local:Hausnummer .
+
+[] a local:Baustelle ;
+    local:befindet_sich_an plsm:f1dd9-geometry ;
+    local:hat plsm:f1dd9-baumassnahme ;
+    local:identifiziert_durch plsm:f1dd9-uuid .
+

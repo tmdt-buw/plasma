@@ -10,15 +10,12 @@
  * Do not edit the class manually.
  */
 import { PositionedCombinedModelElement } from './positionedCombinedModelElement';
-import { SyntacticOperationDTO } from './syntacticOperationDTO';
 
 
 export interface SetNode extends PositionedCombinedModelElement {
-  path?: Array<string>;
-  valid?: boolean;
-  visible?: boolean;
-  disabled?: boolean;
-  pathAsJSONPointer?: string;
-  readonly operations?: Array<SyntacticOperationDTO>;
+    path?: Array<string>;
+    visible?: boolean;
+    disabled?: boolean;
+    pathAsJSONPointer?: string;
 }
 

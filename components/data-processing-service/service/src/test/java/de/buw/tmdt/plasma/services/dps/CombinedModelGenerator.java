@@ -43,22 +43,22 @@ public class CombinedModelGenerator {
 
         List<SchemaNode> nodes = new ArrayList<>();
         List<Edge> edges = new ArrayList<>();
-        SchemaNode root = new ObjectNode("root", List.of(ROOT_PATH_TOKEN), null, null, true);
+        SchemaNode root = new ObjectNode("root", List.of(ROOT_PATH_TOKEN), null, null);
         nodes.add(root);
-        PrimitiveNode identifierNode = new PrimitiveNode("id", List.of(ROOT_PATH_TOKEN, "id"), true, DataType.String, List.of("AL0025-20201123-1456-1634"), null);
+        PrimitiveNode identifierNode = new PrimitiveNode("id", List.of(ROOT_PATH_TOKEN, "id"), DataType.String, List.of("AL0025-20201123-1456-1634"), null);
         Edge rootIdentifierEdge = new Edge(root.getUuid(), identifierNode.getUuid());
         nodes.add(identifierNode);
         edges.add(rootIdentifierEdge);
 
-        ObjectNode vesselNode = new ObjectNode("vessel", true);
+        ObjectNode vesselNode = new ObjectNode("vessel");
         vesselNode.setPath(List.of(ROOT_PATH_TOKEN, vesselNode.getLabel()));
-        PrimitiveNode vesselNameNode = new PrimitiveNode("vessel_name", true, DataType.String, List.of("Airbus A350 XPB"), null);
+        PrimitiveNode vesselNameNode = new PrimitiveNode("vessel_name", DataType.String, List.of("Airbus A350 XPB"), null);
         vesselNameNode.setPath(List.of(ROOT_PATH_TOKEN, vesselNode.getLabel(), vesselNameNode.getLabel()));
-        ObjectNode ownerNode = new ObjectNode("owner", true);
+        ObjectNode ownerNode = new ObjectNode("owner");
         ownerNode.setPath(List.of(ROOT_PATH_TOKEN, vesselNode.getLabel(), ownerNode.getLabel()));
-        PrimitiveNode carrierNode = new PrimitiveNode("carrier", true, DataType.String, List.of("Lufthansa"), null);
+        PrimitiveNode carrierNode = new PrimitiveNode("carrier", DataType.String, List.of("Lufthansa"), null);
         carrierNode.setPath(List.of(ROOT_PATH_TOKEN, vesselNode.getLabel(), ownerNode.getLabel(), carrierNode.getLabel()));
-        PrimitiveNode carrierCodeNode = new PrimitiveNode("carrier_code", true, DataType.String, List.of("LH"), null);
+        PrimitiveNode carrierCodeNode = new PrimitiveNode("carrier_code", DataType.String, List.of("LH"), null);
         carrierCodeNode.setPath(List.of(ROOT_PATH_TOKEN, vesselNode.getLabel(), ownerNode.getLabel(), carrierCodeNode.getLabel()));
         Edge rootVesselEdge = new Edge(root.getUuid(), vesselNode.getUuid());
         Edge vesselNameEdge = new Edge(vesselNode.getUuid(), vesselNameNode.getUuid());
@@ -69,14 +69,14 @@ public class CombinedModelGenerator {
         edges.addAll(List.of(rootVesselEdge, vesselNameEdge, vesselOwnerEdge, vesselOwnerCarrierEdge, vesselOwnerCarrierCodeEdge));
 
 
-        ObjectNode originNode = new ObjectNode("origin", List.of(ROOT_PATH_TOKEN), null, null, true);
+        ObjectNode originNode = new ObjectNode("origin", List.of(ROOT_PATH_TOKEN), null, null);
         originNode.setPath(List.of(ROOT_PATH_TOKEN, originNode.getLabel()));
-        PrimitiveNode nameNode = new PrimitiveNode("airport_name", true, DataType.String, null, null);
+        PrimitiveNode nameNode = new PrimitiveNode("airport_name", DataType.String, null, null);
         nameNode.setPath(List.of(ROOT_PATH_TOKEN, originNode.getLabel(), nameNode.getLabel()));
-        SetNode identificationNumbersNode = new SetNode(UUID.randomUUID().toString(), "identification_numbers", List.of(ROOT_PATH_TOKEN), null, null, true, true, false);
+        SetNode identificationNumbersNode = new SetNode(UUID.randomUUID().toString(), "identification_numbers", List.of(ROOT_PATH_TOKEN), null, null, true, false);
         identificationNumbersNode.setPath(List.of(ROOT_PATH_TOKEN, originNode.getLabel(), identificationNumbersNode.getLabel()));
 
-        PrimitiveNode identificationNumberNode = new PrimitiveNode("number0", true, DataType.Number, null, null);
+        PrimitiveNode identificationNumberNode = new PrimitiveNode("number0", DataType.Number, null, null);
         identificationNumberNode.setPath(List.of(ROOT_PATH_TOKEN, originNode.getLabel(), identificationNumbersNode.getLabel(), ARRAY_PATH_TOKEN));
         Edge rootOriginEdge = new Edge(root.getUuid(), originNode.getUuid());
         Edge originNameEdge = new Edge(originNode.getUuid(), nameNode.getUuid());
@@ -85,12 +85,12 @@ public class CombinedModelGenerator {
         nodes.addAll(List.of(originNode, nameNode, identificationNumbersNode, identificationNumberNode));
         edges.addAll(List.of(rootOriginEdge, originNameEdge, originNumberEdge, numbersNumberEdge));
 
-        SetNode staffNode = new SetNode(UUID.randomUUID().toString(), "staff", List.of(ROOT_PATH_TOKEN), null, null, true, true, false);
+        SetNode staffNode = new SetNode(UUID.randomUUID().toString(), "staff", List.of(ROOT_PATH_TOKEN), null, null, true, false);
         staffNode.setPath(List.of(ROOT_PATH_TOKEN, staffNode.getLabel()));
-        ObjectNode staffObjectNode = new ObjectNode(UUID.randomUUID().toString(), "object1", List.of(ROOT_PATH_TOKEN, staffNode.getLabel(), ARRAY_PATH_TOKEN), null, null, true, true, false);
-        PrimitiveNode staffNameNode = new PrimitiveNode("name", true, DataType.Number, List.of(ROOT_PATH_TOKEN, staffNode.getLabel(), ARRAY_PATH_TOKEN), null);
+        ObjectNode staffObjectNode = new ObjectNode(UUID.randomUUID().toString(), "object1", List.of(ROOT_PATH_TOKEN, staffNode.getLabel(), ARRAY_PATH_TOKEN), null, null, true, false);
+        PrimitiveNode staffNameNode = new PrimitiveNode("name", DataType.Number, List.of(ROOT_PATH_TOKEN, staffNode.getLabel(), ARRAY_PATH_TOKEN), null);
         staffNameNode.setPath(List.of(ROOT_PATH_TOKEN, staffNode.getLabel(), ARRAY_PATH_TOKEN, staffNameNode.getLabel()));
-        PrimitiveNode staffSeatNode = new PrimitiveNode("seat", true, DataType.Number, List.of(ROOT_PATH_TOKEN, staffNode.getLabel(), ARRAY_PATH_TOKEN), null);
+        PrimitiveNode staffSeatNode = new PrimitiveNode("seat", DataType.Number, List.of(ROOT_PATH_TOKEN, staffNode.getLabel(), ARRAY_PATH_TOKEN), null);
         staffSeatNode.setPath(List.of(ROOT_PATH_TOKEN, staffNode.getLabel(), ARRAY_PATH_TOKEN, staffSeatNode.getLabel()));
         Edge rootStaffEdge = new Edge(root.getUuid(), staffNode.getUuid());
         Edge staffObjectEdge = new Edge(staffNode.getUuid(), staffObjectNode.getUuid());
@@ -100,13 +100,13 @@ public class CombinedModelGenerator {
         edges.addAll(List.of(rootStaffEdge, staffObjectEdge, staffNameEdge, staffSeatEdge));
 
         // 2nd level array
-        SetNode tagsArrayNode = new SetNode(UUID.randomUUID().toString(), "tags", null, null, null, true, true, false);
+        SetNode tagsArrayNode = new SetNode(UUID.randomUUID().toString(), "tags", null, null, null, true, false);
         tagsArrayNode.setPath(appendPathToken(staffObjectNode.getPath(), tagsArrayNode.getLabel()));
-        ObjectNode tagsObjectNode = new ObjectNode(UUID.randomUUID().toString(), SchemaNode.OBJECT_LABEL, null, null, null, true, true, false);
+        ObjectNode tagsObjectNode = new ObjectNode(UUID.randomUUID().toString(), SchemaNode.OBJECT_LABEL, null, null, null, true, false);
         tagsObjectNode.setPath(appendPathToken(tagsArrayNode.getPath(), ARRAY_PATH_TOKEN));
-        PrimitiveNode tagsKeyNode = new PrimitiveNode("key", true, DataType.String, List.of("Tag Key"), null);
+        PrimitiveNode tagsKeyNode = new PrimitiveNode("key", DataType.String, List.of("Tag Key"), null);
         tagsKeyNode.setPath(appendPathToken(tagsObjectNode.getPath(), tagsKeyNode.getLabel()));
-        PrimitiveNode tagsValueNode = new PrimitiveNode("value", true, DataType.String, List.of("Tag Value"), null);
+        PrimitiveNode tagsValueNode = new PrimitiveNode("value", DataType.String, List.of("Tag Value"), null);
         tagsValueNode.setPath(appendPathToken(tagsObjectNode.getPath(), tagsValueNode.getLabel()));
         Edge staffTagsEdge = new Edge(staffNode.getUuid(), tagsArrayNode.getUuid());
         Edge tagsObjectEdge = new Edge(tagsArrayNode.getUuid(), tagsObjectNode.getUuid());

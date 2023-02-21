@@ -28,25 +28,16 @@ public class PrimitiveNode extends MappableSyntaxNode {
             @NotNull String label,
             @NotNull DataType dataType
     ) {
-        this(label, true, dataType, null, null);
+        this(label, dataType, null, null);
     }
 
     public PrimitiveNode(
             @NotNull String label,
-            boolean isValid,
-            @NotNull DataType dataType
-    ) {
-        this(label, isValid, dataType, null, null);
-    }
-
-    public PrimitiveNode(
-            @NotNull String label,
-            boolean isValid,
             @NotNull DataType dataType,
             @Nullable List<String> examples,
             @Nullable String cleansingPattern
     ) {
-        super(label, isValid);
+        super(label);
         this.dataType = dataType;
         this.examples = examples != null ? new ArrayList<>(examples) : new ArrayList<>();
         this.cleansingPattern = cleansingPattern;
@@ -55,12 +46,11 @@ public class PrimitiveNode extends MappableSyntaxNode {
     public PrimitiveNode(
             @NotNull String label,
             List<String> path,
-            boolean isValid,
             @NotNull DataType dataType,
             @Nullable List<String> examples,
             @Nullable String cleansingPattern
     ) {
-        super(label, isValid);
+        super(label);
         this.dataType = dataType;
         this.examples = examples != null ? new ArrayList<>(examples) : new ArrayList<>();
         this.cleansingPattern = cleansingPattern;
@@ -74,14 +64,13 @@ public class PrimitiveNode extends MappableSyntaxNode {
             @Nullable @JsonProperty(PATH_PROPERTY) List<String> path,
             @JsonProperty(XCOORDINATE_PROPERTY) Double xCoordinate,
             @JsonProperty(YCOORDINATE_PROPERTY) Double yCoordinate,
-            @JsonProperty(VALID_PROPERTY) boolean isValid,
             @NotNull @JsonProperty(DATATYPE_PROPERTY) DataType dataType,
             @JsonProperty(EXAMPLES_PROPERTY) List<String> examples,
             @JsonProperty(CLEANSING_PATTERN_PROPERTY) String cleansingPattern,
             @JsonProperty(VISIBLE_PROPERTY) boolean visible,
             @JsonProperty(DISABLED_PROPERTY) boolean disabled
     ) {
-        super(uuid, label, path, xCoordinate, yCoordinate, isValid, visible, disabled);
+        super(uuid, label, path, xCoordinate, yCoordinate, visible, disabled);
         this.dataType = dataType;
         this.examples = examples != null ? new ArrayList<>(examples) : new ArrayList<>();
         this.cleansingPattern = cleansingPattern;
@@ -122,7 +111,6 @@ public class PrimitiveNode extends MappableSyntaxNode {
                 getPath(),
                 getXCoordinate(),
                 getYCoordinate(),
-                isValid(),
                 getDataType(),
                 getExamples(),
                 getCleansingPattern(),

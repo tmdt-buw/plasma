@@ -14,14 +14,14 @@ import { PositionedCombinedModelElement } from './positionedCombinedModelElement
 
 
 export interface Class extends PositionedCombinedModelElement {
-  uri?: string;
-  description?: string;
-  syntaxNodeUuid?: string;
-  syntaxLabel?: string;
-  syntaxPath?: string;
-  instance?: Instance;
-  provisional?: boolean;
-  mapped?: boolean;
-  template?: boolean;
+    uri?: string;
+    description?: string;
+    syntaxNodeUuid?: string;
+    syntaxLabel?: string;
+    syntaxPath?: string;
+    instance?: Instance;
+    provisional?: boolean;
+    mapped?: boolean;
+    template?: boolean;
 }
 

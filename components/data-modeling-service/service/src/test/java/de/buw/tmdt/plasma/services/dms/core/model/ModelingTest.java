@@ -159,7 +159,7 @@ class ModelingTest {
 
 
     private CombinedModel getCombinedModel() {
-        SchemaNode root = new ObjectNode("root", true);
+        SchemaNode root = new ObjectNode("root");
 
         SchemaNode node = new PrimitiveNode(
                 "node-" + counter++,

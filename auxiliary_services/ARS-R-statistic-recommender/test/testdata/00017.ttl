@@ -1,0 +1,27 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:de9b8-bezeichnung a local:Standortbezeichnung .
+
+plsm:de9b8-geometry a local:Geographischer_Punkt ;
+    local:besteht_aus plsm:de9b8-latitude,
+        plsm:de9b8-longitude .
+
+plsm:de9b8-id a local:Identifikator .
+
+plsm:de9b8-latitude a local:Geographische_Breite .
+
+plsm:de9b8-longitude a local:Geographische_L_nge .
+
+plsm:de9b8-uuid a local:Universally_Unique_Identifier__UUID_ .
+
+plsm:de9b8-website a local:Website ;
+    local:ist_vom_Typ [ a local:Uniform_Resource_Locator__URL_ ] .
+
+[] a local:Radmonitor ;
+    local:befindet_sich_an plsm:de9b8-geometry ;
+    local:dargestellt_auf plsm:de9b8-website ;
+    local:hat plsm:de9b8-bezeichnung ;
+    local:identifiziert_durch plsm:de9b8-id,
+        plsm:de9b8-uuid .
+

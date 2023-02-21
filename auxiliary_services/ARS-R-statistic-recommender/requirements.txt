@@ -1,0 +1,10 @@
+networkx==2.6.3
+fastapi
+node2vec==0.4.4
+numpy==1.20.3
+rdflib==6.0.2
+pydantic
+datamodel-code-generator[http]
+uvicorn
+SPARQLWrapper
+schedule

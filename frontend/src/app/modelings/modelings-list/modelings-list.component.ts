@@ -150,4 +150,8 @@ export class ModelingsListComponent implements OnInit {
       err => this.notification.error('Cloning failed', 'Cannot clone this model: ' + err.message));
 
   }
+
+  getEditTooltip(model: ModelingInfo): string {
+    return model.finalized ? 'View the semantic model' : 'Edit the semantic model';
+  }
 }

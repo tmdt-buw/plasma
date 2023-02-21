@@ -1,0 +1,24 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:ed202-_object_1 a local:Geographischer_Punkt ;
+    local:besteht_aus plsm:ed202-altitude_1,
+        plsm:ed202-latitude_1,
+        plsm:ed202-longitude_1 .
+
+plsm:ed202-altitude_1 a local:Ellipsoidische_H_he .
+
+plsm:ed202-bauwerk_1 a local:Bezeichnung .
+
+plsm:ed202-geometry_1 a local:Geographische_Linie ;
+    local:besteht_aus plsm:ed202-_object_1 ;
+    local:koordinatenreferenzsystem "name" .
+
+plsm:ed202-latitude_1 a local:UTM_northing .
+
+plsm:ed202-longitude_1 a local:UTM_false_easting .
+
+[] a local:Historisches_Bauwerk ;
+    local:befindet_sich_an plsm:ed202-geometry_1 ;
+    local:hat plsm:ed202-bauwerk_1 .
+

@@ -11,7 +11,6 @@
  */
 import { CollisionSchema } from './collisionSchema';
 import { PrimitiveNode } from './primitiveNode';
-import { CompositeNode } from './compositeNode';
 import { NamedEntity } from './namedEntity';
 import { SetNode } from './setNode';
 import { ObjectNode } from './objectNode';
@@ -23,5 +22,5 @@ import { Class } from './class';
  * @type UpdatePositionsRequestInner
  * @export
  */
-export type UpdatePositionsRequestInner = Class | CollisionSchema | CompositeNode | Literal | NamedEntity | ObjectNode | PrimitiveNode | SetNode;
+export type UpdatePositionsRequestInner = Class | CollisionSchema | Literal | NamedEntity | ObjectNode | PrimitiveNode | SetNode;
 

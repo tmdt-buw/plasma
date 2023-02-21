@@ -1,0 +1,27 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:49f2c-bezeichnung a local:Standortbezeichnung .
+
+plsm:49f2c-geometry a local:Geographischer_Punkt ;
+    local:besteht_aus plsm:49f2c-latitude,
+        plsm:49f2c-longitude .
+
+plsm:49f2c-knoten_nummer a local:Knotenpunkt_Nummer .
+
+plsm:49f2c-latitude a local:Geographische_Breite .
+
+plsm:49f2c-longitude a local:Geographische_L_nge .
+
+plsm:49f2c-nummer a local:Lichtsignalanlagen_Nummer .
+
+plsm:49f2c-uuid a local:Universally_Unique_Identifier__UUID_ .
+
+[] a local:Lichtsignalanlage ;
+    local:befindet_sich_an plsm:49f2c-geometry ;
+    local:geh_rt_zu [ a local:Knotenpunkt ;
+            local:identifiziert_durch plsm:49f2c-knoten_nummer ] ;
+    local:hat plsm:49f2c-bezeichnung ;
+    local:identifiziert_durch plsm:49f2c-nummer,
+        plsm:49f2c-uuid .
+

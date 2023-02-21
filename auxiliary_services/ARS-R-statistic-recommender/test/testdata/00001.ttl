@@ -1,0 +1,71 @@
+@prefix local: <https://local.ontology#> .
+@prefix plsm: <http://plasma.uni-wuppertal.de/sm/> .
+
+plsm:82e92-abfahrtsplan a local:Abfahrtsplan ;
+    local:ist_vom_Typ _:n22170a7149ab468e8b0f81d828a37daeb1 .
+
+plsm:82e92-abfahrtstafel a local:Abfahrtstafel ;
+    local:ist_vom_Typ _:n22170a7149ab468e8b0f81d828a37daeb1 .
+
+plsm:82e92-automat a local:Boolescher_Ausdruck .
+
+plsm:82e92-betreiber a local:Betreiber .
+
+plsm:82e92-bezeichnung a local:Bezeichnung .
+
+plsm:82e92-fahrplansuche a local:Fahrplansuche ;
+    local:ist_vom_Typ _:n22170a7149ab468e8b0f81d828a37daeb1 .
+
+plsm:82e92-geometry a local:Geographischer_Punkt ;
+    local:besteht_aus plsm:82e92-latitude,
+        plsm:82e92-longitude .
+
+plsm:82e92-ibnr a local:Interne_Bahnhofsnummer__IBNR_ .
+
+plsm:82e92-latitude a local:Geographische_Breite .
+
+plsm:82e92-linien a local:Verkehrslinie .
+
+plsm:82e92-longitude a local:Geographische_L_nge .
+
+plsm:82e92-nur_ausstieg a local:Boolescher_Ausdruck .
+
+plsm:82e92-nur_einstieg a local:Boolescher_Ausdruck .
+
+plsm:82e92-nur_ersatzverkehr a local:Boolescher_Ausdruck .
+
+plsm:82e92-plattform a local:Zustiegsplattform .
+
+plsm:82e92-richtung a local:Fahrtrichtung .
+
+plsm:82e92-tarifzone a local:Tarifzone .
+
+plsm:82e92-uuid a local:Universally_Unique_Identifier__UUID_ .
+
+plsm:82e92-verkehrsmittel a local:Verkehrsmittel ;
+    local:besteht_aus plsm:82e92-verkehrsmittelklasse .
+
+plsm:82e92-verkehrsmittelklasse a local:Verkehrsmittelklasse .
+
+[] a local:Haltestelle ;
+    local:angefahren_von plsm:82e92-linien ;
+    local:befindet_sich_an plsm:82e92-geometry ;
+    local:benutzt_von plsm:82e92-verkehrsmittel ;
+    local:betrieben_durch plsm:82e92-betreiber ;
+    local:bezieht_sich_auf plsm:82e92-plattform ;
+    local:geh_rt_zu plsm:82e92-tarifzone ;
+    local:hat [ a local:Eigenschaften ;
+            local:hat_Fahrkartenautomat plsm:82e92-automat ;
+            local:nur_aussteigen_erlaubt plsm:82e92-nur_ausstieg ;
+            local:nur_durch_Ersatzverkehr_angefahren plsm:82e92-nur_ersatzverkehr ;
+            local:nur_einsteigen_erlaubt plsm:82e92-nur_einstieg ],
+        plsm:82e92-bezeichnung,
+        plsm:82e92-fahrplansuche,
+        plsm:82e92-richtung ;
+    local:identifiziert_durch plsm:82e92-ibnr,
+        plsm:82e92-uuid ;
+    local:zeigt_an plsm:82e92-abfahrtsplan,
+        plsm:82e92-abfahrtstafel .
+
+_:n22170a7149ab468e8b0f81d828a37daeb1 a local:Uniform_Resource_Locator__URL_ .
+
